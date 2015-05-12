@@ -10,6 +10,6 @@
 		"wp-coding-standards/wpcs": "dev-develop"
   	},
 	"require": {
-		"sunra/php-simple-html-dom-parser": "v1.5.0"
+		"querypath/QueryPath": ">=3.0.0"
 	}
 }

@@ -4,50 +4,48 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bddef687cfe656c0543ed7cd848defcc",
+    "hash": "8ca2694d70016b848b255e9ada03a05c",
     "packages": [
         {
-            "name": "sunra/php-simple-html-dom-parser",
-            "version": "v1.5.0",
+            "name": "querypath/querypath",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/sunra/php-simple-html-dom-parser.git",
-                "reference": "a0b80ace086c7e09085669205e1b3c2c9c7a453c"
+                "url": "https://github.com/technosophos/querypath.git",
+                "reference": "13224745f7348e099d2dde9e555bc8972c21a810"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sunra/php-simple-html-dom-parser/zipball/a0b80ace086c7e09085669205e1b3c2c9c7a453c",
-                "reference": "a0b80ace086c7e09085669205e1b3c2c9c7a453c",
+                "url": "https://api.github.com/repos/technosophos/querypath/zipball/13224745f7348e099d2dde9e555bc8972c21a810",
+                "reference": "13224745f7348e099d2dde9e555bc8972c21a810",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "php": ">=5.3.0"
             },
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Sunra\\PhpSimple\\HtmlDomParser": "Src/"
-                }
+                    "QueryPath": "src/"
+                },
+                "files": [
+                    "src/qp_functions.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Sunra",
-                    "email": "sunra@yandex.ru",
-                    "homepage": "http://github.com/sunra"
-                }
-            ],
-            "description": "Composer adaptation of: A HTML DOM parser written in PHP5+ let you manipulate HTML in a very easy way! Require PHP 5+. Supports invalid HTML. Find tags on an HTML page with selectors just like jQuery. Extract contents from HTML in a single line.",
-            "homepage": "https://github.com/sunra/php-simple-html-dom-parser",
+            "description": "HTML/XML querying (CSS 4 or XPath) and processing (like jQuery)",
+            "homepage": "https://github.com/technosophos/querypath",
             "keywords": [
-                "dom",
+                "css",
                 "html",
-                "parser"
+                "jquery",
+                "xml",
+                "xslt"
             ],
-            "time": "2013-05-04 14:32:03"
+            "time": "2014-09-23 19:04:19"
         }
     ],
     "packages-dev": [

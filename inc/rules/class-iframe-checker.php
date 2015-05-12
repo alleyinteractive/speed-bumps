@@ -1,8 +1,6 @@
 <?php
 
 require 'vendor/autoload.php';
-use Sunra\PhpSimple\HtmlDomParser;
-
 class IFrame_Checker {
 
 	private $content;
@@ -11,23 +9,25 @@ class IFrame_Checker {
 	}
 
 	public function check() {
-		$dom = HtmlDomParser::str_get_html( $this->content );
+		
+		$ofAllIFrames = qp( $this->content, 'iframe' );
 
 		$iframes = array();
-		$allIframes = array();
-		foreach( $dom->find( 'iframe' ) as $iframe) {
+		$startTag = 0;
+		foreach( $ofAllIFrames as $iframe) {
+			$startCurrentTag = strpos( $this->content, '<iframe', $startTag );
+			$endCurrentTag = strpos( $this->content, '</iframe>', $startCurrentTag );
 			$iframes[] = array(
-				'start'	=>	$iframe->tag_start,
-				'end'	=>	strpos( $this->content, '</iframe>', $iframe->tag_start )
-
+				'start'	=>	$startCurrentTag,
+				'end'	=>	$endCurrentTag
 			);
-			$allIframes[] = $iframe;
+			$startTag = $startCurrentTag + 1;
+			
 		}
 		return array(
-			'hasIFrame'	=>	count( $allIframes ) > 0,
+			'hasIFrame'	=>	count( $iframes ) > 0,
 			'elements'	=>	$iframes
 		);
-
-		
+		 
 	}
 }
