@@ -10,3 +10,16 @@ Text Domain: speed-bumps
 Domain Path: /languages
 */
 
+class Speed_Bumps {
+	private static $instance;
+
+	public static function get_instance() {
+		if ( ! isset( self::$instance ) ) {
+
+			self::$instance = new Speed_Bumps;
+			
+		}
+
+		return self::$instance;
+	}
+}

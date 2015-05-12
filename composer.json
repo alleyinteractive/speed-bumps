@@ -1,0 +1,15 @@
+{
+	"name": "fusioneng/speed-bumps",
+	"authors": [
+		{
+			"name": "Fusion Engineering",
+			"email": "tech@fusion.net"
+		}
+  	],
+  	"require-dev": {
+		"wp-coding-standards/wpcs": "dev-develop"
+  	},
+	"require": {
+		"sunra/php-simple-html-dom-parser": "v1.5.0"
+	}
+}
