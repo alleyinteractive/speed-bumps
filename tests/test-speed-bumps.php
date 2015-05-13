@@ -18,4 +18,6 @@ class Test_Speed_Bumps extends WP_UnitTestCase {
 		return '<div id="polar-ad"</div>';
 	}
 
+
+
 }
