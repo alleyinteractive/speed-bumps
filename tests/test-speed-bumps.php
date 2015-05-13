@@ -14,7 +14,7 @@ class Test_Speed_Bumps extends WP_UnitTestCase {
 		add_filter( 'speed_bumps_insert_ad', array( $this, 'add_polar' ), 10, 0 );
 		
 		$newContent = Speed_Bumps::check_and_inject_ad( $content, null );
-		$this->assertTrue( $this->endsWith( $newContent, $this->add_polar() ) );
+		$this->assertEquals( 'Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200<div id="polar-ad"></div>', $newContent );
 	}
 
 	public function test_algorithm_with_content_less_than_1200() {
@@ -58,6 +58,23 @@ EOT;
 	
 		$newContent = Speed_Bumps::check_and_inject_ad( $content, null );
 		$this->assertNotContains( '<div id="polar-ad"></div>', $newContent );
+
+	}
+
+	public function test_algorithm_paragraph_with_image_at_the_end() {
+
+		$content = <<<EOT
+	First paragraph, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+<img src="some awesome image"></img>
+
+	Second paragraph, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+EOT;
+
+		add_filter( 'speed_bumps_insert_ad', array( $this, 'add_polar' ), 10, 0 );
+	
+		$newContent = Speed_Bumps::check_and_inject_ad( $content, null );
+		$this->assertTrue( $this->endsWith( $newContent, $this->add_polar() ) );
 
 	}
 

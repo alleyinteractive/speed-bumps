@@ -36,13 +36,24 @@ class Speed_Bumps {
 
 	public static function check_and_inject_ad( $the_content, $post_id = null ) {
 		add_filter( 'speed_bumps_global_constraints', 'Speed_Bumps_Text_Constraints::minimum_content_length', 10, 2 );
-		
+		add_filter( 'speed_bumps_paragraph_constraints', 'Speed_Bumps_Element_Constraints::contains_inline_element', 10, 1 );
 		if ( apply_filters( 'speed_bumps_global_constraints', true, $the_content ) ) {
 			$output = '';
+			$alreadyInsertAd = false;
 			$parts = explode( PHP_EOL, $the_content );
+
+			if( count( $parts ) <= 1 ) {
+				return  array_shift( $parts ) . apply_filters( 'speed_bumps_insert_ad', '' );
+			}
+			
 			foreach( $parts as $index => $part ) {
-				if( $index === 0 ) {
-					$output .= $part . apply_filters( 'speed_bumps_insert_ad', '' );
+				if( ! apply_filters( 'speed_bumps_paragraph_constraints', $part ) && $part !== '' ) {
+					if( $index > 1 && ! $alreadyInsertAd ) {
+						$output .= $part . apply_filters( 'speed_bumps_insert_ad', '' );
+						$alreadyInsertAd = true;
+					} else {
+						$output .= $part;
+					}
 				} else {
 					$output .= $part;
 				}
@@ -56,35 +67,6 @@ class Speed_Bumps {
 
 	}
 	
-	public static function elements_constraints( $canInsert, $the_content ) { 
-		/*
-		$ofAllIFrames = qp( $this->content, 'iframe' );
-
-		$iframes = array();
-		$startTag = 0;
-		foreach( $ofAllIFrames as $iframe) {
-			$startCurrentTag = strpos( $this->content, '<iframe', $startTag );
-			$endCurrentTag = strpos( $this->content, '</iframe>', $startCurrentTag );
-			$iframes[] = array(
-				'start'	=>	$startCurrentTag,
-				'end'	=>	$endCurrentTag
-			);
-			$startTag = $startCurrentTag + 1;
-			
-		}
-		 */
-		/*
-		return array(
-			'hasIFrame'	=>	count( $iframes ) > 0,
-			'elements'	=>	$iframes
-		);
-		 */
-
-		//return true;
-		 
-	}
-
-
 }
 
 add_action( 'init', 'Speed_Bumps::get_instance' );
