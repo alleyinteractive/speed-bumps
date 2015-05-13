@@ -27,6 +27,7 @@ class Speed_Bumps {
 	private static function require_files() {
 		require( dirname( __FILE__ ) . '/vendor/autoload.php' );
 		require_once( dirname( __FILE__ ) . '/inc/class-speed-bumps-text-constraints.php' );
+		require_once( dirname( __FILE__ ) . '/inc/class-speed-bumps-element-constraints.php' );
 	}
 
 	private static function setup_filters() {
@@ -38,17 +39,18 @@ class Speed_Bumps {
 		
 		if ( apply_filters( 'speed_bumps_global_constraints', true, $the_content ) ) {
 			$output = '';
-			$paragraphs = qp( $the_content, 'p' );
-			foreach( $paragraphs as $index => $p ) {
+			$parts = explode( PHP_EOL, $the_content );
+			foreach( $parts as $index => $part ) {
 				if( $index === 0 ) {
-					$output .= $p->html() . apply_filters( 'speed_bumps_insert_ad', '' );
+					$output .= $part . apply_filters( 'speed_bumps_insert_ad', '' );
 				} else {
-					$output .= $p->html();
+					$output .= $part;
 				}
 			}
 
 			return $output;
 		}
+		 
 
 		return $the_content;
 
