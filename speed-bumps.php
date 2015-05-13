@@ -37,8 +37,9 @@ class Speed_Bumps {
 	public static function check_and_inject_ad( $the_content, $post_id = null ) {
 		add_filter( 'speed_bumps_global_constraints', 'Speed_Bumps_Text_Constraints::minimum_content_length', 10, 2 );
 		add_filter( 'speed_bumps_paragraph_constraints', 'Speed_Bumps_Element_Constraints::contains_inline_element', 10, 1 );
+		
 		if ( apply_filters( 'speed_bumps_global_constraints', true, $the_content ) ) {
-			$output = '';
+			$output = array();
 			$alreadyInsertAd = false;
 			$parts = explode( PHP_EOL, $the_content );
 
@@ -47,19 +48,18 @@ class Speed_Bumps {
 			}
 			
 			foreach( $parts as $index => $part ) {
-				if( ! apply_filters( 'speed_bumps_paragraph_constraints', $part ) && $part !== '' ) {
-					if( $index > 1 && ! $alreadyInsertAd ) {
-						$output .= $part . apply_filters( 'speed_bumps_insert_ad', '' );
+				if( ! apply_filters( 'speed_bumps_paragraph_constraints', $part ) ) {
+					if( ! $alreadyInsertAd ) {
+						$output[] = $part . apply_filters( 'speed_bumps_insert_ad', '' ) . PHP_EOL;
 						$alreadyInsertAd = true;
 					} else {
-						$output .= $part;
+						$output[] = $part;
 					}
 				} else {
-					$output .= $part;
+					$output[] = $part;
 				}
 			}
-
-			return $output;
+			return implode( PHP_EOL, $output );
 		}
 		 
 
