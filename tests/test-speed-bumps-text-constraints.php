@@ -38,17 +38,5 @@ class Test_Speed_Bumps_Text_Constraints extends WP_UnitTestCase {
 		$this->assertFalse( $okToInsert );	
 
 	}
-
-	public function test_string_case_for_speed_bumps_minimum_content_filter() {
-		$content = 'test';
-
-		add_filter( 'speed_bumps_arguments', function( $args ) { 
-			return 'something entirely wrong';
-		});
-		
-		$okToInsert = Speed_Bumps_Text_Constraints::minimum_content_length( true, $content );
-		
-		$this->assertFalse( $okToInsert );	
-	}
 	
 }

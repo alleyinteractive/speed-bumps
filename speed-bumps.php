@@ -25,6 +25,7 @@ class Speed_Bumps {
 	}
 
 	private static function require_files() {
+		require( dirname( __FILE__ ) . '/vendor/autoload.php' );
 		require_once( dirname( __FILE__ ) . '/inc/class-speed-bumps-text-constraints.php' );
 	}
 
@@ -33,12 +34,22 @@ class Speed_Bumps {
 	}
 
 	public static function check_and_inject_ad( $the_content, $post_id = null ) {
-		add_filter( 'can_insert_here', 'Speed_Bumps_Text_Constraints::minimum_content_length', 10, 2 );
+		add_filter( 'speed_bumps_global_constraints', 'Speed_Bumps_Text_Constraints::minimum_content_length', 10, 2 );
 		
-		if ( apply_filters( 'can_insert_here', true, $the_content ) ) {
-			return $the_content . apply_filters( 'speed_bumps_insert_ad', '' );
+		if ( apply_filters( 'speed_bumps_global_constraints', true, $the_content ) ) {
+			$output = '';
+			$paragraphs = qp( $the_content, 'p' );
+			foreach( $paragraphs as $index => $p ) {
+				if( $index === 0 ) {
+					$output .= $p->html() . apply_filters( 'speed_bumps_insert_ad', '' );
+				} else {
+					$output .= $p->html();
+				}
+			}
+
+			return $output;
 		}
-		
+
 		return $the_content;
 
 	}
