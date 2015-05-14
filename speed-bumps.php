@@ -25,7 +25,6 @@ class Speed_Bumps {
 	}
 
 	private static function require_files() {
-		require( dirname( __FILE__ ) . '/vendor/autoload.php' );
 		require_once( dirname( __FILE__ ) . '/inc/class-speed-bumps-text-constraints.php' );
 		require_once( dirname( __FILE__ ) . '/inc/class-speed-bumps-element-constraints.php' );
 	}
