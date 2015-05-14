@@ -18,6 +18,10 @@ class Speed_Bumps_Element_Constraints {
 		if ( preg_match_all( '/' . get_shortcode_regex() . '/s', $paragraph, $matches, PREG_SET_ORDER ) ) {
 			return true;
 		}
+
+		if ( trim( $paragraph ) === '' ) {
+			return true;
+		}
 		
 		return false;
 	}

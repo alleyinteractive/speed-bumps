@@ -45,8 +45,12 @@ class Speed_Bumps {
 			if( count( $parts ) <= 1 ) {
 				return  array_shift( $parts ) . apply_filters( 'speed_bumps_insert_ad', '' );
 			}
+
+			$startFrom50Percent =  floor( count( $parts ) / 2 );
+			$firstHalf = array_slice( $parts, 0, $startFrom50Percent );
+			$secondHalf = array_slice( $parts, $startFrom50Percent );	
 			
-			foreach( $parts as $index => $part ) {
+			foreach( $secondHalf as $index => $part ) {
 				if( ! apply_filters( 'speed_bumps_paragraph_constraints', $part ) ) {
 					if( ! $alreadyInsertAd ) {
 						$output[] = $part . apply_filters( 'speed_bumps_insert_ad', '' ) . PHP_EOL;
@@ -58,6 +62,8 @@ class Speed_Bumps {
 					$output[] = $part;
 				}
 			}
+
+			$output = array_merge( $firstHalf, $output );
 			return implode( PHP_EOL, $output );
 		}
 		 

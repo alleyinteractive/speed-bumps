@@ -46,7 +46,12 @@ EOT;
 		$containsCaption = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
 		
 		$this->assertTrue( $containsCaption );
+	}
 
-		
+	public function test_if_the_paragraph_is_blank() {
+		$content = PHP_EOL;
+
+		$containsBlankLine = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
+		$this->assertTrue( $containsBlankLine );
 	}
 }
