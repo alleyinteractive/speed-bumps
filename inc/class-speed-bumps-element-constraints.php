@@ -22,6 +22,18 @@ class Speed_Bumps_Element_Constraints {
 		if ( trim( $paragraph ) === '' ) {
 			return true;
 		}
+
+		if ( false !== stripos( $paragraph, 'https://twitter.com' ) ) {
+			return true;
+		}
+
+		if ( false !== stripos( $paragraph, 'https://www.youtube.com/watch' ) ) {
+			return true;
+		}
+
+		if ( false !== stripos( $paragraph, 'https://vine.co/v' ) ) {
+			return true;
+		}	
 		
 		return false;
 	}

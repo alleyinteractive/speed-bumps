@@ -54,4 +54,26 @@ EOT;
 		$containsBlankLine = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
 		$this->assertTrue( $containsBlankLine );
 	}
+
+	public function test_if_the_paragraph_has_twitter() {
+		$content = 'https://twitter.com/status/123456789';
+
+		$containsTwitter = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
+
+		$this->assertTrue( $containsTwitter );	
+	}
+
+	public function test_if_the_paragraph_has_video() {
+		$content = 'https://www.youtube.com/watch?v=asdfasdf';
+
+		$containsYoutube = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
+		$this->assertTrue( $containsYoutube );
+	}
+
+	public function test_if_the_paragraph_has_vine() {
+		$content = 'https://vine.co/v/';
+		$containsVine = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
+		$this->assertTrue( $containsVine );
+
+	}
 }
