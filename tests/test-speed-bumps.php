@@ -17,7 +17,7 @@ Something longer than 1200Something longer than 1200Something longer than 1200So
 EOT;
 		add_filter( 'speed_bumps_insert_ad', array( $this, 'add_polar' ), 10, 0 );
 		
-		$newContent = Speed_Bumps::check_and_inject_ad( $content, null );
+		$newContent = Speed_Bumps::check_and_inject_ad( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 	}
 
@@ -26,7 +26,7 @@ EOT;
 		
 		add_filter( 'speed_bumps_insert_ad', array( $this, 'add_polar' ), 10, 0 );
 		
-		$newContent = Speed_Bumps::check_and_inject_ad( $content, null );
+		$newContent = Speed_Bumps::check_and_inject_ad( $content );
 		$this->assertNotContains( $this->add_polar(), $newContent );
 
 	}
@@ -50,7 +50,7 @@ EOT;
 
 		add_filter( 'speed_bumps_insert_ad', array( $this, 'add_polar' ), 10, 0 );
 	
-		$newContent = Speed_Bumps::check_and_inject_ad( $content, null );
+		$newContent = Speed_Bumps::check_and_inject_ad( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
 	}
@@ -67,7 +67,7 @@ EOT;
 
 		add_filter( 'speed_bumps_insert_ad', array( $this, 'add_polar' ), 10, 0 );
 	
-		$newContent = Speed_Bumps::check_and_inject_ad( $content, null );
+		$newContent = Speed_Bumps::check_and_inject_ad( $content );
 		$this->assertNotContains( '<div id="polar-ad"></div>', $newContent );
 
 	}
@@ -94,7 +94,7 @@ EOT;
 
 		add_filter( 'speed_bumps_insert_ad', array( $this, 'add_polar' ), 10, 0 );
 	
-		$newContent = Speed_Bumps::check_and_inject_ad( $content, null );
+		$newContent = Speed_Bumps::check_and_inject_ad( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
 	}
@@ -142,7 +142,7 @@ EOT;
 
 		add_filter( 'speed_bumps_insert_ad', array( $this, 'add_polar' ), 10, 0 );
 
-		$newContent = Speed_Bumps::check_and_inject_ad( $content, null );
+		$newContent = Speed_Bumps::check_and_inject_ad( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
 	}
