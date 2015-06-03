@@ -11,7 +11,7 @@ class Test_Speed_Bumps_Element_Constraints extends WP_UnitTestCase {
 Some text before blockquote <blockquote>Awesome quote</blockquote>
 EOT;
 
-		$containsBlockquote= Speed_Bumps_Element_Constraints::contains_inline_element( $content );
+		$containsBlockquote= Speed_Bumps_Element_Constraints::contains_blockquote( $content );
 		
 		$this->assertTrue( $containsBlockquote );
 
@@ -22,7 +22,7 @@ EOT;
 Some text before blockquote <img src="some_awesome_image.png"></img>
 EOT;
 
-		$containsImage = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
+		$containsImage = Speed_Bumps_Element_Constraints::contains_image( $content );
 		
 		$this->assertTrue( $containsImage );
 
@@ -33,7 +33,7 @@ EOT;
 Some text before blockquote <iframe src="some_awesome_image.png"></iframe>
 EOT;
 
-		$containsIFrame = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
+		$containsIFrame = Speed_Bumps_Element_Constraints::contains_iframe( $content );
 		
 		$this->assertTrue( $containsIFrame );
 	}
@@ -43,7 +43,7 @@ EOT;
 some text before [caption id="attachment_131804" align="aligncenter" width="1024"]<img class="size-large wp-image-131804" src="https://fusiondotnet.files.wordpress.com/2015/05/451577070.jpg?quality=80&amp;strip=all&amp;w=1024" alt="Getty Images" width="1024" height="712" /> Getty Images[/caption]
 EOT;
 
-		$containsCaption = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
+		$containsCaption = Speed_Bumps_Element_Constraints::contains_embed( $content );
 		
 		$this->assertTrue( $containsCaption );
 	}
@@ -51,14 +51,14 @@ EOT;
 	public function test_if_the_paragraph_is_blank() {
 		$content = PHP_EOL;
 
-		$containsBlankLine = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
+		$containsBlankLine = Speed_Bumps_Element_Constraints::contains_blank( $content );
 		$this->assertTrue( $containsBlankLine );
 	}
 
 	public function test_if_the_paragraph_has_twitter() {
 		$content = 'https://twitter.com/status/123456789';
 
-		$containsTwitter = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
+		$containsTwitter = Speed_Bumps_Element_Constraints::contains_twitter( $content );
 
 		$this->assertTrue( $containsTwitter );	
 	}
@@ -66,13 +66,13 @@ EOT;
 	public function test_if_the_paragraph_has_video() {
 		$content = 'https://www.youtube.com/watch?v=asdfasdf';
 
-		$containsYoutube = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
+		$containsYoutube = Speed_Bumps_Element_Constraints::contains_video( $content );
 		$this->assertTrue( $containsYoutube );
 	}
 
 	public function test_if_the_paragraph_has_vine() {
 		$content = 'https://vine.co/v/';
-		$containsVine = Speed_Bumps_Element_Constraints::contains_inline_element( $content );
+		$containsVine = Speed_Bumps_Element_Constraints::contains_vine( $content );
 		$this->assertTrue( $containsVine );
 
 	}
