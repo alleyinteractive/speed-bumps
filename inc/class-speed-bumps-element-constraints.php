@@ -2,6 +2,17 @@
 
 class Speed_Bumps_Element_Constraints {
 
+	public static function prev_paragraph_contains_element( $speed_bump_id, $paragraph ) {
+		global $_speed_bumps_args;
+
+		$speed_bump_args = $_speed_bumps_args[ $speed_bump_id ];
+		$element_constraints = $speed_bump_args[ 'element_constraints' ];
+
+		foreach( $element_constraints as $constraint ) {
+			return call_user_func( array( 'Speed_Bumps_Element_Constraints', 'contains_blockquote' . $constraint ), $paragraph );
+		}
+	}
+
 	public static function contains_blockquote( $paragraph ) {
 		if ( false !== stripos( $paragraph, '<blockquote' ) ) {
 			return true;

@@ -20,12 +20,14 @@ class Speed_Bumps {
 	}
 
 	private static function setup_filters() {
-		add_filter( 'speed_bumps_inject_content', 'Speed_Bumps::insert_speed_bumps', 10, 1 );
+		add_filter( 'speed_bumps_inject_content', 'Speed_Bumps::insert_speed_bumps', 10, 2 );
 	}
 
-	public function register_speed_bump( $args = array() ) {
+	public function register_speed_bump( $id, $args = array() ) {
+		global $_speed_bumps_args;
+		
 		$default = array(
-			'injecting_content' => '',
+			'string_to_inject' => '',
 			'minimum_content_length' => 1200,
 			'element_constraints' => array( 
 				'iframe',
@@ -35,36 +37,30 @@ class Speed_Bumps {
 		);
 		
 		$args = wp_parse_args( $args, $default );
+		$_speed_bumps_args = array();
+		$_speed_bumps_args[ $id ] = $args;
+		
+		add_filter( 'speed_bumps_global_constraints', 'Speed_Bumps_Text_Constraints::minimum_content_length', 10, 3 );
+		add_filter( 'speed_bumps_paragraph_constraints', 'Speed_Bumps_Element_Constraints::prev_paragraph_contains_element', 10, 2 );
 
-		if( isset( $args['minimum_content_length'] ) ) {
-			$minimum_content = $args['minimum_content_length'];
-			add_filter( 'speed_bumps_global_constraints', 'Speed_Bumps_Text_Constraints::minimum_content_length', 10, 2 );
-			add_filter( 'speed_bumps_minimum_content_length', function() use( $minimum_content ){ return $minimum_content; } );
-		}
-
-		if( isset( $args['element_constraints'] ) ) {
-			foreach( $args['element_constraints'] as $constraint ) {
-				add_filter( 'speed_bumps_paragraph_constraints', 'Speed_Bumps_Element_Constraints::contains_' . $constraint, 10, 1 );
-			}
-		}
-
-		if( isset( $args['injecting_content'] ) ) {
-			$injecting_content = $args['injecting_content'];
-			add_filter( 'speed_bumps_insert_ad', function() use ($injecting_content ) {
-				return $injecting_content . PHP_EOL . PHP_EOL;
-			}, 10, 0 );
-		}
-
+		add_filter( 'speed_bumps_insert_ad', 'Speed_Bumps::string_to_inject', 10, 1 );
 	}
 
-	public static function insert_speed_bumps( $the_content ) {
-		if( apply_filters( 'speed_bumps_global_constraints', true, $the_content ) ) {
+	public static function string_to_inject( $speed_bump_id ) {
+		global $_speed_bumps_args;
+		$string_to_inject = $_speed_bumps_args[ $speed_bump_id ][ 'string_to_inject' ];
+	
+		return $string_to_inject . PHP_EOL . PHP_EOL;
+	}
+
+	public static function insert_speed_bumps( $speed_bump_id, $the_content ) {
+		if( apply_filters( 'speed_bumps_global_constraints', true, $speed_bump_id, $the_content ) ) {
 			$output = array();
 			$alreadyInsertAd = false;
 			$parts = explode( PHP_EOL, $the_content );
 
 			if( count( $parts ) <= 1 ) {
-				return  array_shift( $parts ) . apply_filters( 'speed_bumps_insert_ad', '' );
+				return  array_shift( $parts ) . apply_filters( 'speed_bumps_insert_ad', $speed_bump_id );
 			}
 
 			$startFrom50Percent =  floor( count( $parts ) / 2 );
@@ -72,9 +68,9 @@ class Speed_Bumps {
 			$secondHalf = array_slice( $parts, $startFrom50Percent );	
 
 			foreach( $secondHalf as $index => $part ) {
-				if( ! apply_filters( 'speed_bumps_paragraph_constraints', $part ) ) {
+				if( ! apply_filters( 'speed_bumps_paragraph_constraints', $speed_bump_id, $part ) ) {
 					if( ! $alreadyInsertAd ) {
-						$output[] = $part . apply_filters( 'speed_bumps_insert_ad', '' ) . PHP_EOL;
+						$output[] = $part . apply_filters( 'speed_bumps_insert_ad', $speed_bump_id ) . PHP_EOL;
 						$alreadyInsertAd = true;
 					} else {
 						$output[] = $part;
