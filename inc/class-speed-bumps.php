@@ -32,23 +32,24 @@ class Speed_Bumps {
 	}
 
 	public static function insert_speed_bumps( $speed_bump_id, $the_content ) {
+		$content_to_be_inserted = call_user_func( self::$_speed_bumps_args[ $speed_bump_id ][ 'string_to_inject' ] );
+		$paragraph_offset = self::$_speed_bumps_args[ $speed_bump_id ][ 'paragraph_offset' ]; 
 		if( apply_filters( 'speed_bumps_global_constraints', true, $speed_bump_id, $the_content ) ) {
 			$output = array();
 			$alreadyInsertAd = false;
 			$parts = explode( PHP_EOL, $the_content );
 
 			if( count( $parts ) <= 1 ) {
-				return  array_shift( $parts ) . call_user_func( self::$_speed_bumps_args[ $speed_bump_id ][ 'string_to_inject' ] );
+				return  array_shift( $parts ) . $content_to_be_inserted;
 			}
 
-			$startFrom50Percent =  floor( count( $parts ) / 2 );
-			$firstHalf = array_slice( $parts, 0, $startFrom50Percent );
-			$secondHalf = array_slice( $parts, $startFrom50Percent );	
+			$first_half = array_slice( $parts, 0, $paragraph_offset );
+			$second_half = array_slice( $parts, $paragraph_offset );	
 
-			foreach( $secondHalf as $index => $part ) {
+			foreach( $second_half as $index => $part ) {
 				if( ! apply_filters( 'speed_bumps_paragraph_constraints', $speed_bump_id, $part ) && $part !== '' ) {
 					if( ! $alreadyInsertAd ) {
-						$output[] = $part . call_user_func( self::$_speed_bumps_args[ $speed_bump_id ][ 'string_to_inject' ] ). PHP_EOL;
+						$output[] = $part . $content_to_be_inserted . PHP_EOL;
 						$alreadyInsertAd = true;
 					} else {
 						$output[] = $part;
@@ -58,11 +59,10 @@ class Speed_Bumps {
 				}
 			}
 
-			$output = array_merge( $firstHalf, $output );
+			$output = array_merge( $first_half, $output );
 			return implode( PHP_EOL, $output );
-
 		}
-
+		
 		return $the_content;
 	}
 
@@ -70,6 +70,7 @@ class Speed_Bumps {
 		$default = array(
 			'string_to_inject' => function() { return ''; },
 			'minimum_content_length' => 1200,
+			'paragraph_offset' => 0,
 			'element_constraints' => array( 
 				'iframe',
 				'oembed',

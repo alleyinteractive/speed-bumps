@@ -5,6 +5,30 @@ class Test_Speed_Bumps extends WP_UnitTestCase {
 		parent::setUp();
 	}
 
+	public function test_algorithm_with_offset_content() {
+		$content = <<<EOT
+This is the first paragraph
+
+This is the second paragraph
+EOT;
+		$expected_content = <<<EOT
+This is the first paragraph<div id="polar-ad"></div>
+
+
+This is the second paragraph
+EOT;
+
+		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+			'string_to_inject' =>	function() { return '<div id="polar-ad"></div>'; },
+			'minimum_content_length' => 1,
+			'paragraph_offset' => 0
+		) );
+		
+		$newContent = Speed_Bumps::insert_speed_bumps( 'speed_bump1', $content );
+		$this->assertEquals( $expected_content, $newContent );
+
+	}
+
 	/**
 	 * The ad is inserted at the end of the content because there's only one paragraph
 	 * */
@@ -52,7 +76,8 @@ EOT;
 EOT;
 
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
-			'string_to_inject' =>	function() { return '<div id="polar-ad"></div>'; }
+			'string_to_inject' =>	function() { return '<div id="polar-ad"></div>'; },
+			'paragraph_offset' => 1
 		) );
 		
 		$newContent = Speed_Bumps::insert_speed_bumps( 'speed_bump1', $content );
@@ -71,7 +96,7 @@ EOT;
 EOT;
 
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
-			'string_to_inject' =>	'<div id="polar-ad"></div>'
+			'string_to_inject' =>	function() { return '<div id="polar-ad"></div>'; }
 		) );
 	
 		$newContent = Speed_Bumps::insert_speed_bumps( 'speed_bump1', $content );
@@ -100,7 +125,8 @@ EOT;
 
 
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
-			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; }
+			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
+			'paragraph_offset' => 1
 		) );
 	
 		$newContent = Speed_Bumps::insert_speed_bumps( 'speed_bump1', $content );
@@ -150,7 +176,8 @@ EOT;
 
 
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
-			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; }
+			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
+			'paragraph_offset' => 5
 		) );
 
 		$newContent = Speed_Bumps::insert_speed_bumps( 'speed_bump1', $content );

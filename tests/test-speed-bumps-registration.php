@@ -34,6 +34,7 @@ class Test_Speed_Bumps_Registration extends WP_UnitTestCase {
 		$this->assertEquals( $speed_bump1_args[ 'string_to_inject' ], function() { return ''; } );
 		$this->assertEquals( $speed_bump1_args[ 'minimum_content_length' ], 1200 );
 		$this->assertEquals( $speed_bump1_args[ 'element_constraints' ], array( 'iframe', 'oembed', 'image' ) );
+		$this->assertEquals( $speed_bump1_args[ 'paragraph_offset' ], 0 );
 	}
 
 	public function test_speed_bump_registration_with_different_arguments() {
