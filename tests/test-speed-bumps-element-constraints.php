@@ -6,12 +6,33 @@ class Test_Speed_Bumps_Element_Constraints extends WP_UnitTestCase {
 		parent::setUp();		
 	}
 
+	public function test_if_the_paragraph_not_passed_constraint_check() {
+		$content = <<<EOT
+Some text before blockquote <blockquote>Awesome quote</blockquote> <img src=""></img>
+EOT;
+		Speed_Bumps()->register_speed_bump( 'speed_bump1', array( 'element_constraints' => array( 'blockquote', 'image' ) ) );
+		$contains_blockquote_and_image = Speed_Bumps_Element_Constraints::prev_paragraph_contains_element( 'speed_bump1', $content );
+		
+		$this->assertTrue( $contains_blockquote_and_image );
+	}
+
+	public function test_if_the_paragraph_passed_constraint_check() {
+		$content = <<<EOT
+Some text
+EOT;
+		Speed_Bumps()->register_speed_bump( 'speed_bump1', array( 'element_constraints' => array( 'blockquote', 'image' ) ) );
+		$contains_blockquote_and_image = Speed_Bumps_Element_Constraints::prev_paragraph_contains_element( 'speed_bump1', $content );
+		
+		$this->assertFalse( $contains_blockquote_and_image );
+	}
+
+
 	public function test_if_the_paragraph_has_blockquote() {
 		$content = <<<EOT
 Some text before blockquote <blockquote>Awesome quote</blockquote>
 EOT;
-
-		$containsBlockquote= Speed_Bumps_Element_Constraints::contains_blockquote( $content );
+		$blockquote_constraint = new Speed_Bumps_Blockquote_Constraint();
+		$containsBlockquote = $blockquote_constraint->contains( $content );
 		
 		$this->assertTrue( $containsBlockquote );
 
@@ -21,8 +42,9 @@ EOT;
 		$content = <<<EOT
 Some text before blockquote <img src="some_awesome_image.png"></img>
 EOT;
+		$image_constraint = new Speed_Bumps_Image_Constraint();
 
-		$containsImage = Speed_Bumps_Element_Constraints::contains_image( $content );
+		$containsImage = $image_constraint->contains( $content );
 		
 		$this->assertTrue( $containsImage );
 
@@ -33,46 +55,48 @@ EOT;
 Some text before blockquote <iframe src="some_awesome_image.png"></iframe>
 EOT;
 
-		$containsIFrame = Speed_Bumps_Element_Constraints::contains_iframe( $content );
+		$iframe_constraint = new Speed_Bumps_Iframe_Constraint();
+		$containsIFrame = $iframe_constraint->contains( $content );
 		
 		$this->assertTrue( $containsIFrame );
 	}
 
-	public function test_if_the_paragraph_has_caption() {	
+	public function test_if_the_paragraph_has_shortcode() {	
 		$content = <<<EOT
 some text before [caption id="attachment_131804" align="aligncenter" width="1024"]<img class="size-large wp-image-131804" src="https://fusiondotnet.files.wordpress.com/2015/05/451577070.jpg?quality=80&amp;strip=all&amp;w=1024" alt="Getty Images" width="1024" height="712" /> Getty Images[/caption]
 EOT;
 
-		$containsCaption = Speed_Bumps_Element_Constraints::contains_embed( $content );
+		$shortcode_constraint = new Speed_Bumps_Shortcode_Constraint();
+		$containsCaption = $shortcode_constraint->contains( $content );
 		
 		$this->assertTrue( $containsCaption );
 	}
 
-	public function test_if_the_paragraph_is_blank() {
-		$content = PHP_EOL;
-
-		$containsBlankLine = Speed_Bumps_Element_Constraints::contains_blank( $content );
-		$this->assertTrue( $containsBlankLine );
-	}
-
 	public function test_if_the_paragraph_has_twitter() {
-		$content = 'https://twitter.com/status/123456789';
+		$content = 'https://twitter.com/ML_toparticles/status/606513045519659009';
 
-		$containsTwitter = Speed_Bumps_Element_Constraints::contains_twitter( $content );
+		$oembed_constraint = new Speed_Bumps_Oembed_Constraint();
+
+		$containsTwitter = $oembed_constraint->contains( $content );
 
 		$this->assertTrue( $containsTwitter );	
 	}
 
 	public function test_if_the_paragraph_has_video() {
-		$content = 'https://www.youtube.com/watch?v=asdfasdf';
+		$content = 'https://www.youtube.com/watch?v=HG7I4oniOyA';
+		
+		$oembed_constraint = new Speed_Bumps_Oembed_Constraint();
 
-		$containsYoutube = Speed_Bumps_Element_Constraints::contains_video( $content );
+		$containsYoutube = $oembed_constraint->contains( $content );
 		$this->assertTrue( $containsYoutube );
 	}
 
 	public function test_if_the_paragraph_has_vine() {
-		$content = 'https://vine.co/v/';
-		$containsVine = Speed_Bumps_Element_Constraints::contains_vine( $content );
+		$content = 'https://vine.co/v/ehuvrWg6PgA/embed/postcard';
+
+		$oembed_constraint = new Speed_Bumps_Oembed_Constraint();
+
+		$containsVine = $oembed_constraint->contains( $content );
 		$this->assertTrue( $containsVine );
 
 	}
