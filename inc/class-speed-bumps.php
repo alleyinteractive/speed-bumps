@@ -31,12 +31,6 @@ class Speed_Bumps {
 		add_filter( 'speed_bumps_inject_content', 'Speed_Bumps::insert_speed_bumps', 10, 2 );
 	}
 
-	public static function string_to_inject( $speed_bump_id ) {
-		$string_to_inject = Speed_Bumps::$_speed_bumps_args[ $speed_bump_id ][ 'string_to_inject' ];
-	
-		return $string_to_inject . PHP_EOL . PHP_EOL;
-	}
-
 	public static function insert_speed_bumps( $speed_bump_id, $the_content ) {
 		if( apply_filters( 'speed_bumps_global_constraints', true, $speed_bump_id, $the_content ) ) {
 			$output = array();
@@ -44,7 +38,7 @@ class Speed_Bumps {
 			$parts = explode( PHP_EOL, $the_content );
 
 			if( count( $parts ) <= 1 ) {
-				return  array_shift( $parts ) . apply_filters( 'speed_bumps_insert_ad', $speed_bump_id );
+				return  array_shift( $parts ) . call_user_func( self::$_speed_bumps_args[ $speed_bump_id ][ 'string_to_inject' ] );
 			}
 
 			$startFrom50Percent =  floor( count( $parts ) / 2 );
@@ -54,7 +48,7 @@ class Speed_Bumps {
 			foreach( $secondHalf as $index => $part ) {
 				if( ! apply_filters( 'speed_bumps_paragraph_constraints', $speed_bump_id, $part ) && $part !== '' ) {
 					if( ! $alreadyInsertAd ) {
-						$output[] = $part . apply_filters( 'speed_bumps_insert_ad', $speed_bump_id ) . PHP_EOL;
+						$output[] = $part . call_user_func( self::$_speed_bumps_args[ $speed_bump_id ][ 'string_to_inject' ] ). PHP_EOL;
 						$alreadyInsertAd = true;
 					} else {
 						$output[] = $part;
@@ -74,7 +68,7 @@ class Speed_Bumps {
 
 	public function register_speed_bump( $id, $args = array() ) {
 		$default = array(
-			'string_to_inject' => '',
+			'string_to_inject' => function() { return ''; },
 			'minimum_content_length' => 1200,
 			'element_constraints' => array( 
 				'iframe',
@@ -88,7 +82,6 @@ class Speed_Bumps {
 		
 		add_filter( 'speed_bumps_global_constraints', 'Speed_Bumps_Text_Constraints::minimum_content_length', 10, 3 );
 		add_filter( 'speed_bumps_paragraph_constraints', 'Speed_Bumps_Element_Constraints::prev_paragraph_contains_element', 10, 2 );
-		add_filter( 'speed_bumps_insert_ad', 'Speed_Bumps::string_to_inject', 10, 1 );
 	}
 
 	public function get_speed_bump_args( $id ) {
