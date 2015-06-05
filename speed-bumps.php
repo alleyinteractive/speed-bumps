@@ -24,7 +24,7 @@ Domain Path: /languages
 //require_once dirname( __FILE__ ) . '/inc/class-speed-bumps.php';
 //
 //
-//Only the 'loader.php' file will be include within the whole project.  
+//Only the 'loader.php' file will be included within the whole project.  
 require_once dirname (__FILE__) . '/loader.php';
 // @codingStandardsIgnoreStart
 function Speed_Bumps() {

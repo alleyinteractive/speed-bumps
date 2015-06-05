@@ -19,8 +19,8 @@ class SpeedBumps {
 	//Not required anymore. The root level loader.php file is taking care of any 
 	//possible dependecy within the plugin namespace {SpeedBumps}
 	//
-	// Please, make sure to include the {SpeedBumps} namespace when creating an instance of an object or calling an static method,
-	// from a class or file with namesapce different from {SpeedBumps} or without any namespace declaration at all. 
+	// Please, make sure to include the {SpeedBumps} namespace when creating an instance of an object or calling an static method
+	// from a class or file with namespace different from {SpeedBumps} or without any namespace declaration at all. 
 	// 
 	// e.g:
 	// 
