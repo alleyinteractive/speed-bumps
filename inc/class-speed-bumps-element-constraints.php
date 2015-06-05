@@ -13,7 +13,7 @@ class Speed_Bumps_Element_Constraints {
 			}
 		}
 
-		return in_array( true, $paragraph_no_constrainted_elements, true );
+		return $canInsert;
 	}
 
 }
