@@ -1,10 +1,4 @@
 <?php
-// anthony2727/speed-bumps
-// forked from fusioneng/speed-bumps
-// AnthonyRodriguez.itt@gmail.com
-// www.github.com/anthony2727
-//  
-// 
 namespace SpeedBumps\Inc;
 
 class SpeedBumps {
@@ -22,8 +16,26 @@ class SpeedBumps {
 		return self::$instance;
 	}
 
-	//Not required anymore. The root level loader.php class is taking care of any 
+	//Not required anymore. The root level loader.php file is taking care of any 
 	//possible dependecy within the plugin namespace {SpeedBumps}
+	//
+	// Please, make sure to include the {SpeedBumps} namespace when creating an instance of an object or calling an static method,
+	// from a class or file with namesapce different from {SpeedBumps} or without any namespace declaration at all. 
+	// 
+	// e.g:
+	// 
+	// class test{ 
+	//                 |namespace| |className|
+	//      $foo = new \SpeedBumps\SpeedBumpsElementConstrain;
+	// }
+	// 
+	// It isn't necesaty if the class or file from which the call is happening has the same namespace of the instantiated object.
+	// e.g:
+	// namespace SpeedBumps;
+	// class test{ 
+	// 						      |just the class name is necesary bacause both clases share the same namespace|
+	//      e.g: just: $foo = new SpeedBumpsElementConstrain;
+	// }
 
 	// private static function require_files() {
 	// 	require_once( dirname( __FILE__ ) . '/class-speed-bumps-element-constraint.php' );

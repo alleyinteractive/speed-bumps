@@ -22,10 +22,13 @@ Domain Path: /languages
 //Dependencies are handled by the root level loader.php file
 // 
 //require_once dirname( __FILE__ ) . '/inc/class-speed-bumps.php';
+//
+//
+//Only the 'loader.php' file will be include within the whole project.  
 require_once dirname (__FILE__) . '/loader.php';
 // @codingStandardsIgnoreStart
 function Speed_Bumps() {
-	//     Calling the SpeedBumps class from the respective namespace
+	//Calling the SpeedBumps class from the respective namespace
 	return \SpeedBumps\Inc\SpeedBumps::get_instance();
 }
 // @codingStandardsIgnoreEnd
