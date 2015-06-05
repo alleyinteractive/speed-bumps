@@ -1,31 +1,41 @@
 <?php
+// anthony2727/speed-bumps
+// forked from fusioneng/speed-bumps
+// AnthonyRodriguez.itt@gmail.com
+// www.github.com/anthony2727
+//  
+// 
+namespace SpeedBumps\Inc;
 
-class Speed_Bumps {
+class SpeedBumps {
 	private static $instance;
 	private static $_speed_bumps_args = array();
 
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
 
-			self::require_files();
-			self::$instance = new Speed_Bumps;
+			//self::require_files();
+			self::$instance = new SpeedBumps;
 			self::$instance->setup_filters();
 			
 		}
 		return self::$instance;
 	}
 
-	private static function require_files() {
-		require_once( dirname( __FILE__ ) . '/class-speed-bumps-element-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-blockquote-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-image-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-iframe-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-shortcode-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-oembed-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-element-factory.php' );
-		require_once( dirname( __FILE__ ) . '/class-speed-bumps-text-constraints.php' );
-		require_once( dirname( __FILE__ ) . '/class-speed-bumps-element-constraints.php' );
-	}
+	//Not required anymore. The root level loader.php class is taking care of any 
+	//possible dependecy within the plugin namespace {SpeedBumps}
+
+	// private static function require_files() {
+	// 	require_once( dirname( __FILE__ ) . '/class-speed-bumps-element-constraint.php' );
+	// 	require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-blockquote-constraint.php' );
+	// 	require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-image-constraint.php' );
+	// 	require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-iframe-constraint.php' );
+	// 	require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-shortcode-constraint.php' );
+	// 	require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-oembed-constraint.php' );
+	// 	require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-element-factory.php' );
+	// 	require_once( dirname( __FILE__ ) . '/class-speed-bumps-text-constraints.php' );
+	// 	require_once( dirname( __FILE__ ) . '/class-speed-bumps-element-constraints.php' );
+	// }
 
 	private static function setup_filters() {
 		add_filter( 'speed_bumps_inject_content', 'Speed_Bumps::insert_speed_bumps', 10, 2 );
@@ -79,14 +89,14 @@ class Speed_Bumps {
 		);
 		
 		$args = wp_parse_args( $args, $default );
-		Speed_Bumps::$_speed_bumps_args[ $id ] = $args;
+		SpeedBumps::$_speed_bumps_args[ $id ] = $args;
 		
 		add_filter( 'speed_bumps_global_constraints', 'Speed_Bumps_Text_Constraints::minimum_content_length', 10, 3 );
 		add_filter( 'speed_bumps_paragraph_constraints', 'Speed_Bumps_Element_Constraints::prev_paragraph_contains_element', 10, 2 );
 	}
 
 	public function get_speed_bump_args( $id ) {
-		return Speed_Bumps::$_speed_bumps_args[ $id ];
+		return SpeedBumps::$_speed_bumps_args[ $id ];
 	}
 
 }
