@@ -22,6 +22,7 @@ class Speed_Bumps {
 		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-iframe-constraint.php' );
 		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-shortcode-constraint.php' );
 		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-oembed-constraint.php' );
+		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-dummy-constraint.php' );
 		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-element-factory.php' );
 		require_once( dirname( __FILE__ ) . '/class-speed-bumps-text-constraints.php' );
 		require_once( dirname( __FILE__ ) . '/class-speed-bumps-element-constraints.php' );

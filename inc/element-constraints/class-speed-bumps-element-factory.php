@@ -10,6 +10,7 @@ class Speed_Bumps_Element_Factory {
 			return new $element_constraint();
 		}
 		else {
+			return new Speed_Bumps_Dummy_Constraint();
 		}
 	} 
 }
