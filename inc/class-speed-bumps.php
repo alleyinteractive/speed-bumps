@@ -16,17 +16,17 @@ class Speed_Bumps {
 	}
 
 	private static function require_files() {
-		require_once( dirname( __FILE__ ) . '/class-speed-bumps-element-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-blockquote-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-image-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-iframe-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-shortcode-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-oembed-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-dummy-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-element-factory.php' );
-		require_once( dirname( __FILE__ ) . '/class-speed-bumps-injection-constraint.php' );
-		require_once( dirname( __FILE__ ) . '/class-speed-bumps-text-constraints.php' );
-		require_once( dirname( __FILE__ ) . '/class-speed-bumps-element-constraints.php' );
+		require_once( dirname( __FILE__ ) . '/constraints/elements/class-constraint-abstract.php' );
+		require_once( dirname( __FILE__ ) . '/constraints/elements/class-blockquote.php' );
+		require_once( dirname( __FILE__ ) . '/constraints/elements/class-image.php' );
+		require_once( dirname( __FILE__ ) . '/constraints/elements/class-iframe.php' );
+		require_once( dirname( __FILE__ ) . '/constraints/elements/class-shortcode.php' );
+		require_once( dirname( __FILE__ ) . '/constraints/elements/class-oembed.php' );
+		require_once( dirname( __FILE__ ) . '/constraints/elements/class-dummy.php' );
+		require_once( dirname( __FILE__ ) . '/constraints/elements/class-factory.php' );
+		require_once( dirname( __FILE__ ) . '/constraints/content/class-injection.php' );
+		require_once( dirname( __FILE__ ) . '/constraints/text/class-text.php' );
+		require_once( dirname( __FILE__ ) . '/constraints/elements/class-element-constraints.php' );
 	}
 
 	private static function setup_filters() {
@@ -88,10 +88,10 @@ class Speed_Bumps {
 		$args = wp_parse_args( $args, $default );
 		Speed_Bumps::$_speed_bumps_args[ $id ] = $args;
 
-		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraint\Text\Speed_Bumps_Text_Constraints::minimum_content_length', 10, 4 );
-		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraint\Content\Injection::did_already_insert_ad', 10, 4 );
+		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Text\Text::minimum_content_length', 10, 4 );
+		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Content\Injection::did_already_insert_ad', 10, 4 );
 
-		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraint\Element\Speed_Bumps_Element_Constraints::adj_paragraph_contains_element', 10, 4 );
+		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_contains_element', 10, 4 );
 	}
 
 	public function get_speed_bump_args( $id ) {

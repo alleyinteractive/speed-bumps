@@ -1,7 +1,7 @@
 <?php
-namespace Speed_Bumps\Constraint\Element;
+namespace Speed_Bumps\Constraints\Elements;
 
-class Speed_Bumps_Iframe_Constraint extends Speed_Bumps_Element_Constraint {
+class Iframe extends Constraint_Abstract {
 	public function can_insert( $paragraph ) {
 		if ( false !== stripos( $paragraph, '<iframe' ) ) {
 			return false;

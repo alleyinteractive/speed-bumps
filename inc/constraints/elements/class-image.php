@@ -1,7 +1,7 @@
 <?php
-namespace Speed_Bumps\Constraint\Element;
+namespace Speed_Bumps\Constraints\Elements;
 
-class Speed_Bumps_Image_Constraint extends Speed_Bumps_Element_Constraint {
+class Image extends Constraint_Abstract {
 	public function can_insert( $paragraph ) {
 		if ( false !== stripos( $paragraph, '<img' ) ) {
 			return false;
