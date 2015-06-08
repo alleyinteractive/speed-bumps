@@ -12,13 +12,4 @@ class Speed_Bumps_Text_Constraints {
 		return $canInsert;
 	}
 
-	public static function did_already_insert_ad( $canInsert, $context, $args, $alreadyInsertAd ) {
-
-		if ( count( $alreadyInsertAd ) > 0 ) {
-			$canInsert = false;
-		}
-
-		return $canInsert;
-	}
-
 }

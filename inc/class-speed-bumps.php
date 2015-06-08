@@ -24,6 +24,7 @@ class Speed_Bumps {
 		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-oembed-constraint.php' );
 		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-dummy-constraint.php' );
 		require_once( dirname( __FILE__ ) . '/element-constraints/class-speed-bumps-element-factory.php' );
+		require_once( dirname( __FILE__ ) . '/class-speed-bumps-injection-constraint.php' );
 		require_once( dirname( __FILE__ ) . '/class-speed-bumps-text-constraints.php' );
 		require_once( dirname( __FILE__ ) . '/class-speed-bumps-element-constraints.php' );
 	}
@@ -88,7 +89,7 @@ class Speed_Bumps {
 		Speed_Bumps::$_speed_bumps_args[ $id ] = $args;
 
 		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraint\Text\Speed_Bumps_Text_Constraints::minimum_content_length', 10, 4 );
-		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraint\Text\Speed_Bumps_Text_Constraints::did_already_insert_ad', 10, 4 );
+		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraint\Content\Injection::did_already_insert_ad', 10, 4 );
 
 		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraint\Element\Speed_Bumps_Element_Constraints::adj_paragraph_contains_element', 10, 4 );
 	}

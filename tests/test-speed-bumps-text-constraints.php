@@ -55,17 +55,4 @@ class Test_Speed_Bumps_Text_Constraints extends WP_UnitTestCase {
 		$this->assertFalse( $okToInsert );	
 	}
 
-	public function test_ad_already_inserted() {
-		$ad_did_inserted = \Speed_Bumps\Constraint\Text\Speed_Bumps_Text_Constraints::did_already_insert_ad( true, array(), array(), array( 'something' ) );	
-
-		$this->assertFalse( $ad_did_inserted );
-	}
-
-	public function test_ad_not_already_inserted() {
-		$ad_did_not_insert = \Speed_Bumps\Constraint\Text\Speed_Bumps_Text_Constraints::did_already_insert_ad( true, array(), array(), array() );	
-
-		$this->assertTrue( $ad_did_not_insert );
-	
-	}
-	
 }
