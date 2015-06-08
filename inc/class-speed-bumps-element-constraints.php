@@ -9,10 +9,10 @@ class Speed_Bumps_Element_Constraints {
 
 		foreach( $element_constraints as $constraint ) {
 			$element_to_check = Speed_Bumps_Element_Factory::build( ucfirst( $constraint ) );
-			$prev_paragraph_not_insertable = $element_to_check->contains( $context['prev_paragraph'] );
-			$next_paragraph_not_insertable = $element_to_check->contains( $context['next_paragraph'] );
+			$can_insert_prev_paragraph = $element_to_check->can_insert( $context['prev_paragraph'] );
+			$can_insert_next_paragraph = $element_to_check->can_insert( $context['next_paragraph'] );
 
-			if ( $prev_paragraph_not_insertable || $next_paragraph_not_insertable ) {
+			if ( !$can_insert_prev_paragraph || !$can_insert_next_paragraph ) {
 				$canInsert = false;
 			}
 		}

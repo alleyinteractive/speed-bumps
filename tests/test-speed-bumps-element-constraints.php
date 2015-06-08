@@ -45,9 +45,9 @@ EOT;
 Some text before blockquote <blockquote>Awesome quote</blockquote>
 EOT;
 		$blockquote_constraint = new \Speed_Bumps\Constraint\Element\Speed_Bumps_Blockquote_Constraint();
-		$containsBlockquote = $blockquote_constraint->contains( $content );
+		$can_insert = $blockquote_constraint->can_insert( $content );
 		
-		$this->assertTrue( $containsBlockquote );
+		$this->assertFalse( $can_insert );
 
 	}
 
@@ -57,9 +57,9 @@ Some text before blockquote <img src="some_awesome_image.png"></img>
 EOT;
 		$image_constraint = new \Speed_Bumps\Constraint\Element\Speed_Bumps_Image_Constraint();
 
-		$containsImage = $image_constraint->contains( $content );
+		$can_insert = $image_constraint->can_insert( $content );
 		
-		$this->assertTrue( $containsImage );
+		$this->assertFalse( $can_insert );
 
 	}
 
@@ -69,9 +69,9 @@ Some text before blockquote <iframe src="some_awesome_image.png"></iframe>
 EOT;
 
 		$iframe_constraint = new \Speed_Bumps\Constraint\Element\Speed_Bumps_Iframe_Constraint();
-		$containsIFrame = $iframe_constraint->contains( $content );
+		$can_insert = $iframe_constraint->can_insert( $content );
 		
-		$this->assertTrue( $containsIFrame );
+		$this->assertFalse( $can_insert );
 	}
 
 	public function test_if_the_paragraph_has_shortcode() {	
@@ -80,9 +80,9 @@ some text before [caption id="attachment_131804" align="aligncenter" width="1024
 EOT;
 
 		$shortcode_constraint = new \Speed_Bumps\Constraint\Element\Speed_Bumps_Shortcode_Constraint();
-		$containsCaption = $shortcode_constraint->contains( $content );
+		$can_insert = $shortcode_constraint->can_insert( $content );
 		
-		$this->assertTrue( $containsCaption );
+		$this->assertFalse( $can_insert );
 	}
 
 	public function test_if_the_paragraph_has_twitter() {
@@ -90,9 +90,9 @@ EOT;
 
 		$oembed_constraint = new \Speed_Bumps\Constraint\Element\Speed_Bumps_Oembed_Constraint();
 
-		$containsTwitter = $oembed_constraint->contains( $content );
+		$can_insert = $oembed_constraint->can_insert( $content );
 
-		$this->assertTrue( $containsTwitter );	
+		$this->assertFalse( $can_insert );	
 	}
 
 	public function test_if_the_paragraph_has_video() {
@@ -100,8 +100,8 @@ EOT;
 		
 		$oembed_constraint = new \Speed_Bumps\Constraint\Element\Speed_Bumps_Oembed_Constraint();
 
-		$containsYoutube = $oembed_constraint->contains( $content );
-		$this->assertTrue( $containsYoutube );
+		$can_insert = $oembed_constraint->can_insert( $content );
+		$this->assertFalse( $can_insert );
 	}
 
 	public function test_if_the_paragraph_has_vine() {
@@ -109,8 +109,8 @@ EOT;
 
 		$oembed_constraint = new \Speed_Bumps\Constraint\Element\Speed_Bumps_Oembed_Constraint();
 
-		$containsVine = $oembed_constraint->contains( $content );
-		$this->assertTrue( $containsVine );
+		$can_insert = $oembed_constraint->can_insert( $content );
+		$this->assertFalse( $can_insert );
 
 	}
 }
