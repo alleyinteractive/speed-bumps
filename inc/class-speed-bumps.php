@@ -32,12 +32,10 @@ class Speed_Bumps {
 	}
 
 	public static function insert_speed_bumps( $the_content ) {
-
 		$output = array();
 		$alreadyInsertAd = array();
 		$parts = preg_split( '/\n\s*\n/', $the_content );
 		$total_paragraphs = count( $parts );
-
 		foreach ( $parts as $index => $part ) {
 
 			$output[] = $part;
@@ -52,6 +50,10 @@ class Speed_Bumps {
 
 			foreach ( Speed_Bumps::$_speed_bumps_args as $id => $args ) {
 
+				if( $index < $args[ 'paragraph_offset' ] ) {
+					break;
+				}
+			
 				if ( apply_filters( 'speed_bumps_'. $id . '_constraints', true, $context, $args, $alreadyInsertAd ) ) {
 
 					$content_to_be_inserted = call_user_func( $args[ 'string_to_inject' ], $context );
@@ -60,13 +62,12 @@ class Speed_Bumps {
 					$alreadyInsertAd[] = array(
 						'index' => $index,
 						'speed_bump_id' => $id,
-						'inserted_content' => $content_to_be_inserted;
+						'inserted_content' => $content_to_be_inserted
 					);
 				}
 			}
 
 		}
-
 		return implode( PHP_EOL . PHP_EOL, $output );
 	}
 
@@ -85,10 +86,10 @@ class Speed_Bumps {
 		$args = wp_parse_args( $args, $default );
 		Speed_Bumps::$_speed_bumps_args[ $id ] = $args;
 
-		add_filter( 'speed_bumps_' . $id . '_constraints', 'Speed_Bumps_Text_Constraints::minimum_content_length', 10, 3 );
-		add_filter( 'speed_bumps_' . $id . '_constraints', 'Speed_Bumps_Text_Constraints::did_already_insert_ad', 10, 3 );
+		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraint\Text\Speed_Bumps_Text_Constraints::minimum_content_length', 10, 4 );
+		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraint\Text\Speed_Bumps_Text_Constraints::did_already_insert_ad', 10, 4 );
 
-		add_filter( 'speed_bumps_' . $id . '_constraints', 'Speed_Bumps_Element_Constraints::adjacent_paragraph_contains_element', 10, 3 );
+		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraint\Element\Speed_Bumps_Element_Constraints::adj_paragraph_contains_element', 10, 4 );
 	}
 
 	public function get_speed_bump_args( $id ) {

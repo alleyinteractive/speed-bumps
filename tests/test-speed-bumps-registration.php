@@ -13,17 +13,10 @@ class Test_Speed_Bumps_Registration extends WP_UnitTestCase {
 		$this->assertTrue( $filter_exists );
 	}
 
-	public function test_has_filter_speed_bump_global_constraints() {
-		$this->speed_bump->register_speed_bump( 'id' );
-		$filter_exists = has_filter( 'speed_bumps_global_constraints' );
-
-		$this->assertTrue( $filter_exists );
-	}
-
 	public function test_has_filter_speed_bumps_paragraph_constraints() {
 		$this->speed_bump->register_speed_bump( 'id' );
 
-		$filter_exists = has_filter( 'speed_bumps_paragraph_constraints' );
+		$filter_exists = has_filter( 'speed_bumps_id_constraints' );
 		$this->assertTrue( $filter_exists );
 	}
 

@@ -1,4 +1,5 @@
 <?php
+namespace Speed_Bumps\Constraint\Element;
 
 class Speed_Bumps_Element_Constraints {
 
@@ -7,8 +8,11 @@ class Speed_Bumps_Element_Constraints {
 		$element_constraints = $args[ 'element_constraints' ];
 
 		foreach( $element_constraints as $constraint ) {
-			if ( false !== stripos( $context['prev_paragraph'], '<' . $contraint ) ||
-				 false !== stripos( $context['next_paragraph'], '<' . $contraint ) ) {
+			$element_to_check = Speed_Bumps_Element_Factory::build( ucfirst( $constraint ) );
+			$prev_paragraph_not_insertable = $element_to_check->contains( $context['prev_paragraph'] );
+			$next_paragraph_not_insertable = $element_to_check->contains( $context['next_paragraph'] );
+
+			if ( $prev_paragraph_not_insertable || $next_paragraph_not_insertable ) {
 				$canInsert = false;
 			}
 		}
