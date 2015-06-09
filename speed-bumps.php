@@ -15,7 +15,7 @@ require_once dirname (__FILE__) . '/loader.php';
 
 // @codingStandardsIgnoreStart
 function Speed_Bumps() {
-	return \SpeedBumps\Inc\SpeedBumps::get_instance();
+	return \SpeedBumps\Inc\Speed_Bumps::get_instance();
 }
 // @codingStandardsIgnoreEnd
 add_action( 'init', 'Speed_Bumps' );
