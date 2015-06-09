@@ -47,28 +47,26 @@ class Speed_Bumps {
 				'prev_paragraph'   => $part,
 				'next_paragraph'   => ( $index + 1 < $total_paragraphs ) ? $parts[ $index + 1 ] : '',
 				'total_paragraphs' => $total_paragraphs,
-				'the_content'      => $the_content
+				'the_content'      => $the_content,
 			);
 
 			foreach ( Speed_Bumps::$_speed_bumps_args as $id => $args ) {
 
-				if( $index < $args[ 'paragraph_offset' ] ) {
+				if ( $index < $args['paragraph_offset'] ) {
 					break;
 				}
-			
 				if ( apply_filters( 'speed_bumps_'. $id . '_constraints', true, $context, $args, $alreadyInsertAd ) ) {
 
-					$content_to_be_inserted = call_user_func( $args[ 'string_to_inject' ], $context );
+					$content_to_be_inserted = call_user_func( $args['string_to_inject'], $context );
 
 					$output[] = $content_to_be_inserted;
 					$alreadyInsertAd[] = array(
 						'index' => $index,
 						'speed_bump_id' => $id,
-						'inserted_content' => $content_to_be_inserted
+						'inserted_content' => $content_to_be_inserted,
 					);
 				}
 			}
-
 		}
 		return implode( PHP_EOL . PHP_EOL, $output );
 	}
@@ -82,7 +80,7 @@ class Speed_Bumps {
 				'iframe',
 				'oembed',
 				'image',
-			)
+			),
 		);
 
 		$args = wp_parse_args( $args, $default );

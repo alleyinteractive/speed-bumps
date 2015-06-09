@@ -20,11 +20,11 @@ This is the second paragraph
 EOT;
 
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
-			'string_to_inject' =>	function() { return '<div id="polar-ad"></div>'; },
+			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 			'minimum_content_length' => 1,
-			'paragraph_offset' => 0
+			'paragraph_offset' => 0,
 		) );
-		
+
 		$newContent = Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expected_content, $newContent );
 
@@ -43,8 +43,8 @@ Something longer than 1200Something longer than 1200Something longer than 1200So
 <div id="polar-ad"></div>
 EOT;
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
-			'string_to_inject' =>	function() { return '<div id="polar-ad"></div>'; }
-		) );	
+			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
+		) );
 
 		$newContent = Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
@@ -52,11 +52,11 @@ EOT;
 
 	public function test_algorithm_with_content_less_than_1200() {
 		$content = 'less than 1200 character';
-		
+
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
-			'string_to_inject' =>	function() { return '<div id="polar-ad"></div>'; }
-		) );	
-		
+			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
+		) );
+
 		$newContent = Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertNotContains( '<div id="polar-ad"></div>', $newContent );
 
@@ -65,7 +65,7 @@ EOT;
 	/*
 	 * The first <p> should exceed 1200 characters and the ads will be inserted in the middle between two paragraphs
 	 * */
-	public function test_algorithm_with_two_paragraphs() {		
+	public function test_algorithm_with_two_paragraphs() {
 		$content = <<<EOT
 	First, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
@@ -81,10 +81,10 @@ EOT;
 EOT;
 
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
-			'string_to_inject' =>	function() { return '<div id="polar-ad"></div>'; },
-			'paragraph_offset' => 1
+			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
+			'paragraph_offset' => 1,
 		) );
-		
+
 		$newContent = Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
@@ -110,12 +110,11 @@ EOT;
 <div id="polar-ad"></div>
 EOT;
 
-
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
-			'paragraph_offset' => 1
+			'paragraph_offset' => 1,
 		) );
-	
+
 		$newContent = Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
@@ -162,10 +161,9 @@ https://twitter.com/ML_toparticles/status/606513045519659009
 
 EOT;
 
-
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
-			'paragraph_offset' => 2
+			'paragraph_offset' => 2,
 		) );
 
 		$newContent = Speed_Bumps::insert_speed_bumps( $content );

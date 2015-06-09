@@ -7,6 +7,6 @@ class Blockquote extends Constraint_Abstract {
 			return false;
 		}
 
-		return true;	
+		return true;
 	}
 }

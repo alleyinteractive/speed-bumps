@@ -6,7 +6,6 @@ class Shortcode extends Constraint_Abstract{
 		if ( preg_match_all( '/' . get_shortcode_regex() . '/s', $paragraph, $matches, PREG_SET_ORDER ) ) {
 			return false;
 		}
-
-		return true;	
+		return true;
 	}
 }

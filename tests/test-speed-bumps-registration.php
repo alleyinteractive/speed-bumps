@@ -24,21 +24,21 @@ class Test_Speed_Bumps_Registration extends WP_UnitTestCase {
 		$this->speed_bump->register_speed_bump( 'speed_bump1' );
 		$speed_bump1_args = Speed_Bumps()->get_speed_bump_args( 'speed_bump1' );
 
-		$this->assertEquals( $speed_bump1_args[ 'string_to_inject' ], function() { return ''; } );
-		$this->assertEquals( $speed_bump1_args[ 'minimum_content_length' ], 1200 );
-		$this->assertEquals( $speed_bump1_args[ 'element_constraints' ], array( 'iframe', 'oembed', 'image' ) );
-		$this->assertEquals( $speed_bump1_args[ 'paragraph_offset' ], 0 );
+		$this->assertEquals( $speed_bump1_args['string_to_inject'], function() { return ''; } );
+		$this->assertEquals( $speed_bump1_args['minimum_content_length'], 1200 );
+		$this->assertEquals( $speed_bump1_args['element_constraints'], array( 'iframe', 'oembed', 'image' ) );
+		$this->assertEquals( $speed_bump1_args['paragraph_offset'], 0 );
 	}
 
 	public function test_speed_bump_registration_with_different_arguments() {
 		$this->speed_bump->register_speed_bump( 'speed_bump1' );
 		$speed_bump1_args = Speed_Bumps()->get_speed_bump_args( 'speed_bump1' );
 
-		$this->assertEquals( $speed_bump1_args[ 'minimum_content_length' ], 1200 );
-	
+		$this->assertEquals( $speed_bump1_args['minimum_content_length'], 1200 );
+
 		$this->speed_bump->register_speed_bump( 'speed_bump2', array( 'minimum_content_length' => 10 ) );
 		$speed_bump2_args = Speed_Bumps()->get_speed_bump_args( 'speed_bump2' );
-		$this->assertEquals( $speed_bump2_args[ 'minimum_content_length' ], 10 );
+		$this->assertEquals( $speed_bump2_args['minimum_content_length'], 10 );
 	}
 
 }

@@ -7,6 +7,6 @@ class Image extends Constraint_Abstract {
 			return false;
 		}
 
-		return true;	
+		return true;
 	}
 }
