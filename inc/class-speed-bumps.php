@@ -1,28 +1,17 @@
 <?php
+namespace Speed_Bumps;
+
 class Speed_Bumps {
 	private static $instance;
 	private static $_speed_bumps_args = array();
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
-			self::require_files();
 			self::$instance = new Speed_Bumps;
 			self::$instance->setup_filters();
 		}
 		return self::$instance;
 	}
-	private static function require_files() {
-		require_once( dirname( __FILE__ ) . '/constraints/elements/class-constraint-abstract.php' );
-		require_once( dirname( __FILE__ ) . '/constraints/elements/class-blockquote.php' );
-		require_once( dirname( __FILE__ ) . '/constraints/elements/class-image.php' );
-		require_once( dirname( __FILE__ ) . '/constraints/elements/class-iframe.php' );
-		require_once( dirname( __FILE__ ) . '/constraints/elements/class-shortcode.php' );
-		require_once( dirname( __FILE__ ) . '/constraints/elements/class-oembed.php' );
-		require_once( dirname( __FILE__ ) . '/constraints/elements/class-dummy.php' );
-		require_once( dirname( __FILE__ ) . '/constraints/elements/class-factory.php' );
-		require_once( dirname( __FILE__ ) . '/constraints/content/class-injection.php' );
-		require_once( dirname( __FILE__ ) . '/constraints/text/class-text.php' );
-		require_once( dirname( __FILE__ ) . '/constraints/elements/class-element-constraints.php' );
-	}
+	
 	private static function setup_filters() {
 		add_filter( 'speed_bumps_inject_content', 'Speed_Bumps::insert_speed_bumps', 10 );
 	}
@@ -44,7 +33,7 @@ class Speed_Bumps {
 				if( $index < $args[ 'paragraph_offset' ] ) {
 					break;
 				}
-				
+
 				if ( apply_filters( 'speed_bumps_'. $id . '_constraints', true, $context, $args, $alreadyInsertAd ) ) {
 					$content_to_be_inserted = call_user_func( $args[ 'string_to_inject' ], $context );
 					$output[] = $content_to_be_inserted;

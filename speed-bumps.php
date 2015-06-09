@@ -1,4 +1,5 @@
 <?php
+use Speed_Bumps\Speed_Bumps;
 /*
 Plugin Name: Speed-bumps
 Version: 0.1-alpha
@@ -10,12 +11,12 @@ Text Domain: speed-bumps
 Domain Path: /languages
 */
 
-//Only the 'loader.php' file will be included within the whole project.  
+//Load any class-type file dependency automatically.  
 require_once dirname (__FILE__) . '/loader.php';
 
 // @codingStandardsIgnoreStart
 function Speed_Bumps() {
-	return \SpeedBumps\Inc\Speed_Bumps::get_instance();
+	return Speed_Bumps::get_instance();
 }
 // @codingStandardsIgnoreEnd
 add_action( 'init', 'Speed_Bumps' );
