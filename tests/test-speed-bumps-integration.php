@@ -1,6 +1,6 @@
 <?php
 
-class Test_Speed_Bumps extends WP_UnitTestCase {
+class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 	}
@@ -12,8 +12,9 @@ This is the first paragraph
 This is the second paragraph
 EOT;
 		$expected_content = <<<EOT
-This is the first paragraph<div id="polar-ad"></div>
+This is the first paragraph
 
+<div id="polar-ad"></div>
 
 This is the second paragraph
 EOT;
@@ -24,7 +25,7 @@ EOT;
 			'paragraph_offset' => 0
 		) );
 		
-		$newContent = Speed_Bumps::insert_speed_bumps( 'speed_bump1', $content );
+		$newContent = Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expected_content, $newContent );
 
 	}
@@ -37,12 +38,15 @@ EOT;
 Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200
 EOT;
 		$expectedContent = <<<EOT
-Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200<div id="polar-ad"></div>
+Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200
+
+<div id="polar-ad"></div>
 EOT;
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' =>	function() { return '<div id="polar-ad"></div>'; }
 		) );	
-		$newContent = Speed_Bumps::insert_speed_bumps( 'speed_bump1', $content );
+
+		$newContent = Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 	}
 
@@ -53,7 +57,7 @@ EOT;
 			'string_to_inject' =>	function() { return '<div id="polar-ad"></div>'; }
 		) );	
 		
-		$newContent = Speed_Bumps::insert_speed_bumps( 'speed_bump1', $content );
+		$newContent = Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertNotContains( '<div id="polar-ad"></div>', $newContent );
 
 	}
@@ -71,8 +75,9 @@ EOT;
 		$expectedContent = <<<EOT
 	First, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
-	Second, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<div id="polar-ad"></div>
+	Second, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
+<div id="polar-ad"></div>
 EOT;
 
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
@@ -80,27 +85,8 @@ EOT;
 			'paragraph_offset' => 1
 		) );
 		
-		$newContent = Speed_Bumps::insert_speed_bumps( 'speed_bump1', $content );
+		$newContent = Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
-
-	}
-
-	public function test_algorithm_with_custom_global_rule_false() {
-		add_filter( 'speed_bumps_global_constraints', '__return_false' );
-
-		$content = <<<EOT
-	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-EOT;
-
-		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
-			'string_to_inject' =>	function() { return '<div id="polar-ad"></div>'; }
-		) );
-	
-		$newContent = Speed_Bumps::insert_speed_bumps( 'speed_bump1', $content );
-		$this->assertNotContains( '<div id="polar-ad"></div>', $newContent );
 
 	}
 
@@ -119,8 +105,9 @@ EOT;
 
 <img src="some awesome image"></img>
 
-	Second paragraph, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<div id="polar-ad"></div>
+	Second paragraph, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
+<div id="polar-ad"></div>
 EOT;
 
 
@@ -129,7 +116,7 @@ EOT;
 			'paragraph_offset' => 1
 		) );
 	
-		$newContent = Speed_Bumps::insert_speed_bumps( 'speed_bump1', $content );
+		$newContent = Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
 	}
@@ -163,8 +150,9 @@ EOT;
 
 <iframe src=""></iframe>
 
-	Third paragraph, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<div id="polar-ad"></div>
+	Third paragraph, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
+<div id="polar-ad"></div>
 
 	Fourth paragraph, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
@@ -177,10 +165,10 @@ EOT;
 
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
-			'paragraph_offset' => 5
+			'paragraph_offset' => 2
 		) );
 
-		$newContent = Speed_Bumps::insert_speed_bumps( 'speed_bump1', $content );
+		$newContent = Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
 	}
