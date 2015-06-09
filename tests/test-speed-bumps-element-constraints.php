@@ -111,6 +111,31 @@ EOT;
 
 		$can_insert = $oembed_constraint->can_insert( $content );
 		$this->assertFalse( $can_insert );
+	}
+
+	public function test_if_the_paragraph_has_h1() {
+		$content = '<h1>header</h1>';
+
+		$header_constraint = new \Speed_Bumps\Constraints\Elements\Header();
+
+		$can_insert = $header_constraint->can_insert( $content );
+		$this->assertFalse( $can_insert );
+	}
+
+	public function test_if_the_paragraph_has_h6() {
+		$content = '<h6>header</h6>';
+		$header_constraint = new \Speed_Bumps\Constraints\Elements\Header();
+
+		$can_insert = $header_constraint->can_insert( $content );
+		$this->assertFalse( $can_insert );
+	}
+
+	public function test_if_the_paragraph_has_header() {
+		$content = '<header>awesome headline</header>';
+		$header_constraint = new \Speed_Bumps\Constraints\Elements\Header();
+
+		$can_insert = $header_constraint->can_insert( $content );
+		$this->assertFalse( $can_insert );
 
 	}
 }
