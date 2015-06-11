@@ -138,12 +138,4 @@ EOT;
 		$this->assertFalse( $can_insert );
 
 	}
-
-	public function test_if_the_paragraph_has_strong() {
-		$content = '<strong>awesome headline</strong>';
-		$header_constraint = new \Speed_Bumps\Constraints\Elements\Strong();
-
-		$can_insert = $header_constraint->can_insert( $content );
-		$this->assertFalse( $can_insert );
-	}
 }
