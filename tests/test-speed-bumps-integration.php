@@ -19,13 +19,13 @@ This is the first paragraph
 This is the second paragraph
 EOT;
 
-		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 			'minimum_content_length' => 1,
 			'paragraph_offset' => 0,
 		) );
 
-		$newContent = Speed_Bumps::insert_speed_bumps( $content );
+		$newContent = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expected_content, $newContent );
 
 	}
@@ -42,22 +42,22 @@ Something longer than 1200Something longer than 1200Something longer than 1200So
 
 <div id="polar-ad"></div>
 EOT;
-		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 		) );
 
-		$newContent = Speed_Bumps::insert_speed_bumps( $content );
+		$newContent = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 	}
 
 	public function test_algorithm_with_content_less_than_1200() {
 		$content = 'less than 1200 character';
 
-		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 		) );
 
-		$newContent = Speed_Bumps::insert_speed_bumps( $content );
+		$newContent = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertNotContains( '<div id="polar-ad"></div>', $newContent );
 
 	}
@@ -80,12 +80,12 @@ EOT;
 <div id="polar-ad"></div>
 EOT;
 
-		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 			'paragraph_offset' => 1,
 		) );
 
-		$newContent = Speed_Bumps::insert_speed_bumps( $content );
+		$newContent = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
 	}
@@ -110,12 +110,12 @@ EOT;
 <div id="polar-ad"></div>
 EOT;
 
-		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 			'paragraph_offset' => 1,
 		) );
 
-		$newContent = Speed_Bumps::insert_speed_bumps( $content );
+		$newContent = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
 	}
@@ -161,12 +161,12 @@ https://twitter.com/ML_toparticles/status/606513045519659009
 
 EOT;
 
-		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 			'paragraph_offset' => 2,
 		) );
 
-		$newContent = Speed_Bumps::insert_speed_bumps( $content );
+		$newContent = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
 	}
