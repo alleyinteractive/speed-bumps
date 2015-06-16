@@ -11,11 +11,11 @@ class Speed_Bumps {
 		}
 		return self::$instance;
 	}
-	
+
 	private static function setup_filters() {
 		add_filter( 'speed_bumps_inject_content', '\Speed_Bumps\Speed_Bumps::insert_speed_bumps', 10 );
 	}
-	
+
 	public static function insert_speed_bumps( $the_content ) {
 		$output = array();
 		$alreadyInsertAd = array();
@@ -30,6 +30,7 @@ class Speed_Bumps {
 				'total_paragraphs' => $total_paragraphs,
 				'the_content'      => $the_content,
 			);
+
 			foreach ( Speed_Bumps::$_speed_bumps_args as $id => $args ) {
 
 				if ( $index < $args['paragraph_offset'] ) {
@@ -67,7 +68,7 @@ class Speed_Bumps {
 		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Content\Injection::did_already_insert_ad', 10, 4 );
 		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_contains_element', 10, 4 );
 	}
-	
+
 	public function get_speed_bump_args( $id ) {
 		return Speed_Bumps::$_speed_bumps_args[ $id ];
 	}
