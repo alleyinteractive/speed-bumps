@@ -5,7 +5,7 @@ class Test_Speed_Bumps_Text_Constraints extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->speed_bump = Speed_Bumps::get_instance();
+		$this->speed_bump = \Speed_Bumps\Speed_Bumps::get_instance();
 	}
 
 	public function test_if_content_has_more_than_1200() {
@@ -17,7 +17,7 @@ class Test_Speed_Bumps_Text_Constraints extends WP_UnitTestCase {
 		$args = array(
 			'minimum_content_length' => 1200,
 		);
-		$okToInsert = \Speed_Bumps\Constraints\Text\Text::minimum_content_length( true, $context, $args, array() );
+		$okToInsert = \Speed_Bumps\Constraints\Text\Minimum_Text::minimum_content_length( true, $context, $args, array() );
 
 		$this->assertTrue( $okToInsert );
 
@@ -33,7 +33,7 @@ class Test_Speed_Bumps_Text_Constraints extends WP_UnitTestCase {
 			'minimum_content_length' => 1,
 		);
 
-		$okToInsert = \Speed_Bumps\Constraints\Text\Text::minimum_content_length( true, $context, $args, array() );
+		$okToInsert = \Speed_Bumps\Constraints\Text\Minimum_Text::minimum_content_length( true, $context, $args, array() );
 
 		$this->assertTrue( $okToInsert );
 
@@ -48,7 +48,7 @@ class Test_Speed_Bumps_Text_Constraints extends WP_UnitTestCase {
 			'minimum_content_length' => 1000,
 		);
 
-		$okToInsert = \Speed_Bumps\Constraints\Text\Text::minimum_content_length( true, $context, $args, array() );
+		$okToInsert = \Speed_Bumps\Constraints\Text\Minimum_Text::minimum_content_length( true, $context, $args, array() );
 
 		$this->assertFalse( $okToInsert );
 	}

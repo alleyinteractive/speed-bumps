@@ -1,7 +1,7 @@
 <?php
 namespace Speed_Bumps\Constraints\Text;
 
-class Text {
+class Minimum_Text {
 
 	public static function minimum_content_length( $canInsert, $context, $args, $alreadyInsertAd ) {
 

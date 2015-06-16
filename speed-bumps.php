@@ -10,7 +10,6 @@ Plugin URI: https://github.com/fusioneng/speed-bumps
 Text Domain: speed-bumps
 Domain Path: /languages
 */
-
 //Load any class-type file dependency automatically.  
 require_once dirname (__FILE__) . '/loader.php';
 
