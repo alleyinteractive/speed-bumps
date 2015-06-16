@@ -3,7 +3,7 @@ namespace Speed_Bumps\Constraints\Elements;
 
 class Element_Constraints {
 
-	public static function adj_paragraph_contains_element( $canInsert, $context, $args, $alreadyInsertAd ) {
+	public static function adj_paragraph_contains_element( $can_insert, $context, $args, $already_inserted ) {
 
 		$element_constraints = $args['element_constraints'];
 
@@ -13,11 +13,11 @@ class Element_Constraints {
 			$can_insert_next_paragraph = $element_to_check->can_insert( $context['next_paragraph'] );
 
 			if ( ! $can_insert_prev_paragraph || ! $can_insert_next_paragraph ) {
-				$canInsert = false;
+				$can_insert = false;
 			}
 		}
 
-		return $canInsert;
+		return $can_insert;
 	}
 
 }

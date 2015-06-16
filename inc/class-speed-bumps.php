@@ -18,7 +18,7 @@ class Speed_Bumps {
 
 	public static function insert_speed_bumps( $the_content ) {
 		$output = array();
-		$alreadyInsertAd = array();
+		$already_inserted = array();
 		$parts = preg_split( '/\n\s*\n/', $the_content );
 		$total_paragraphs = count( $parts );
 		foreach ( $parts as $index => $part ) {
@@ -36,12 +36,12 @@ class Speed_Bumps {
 				if ( $index < $args['paragraph_offset'] ) {
 					break;
 				}
-				if ( apply_filters( 'speed_bumps_'. $id . '_constraints', true, $context, $args, $alreadyInsertAd ) ) {
+				if ( apply_filters( 'speed_bumps_'. $id . '_constraints', true, $context, $args, $already_inserted ) ) {
 
 					$content_to_be_inserted = call_user_func( $args['string_to_inject'], $context );
 
 					$output[] = $content_to_be_inserted;
-					$alreadyInsertAd[] = array(
+					$already_inserted[] = array(
 						'index' => $index,
 						'speed_bump_id' => $id,
 						'inserted_content' => $content_to_be_inserted,
