@@ -11,20 +11,20 @@ class Speed_Bumps {
 		}
 		return self::$instance;
 	}
-    /*
-     * Prevent the creation of a new instance of the "SINGLETON" using the operator 'new' from
-     * outside of this class. 
-     */
-    protected function __construct(){}
-    /*
-     * Prevent cloning the instance of the "SINGLETON" instance.
-     * @return void 
-     */
-    private function __clone(){}
-    /*
-     * Prevent the unserialization of the "SINGLETON" instance.
-     */
-    private function __wakeup(){}
+	/*
+	 * Prevent the creation of a new instance of the "SINGLETON" using the operator 'new' from
+	 * outside of this class. 
+	 */
+	protected function __construct(){}
+	/*
+	 * Prevent cloning the instance of the "SINGLETON" instance.
+	 * @return void 
+	 */
+	private function __clone(){}
+	/*
+	 * Prevent the unserialization of the "SINGLETON" instance.
+	 */
+	private function __wakeup(){}
 
 	private static function setup_filters() {
 		add_filter( 'speed_bumps_inject_content', '\Speed_Bumps\Speed_Bumps::insert_speed_bumps', 10 );
@@ -43,7 +43,7 @@ class Speed_Bumps {
 				'next_paragraph'   => ( $index + 1 < $total_paragraphs ) ? $parts[ $index + 1 ] : '',
 				'total_paragraphs' => $total_paragraphs,
 				'the_content'      => $the_content,
-			);
+				);
 
 			foreach ( Speed_Bumps::$_speed_bumps_args as $id => $args ) {
 
@@ -59,7 +59,7 @@ class Speed_Bumps {
 						'index' => $index,
 						'speed_bump_id' => $id,
 						'inserted_content' => $content_to_be_inserted,
-					);
+						);
 				}
 			}
 		}
@@ -74,8 +74,8 @@ class Speed_Bumps {
 				'iframe',
 				'oembed',
 				'image',
-			),
-		);
+				),
+			);
 		$args = wp_parse_args( $args, $default );
 		Speed_Bumps::$_speed_bumps_args[ $id ] = $args;
 		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Text\Minimum_Text::minimum_content_length', 10, 4 );
