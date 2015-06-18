@@ -47,10 +47,10 @@ class Speed_Bumps {
 				);
 
 			foreach ( Speed_Bumps::$_speed_bumps_args as $id => $args ) {
-
 				if ( $index < $args['paragraph_offset'] ) {
 					break;
 				}
+
 				if ( apply_filters( 'speed_bumps_'. $id . '_constraints', true, $context, $args, $already_inserted ) ) {
 
 					$content_to_be_inserted = call_user_func( $args['string_to_inject'], $context );
@@ -60,7 +60,8 @@ class Speed_Bumps {
 						'index' => $index,
 						'speed_bump_id' => $id,
 						'inserted_content' => $content_to_be_inserted,
-						);
+					);
+					unset( Speed_Bumps::$_speed_bumps_args[ $id ] );
 				}
 			}
 		}
