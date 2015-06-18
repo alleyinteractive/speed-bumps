@@ -13,12 +13,12 @@ class Speed_Bumps {
 	}
 	/**
 	 * Prevent the creation of a new instance of the "SINGLETON" using the operator 'new' from
-	 * outside of this class. 
+	 * outside of this class.
 	**/
 	protected function __construct(){}
 	/**
 	 * Prevent cloning the instance of the "SINGLETON" instance.
-	 * @return void 
+	 * @return void
 	**/
 	private function __clone(){}
 	/**
