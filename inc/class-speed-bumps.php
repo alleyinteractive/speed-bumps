@@ -47,6 +47,7 @@ class Speed_Bumps {
 				);
 
 			foreach ( Speed_Bumps::$_speed_bumps_args as $id => $args ) {
+
 				if ( $index < $args['paragraph_offset'] ) {
 					break;
 				}
@@ -61,14 +62,15 @@ class Speed_Bumps {
 						'speed_bump_id' => $id,
 						'inserted_content' => $content_to_be_inserted,
 					);
-					unset( Speed_Bumps::$_speed_bumps_args[ $id ] );
 				}
 			}
 		}
 		return implode( PHP_EOL . PHP_EOL, $output );
 	}
 	public function register_speed_bump( $id, $args = array() ) {
+		$id = sanitize_key( $id );
 		$default = array(
+			'id' => $id,
 			'string_to_inject' => function() { return ''; },
 			'minimum_content_length' => 1200,
 			'paragraph_offset' => 0,
@@ -82,6 +84,7 @@ class Speed_Bumps {
 		Speed_Bumps::$_speed_bumps_args[ $id ] = $args;
 		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Text\Minimum_Text::minimum_content_length', 10, 4 );
 		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Content\Injection::did_already_insert_ad', 10, 4 );
+		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Content\Injection::is_ad_already_inserted_here', 10, 4 );
 		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_contains_element', 10, 4 );
 	}
 
