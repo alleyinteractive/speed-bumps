@@ -12,6 +12,21 @@ class Speed_Bumps {
 		return self::$instance;
 	}
 
+	/**
+     * Prevent the creation of a new instance of the "SINGLETON" using the operator 'new' from
+     * outside of this class. 
+     */
+	protected function __construct(){}
+	/**
+	 * Prevent cloning the instance of the "SINGLETON" instance.
+	 * @return void 
+	 */
+	private function __clone(){}
+    /**
+     * Prevent the unserialization of the "SINGLETON" instance.
+     */
+	private function __wakeup(){}
+
 	private static function setup_filters() {
 		add_filter( 'speed_bumps_inject_content', '\Speed_Bumps\Speed_Bumps::insert_speed_bumps', 10 );
 	}
