@@ -7,7 +7,7 @@ class Injection {
 		if ( self::is_ad_already_inserted_here( $context, $already_inserted ) ) {
 			$can_insert = false;
 		}
-		
+
 		return $can_insert;
 	}
 
@@ -20,7 +20,7 @@ class Injection {
 			}
 		}
 
-		return false;	
+		return false;
 	}
 
 }
