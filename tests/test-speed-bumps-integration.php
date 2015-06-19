@@ -178,6 +178,10 @@ This is the first paragraph
 This is the second paragraph
 
 This is the third paragraph
+
+This is the fourth paragraph
+
+This is the fifth paragraph
 EOT;
 		$expected_content = <<<EOT
 This is the first paragraph
@@ -189,6 +193,10 @@ This is the second paragraph
 test2
 
 This is the third paragraph
+
+This is the fourth paragraph
+
+This is the fifth paragraph
 EOT;
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
