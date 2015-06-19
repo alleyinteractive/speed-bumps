@@ -84,7 +84,7 @@ class Speed_Bumps {
 		Speed_Bumps::$_speed_bumps_args[ $id ] = $args;
 		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Text\Minimum_Text::minimum_content_length', 10, 4 );
 		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Content\Injection::did_already_insert_ad', 10, 4 );
-		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Content\Injection::is_ad_already_inserted_here', 10, 4 );
+		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Content\Injection::check_no_speed_bump_inserted_here', 10, 4 );
 		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_contains_element', 10, 4 );
 	}
 

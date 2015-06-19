@@ -20,7 +20,7 @@ class Injection {
 	 * Has another speed bump been inserted at this index?
 	 *
 	 */
-	public static function is_ad_already_inserted_here( $can_insert, $context, $args, $already_inserted ) {
+	public static function check_no_speed_bump_inserted_here( $can_insert, $context, $args, $already_inserted ) {
 		$current_index = $context['index'];
 
 		foreach ( $already_inserted as $index => $element ) {
