@@ -8,7 +8,7 @@ class Injection {
 	 * Has this particular speedbump already been inserted?
 	 *
 	 */
-	public static function did_already_insert_ad( $can_insert, $context, $args, $already_inserted ) {
+	public static function this_speed_bump_not_already_inserted( $can_insert, $context, $args, $already_inserted ) {
 		if ( in_array( $args['id'], wp_list_pluck( $already_inserted, 'speed_bump_id' ) ) ) {
 			$can_insert = false;
 		}
@@ -20,7 +20,7 @@ class Injection {
 	 * Has another speed bump been inserted at this index?
 	 *
 	 */
-	public static function check_no_speed_bump_inserted_here( $can_insert, $context, $args, $already_inserted ) {
+	public static function no_speed_bump_inserted_here( $can_insert, $context, $args, $already_inserted ) {
 		$current_index = $context['index'];
 
 		foreach ( $already_inserted as $index => $element ) {
