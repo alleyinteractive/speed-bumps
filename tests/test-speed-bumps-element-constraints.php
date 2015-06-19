@@ -18,7 +18,7 @@ EOT;
 			'element_constraints' => array( 'image' ),
 		);
 
-		$can_insert = \Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_contains_element( false, $context, $args, false );
+		$can_insert = \Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element( false, $context, $args, false );
 
 		$this->assertFalse( $can_insert );
 	}
@@ -34,7 +34,7 @@ EOT;
 		$args = array(
 			'element_constraints' => array( 'blockquote' ),
 		);
-		$can_insert = \Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_contains_element( true, $context, $args, false );
+		$can_insert = \Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, false );
 
 		$this->assertTrue( $can_insert );
 	}
@@ -45,7 +45,7 @@ EOT;
 Some text before blockquote <blockquote>Awesome quote</blockquote>
 EOT;
 		$blockquote_constraint = new \Speed_Bumps\Constraints\Elements\Blockquote();
-		$can_insert = $blockquote_constraint->can_insert( $content );
+		$can_insert = $blockquote_constraint->paragraph_not_contains_element( $content );
 
 		$this->assertFalse( $can_insert );
 
@@ -57,7 +57,7 @@ Some text before blockquote <img src="some_awesome_image.png"></img>
 EOT;
 		$image_constraint = new \Speed_Bumps\Constraints\Elements\Image();
 
-		$can_insert = $image_constraint->can_insert( $content );
+		$can_insert = $image_constraint->paragraph_not_contains_element( $content );
 
 		$this->assertFalse( $can_insert );
 
@@ -69,7 +69,7 @@ Some text before blockquote <iframe src="some_awesome_image.png"></iframe>
 EOT;
 
 		$iframe_constraint = new \Speed_Bumps\Constraints\Elements\Iframe();
-		$can_insert = $iframe_constraint->can_insert( $content );
+		$can_insert = $iframe_constraint->paragraph_not_contains_element( $content );
 
 		$this->assertFalse( $can_insert );
 	}
@@ -80,7 +80,7 @@ some text before [caption id="attachment_131804" align="aligncenter" width="1024
 EOT;
 
 		$shortcode_constraint = new \Speed_Bumps\Constraints\Elements\Shortcode();
-		$can_insert = $shortcode_constraint->can_insert( $content );
+		$can_insert = $shortcode_constraint->paragraph_not_contains_element( $content );
 
 		$this->assertFalse( $can_insert );
 	}
@@ -90,7 +90,7 @@ EOT;
 
 		$oembed_constraint = new \Speed_Bumps\Constraints\Elements\Oembed();
 
-		$can_insert = $oembed_constraint->can_insert( $content );
+		$can_insert = $oembed_constraint->paragraph_not_contains_element( $content );
 
 		$this->assertFalse( $can_insert );
 	}
@@ -100,7 +100,7 @@ EOT;
 
 		$oembed_constraint = new \Speed_Bumps\Constraints\Elements\Oembed();
 
-		$can_insert = $oembed_constraint->can_insert( $content );
+		$can_insert = $oembed_constraint->paragraph_not_contains_element( $content );
 		$this->assertFalse( $can_insert );
 	}
 
@@ -109,7 +109,7 @@ EOT;
 
 		$oembed_constraint = new \Speed_Bumps\Constraints\Elements\Oembed();
 
-		$can_insert = $oembed_constraint->can_insert( $content );
+		$can_insert = $oembed_constraint->paragraph_not_contains_element( $content );
 		$this->assertFalse( $can_insert );
 	}
 
@@ -118,7 +118,7 @@ EOT;
 
 		$header_constraint = new \Speed_Bumps\Constraints\Elements\Header();
 
-		$can_insert = $header_constraint->can_insert( $content );
+		$can_insert = $header_constraint->paragraph_not_contains_element( $content );
 		$this->assertFalse( $can_insert );
 	}
 
@@ -126,7 +126,7 @@ EOT;
 		$content = '<h6>header</h6>';
 		$header_constraint = new \Speed_Bumps\Constraints\Elements\Header();
 
-		$can_insert = $header_constraint->can_insert( $content );
+		$can_insert = $header_constraint->paragraph_not_contains_element( $content );
 		$this->assertFalse( $can_insert );
 	}
 
@@ -134,7 +134,7 @@ EOT;
 		$content = '<header>awesome headline</header>';
 		$header_constraint = new \Speed_Bumps\Constraints\Elements\Header();
 
-		$can_insert = $header_constraint->can_insert( $content );
+		$can_insert = $header_constraint->paragraph_not_contains_element( $content );
 		$this->assertFalse( $can_insert );
 
 	}

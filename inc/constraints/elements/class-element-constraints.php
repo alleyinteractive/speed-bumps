@@ -3,7 +3,7 @@ namespace Speed_Bumps\Constraints\Elements;
 
 class Element_Constraints {
 
-	public static function adj_paragraph_contains_element( $can_insert, $context, $args, $already_inserted ) {
+	public static function adj_paragraph_not_contains_element( $can_insert, $context, $args, $already_inserted ) {
 
 		$element_constraints = $args['element_constraints'];
 
