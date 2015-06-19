@@ -2,7 +2,7 @@
 namespace Speed_Bumps\Constraints\Elements;
 
 class Dummy extends Constraint_Abstract {
-	public function can_insert( $paragraph ) {
+	public function paragraph_not_contains_element( $paragraph ) {
 		return false;
 	}
 }
