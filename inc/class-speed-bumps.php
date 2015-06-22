@@ -65,6 +65,8 @@ class Speed_Bumps {
 				}
 			}
 		}
+
+		Speed_Bumps::$_speed_bumps_args = array();
 		return implode( PHP_EOL . PHP_EOL, $output );
 	}
 	public function register_speed_bump( $id, $args = array() ) {
