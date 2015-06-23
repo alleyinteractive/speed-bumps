@@ -4,6 +4,7 @@ namespace Speed_Bumps;
 class Speed_Bumps {
 	private static $instance;
 	private static $_speed_bumps_args = array();
+	private static $_filter_id = 'speed_bumps_%s_constraints';
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = new Speed_Bumps;
@@ -65,6 +66,8 @@ class Speed_Bumps {
 				}
 			}
 		}
+
+		Speed_Bumps::$_speed_bumps_args = array();
 		return implode( PHP_EOL . PHP_EOL, $output );
 	}
 	public function register_speed_bump( $id, $args = array() ) {
@@ -82,13 +85,28 @@ class Speed_Bumps {
 			);
 		$args = wp_parse_args( $args, $default );
 		Speed_Bumps::$_speed_bumps_args[ $id ] = $args;
-		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Text\Minimum_Text::content_is_long_enough_to_insert', 10, 4 );
-		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Content\Injection::this_speed_bump_not_already_inserted', 10, 4 );
-		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Content\Injection::no_speed_bump_inserted_here', 10, 4 );
-		add_filter( 'speed_bumps_' . $id . '_constraints', '\Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element', 10, 4 );
+
+		$filter_id = sprintf( Speed_Bumps::$_filter_id, $id );
+
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::content_is_long_enough_to_insert', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::this_speed_bump_not_already_inserted', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::no_speed_bump_inserted_here', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element', 10, 4 );
 	}
 
 	public function get_speed_bump_args( $id ) {
 		return Speed_Bumps::$_speed_bumps_args[ $id ];
+	}
+
+	public static function clear_speed_bump( $id ) {
+		$filter_id = sprintf( Speed_Bumps::$_filter_id, $id );
+		remove_all_filters( $filter_id );
+		unset( Speed_Bumps::$_speed_bumps_args[ $id ] );
+	}
+
+	public static function clear_all_speed_bumps() {
+		foreach ( Speed_Bumps::$_speed_bumps_args as $id => $args ) {
+			Speed_Bumps::clear_speed_bump( $id );
+		}
 	}
 }
