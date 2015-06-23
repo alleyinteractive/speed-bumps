@@ -253,12 +253,12 @@ EOT;
 		) );
 
 		\Speed_Bumps\Speed_Bumps::clear_all_speed_bumps();
-		
+
 		$new_content = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expected_content, $new_content );
 	}
 
-		public function test_clear_speed_bump() {
+	public function test_clear_speed_bump() {
 		$content = <<<EOT
 This is the first paragraph
 
@@ -298,7 +298,7 @@ EOT;
 		) );
 
 		\Speed_Bumps\Speed_Bumps::clear_speed_bump( 'speed_bump2' );
-		
+
 		$new_content = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
 		$this->assertEquals( $expected_content, $new_content );
 	}

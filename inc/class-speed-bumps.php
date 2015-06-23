@@ -85,9 +85,9 @@ class Speed_Bumps {
 			);
 		$args = wp_parse_args( $args, $default );
 		Speed_Bumps::$_speed_bumps_args[ $id ] = $args;
-		
+
 		$filter_id = sprintf( Speed_Bumps::$_filter_id, $id );
-		
+
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::content_is_long_enough_to_insert', 10, 4 );
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::this_speed_bump_not_already_inserted', 10, 4 );
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::no_speed_bump_inserted_here', 10, 4 );
@@ -105,7 +105,7 @@ class Speed_Bumps {
 	}
 
 	public static function clear_all_speed_bumps() {
-		foreach( Speed_Bumps::$_speed_bumps_args as $id => $args ) {
+		foreach ( Speed_Bumps::$_speed_bumps_args as $id => $args ) {
 			Speed_Bumps::clear_speed_bump( $id );
 		}
 	}
