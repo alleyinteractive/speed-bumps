@@ -60,7 +60,7 @@ class Test_Speed_Bumps_Injection_Constraints extends WP_UnitTestCase {
 				'inserted_content' => 'content1',
 			),
 		);
-		$ad_did_inserted = \Speed_Bumps\Constraints\Content\Injection::paragraph_not_far_away_enough( true, array( 'index' => 1 ), array( 'id' => 'speed_bump2', 'minimum_space_from_other_inserts' => 4 ), $already_inserted );
+		$ad_did_inserted = \Speed_Bumps\Constraints\Content\Injection::paragraph_far_enough_away( true, array( 'index' => 1 ), array( 'id' => 'speed_bump2', 'minimum_space_from_other_inserts' => 4 ), $already_inserted );
 
 		$this->assertFalse( $ad_did_inserted );
 	}
@@ -73,7 +73,7 @@ class Test_Speed_Bumps_Injection_Constraints extends WP_UnitTestCase {
 				'inserted_content' => 'content1',
 			),
 		);
-		$ad_did_inserted = \Speed_Bumps\Constraints\Content\Injection::paragraph_not_far_away_enough( true, array( 'index' => 5 ), array( 'id' => 'speed_bump2', 'minimum_space_from_other_inserts' => 4 ), $already_inserted );
+		$ad_did_inserted = \Speed_Bumps\Constraints\Content\Injection::paragraph_far_enough_away( true, array( 'index' => 5 ), array( 'id' => 'speed_bump2', 'minimum_space_from_other_inserts' => 4 ), $already_inserted );
 
 		$this->assertTrue( $ad_did_inserted );
 	}
