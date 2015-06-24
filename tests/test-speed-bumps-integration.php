@@ -303,5 +303,51 @@ EOT;
 		$this->assertEquals( $expected_content, $new_content );
 	}
 
+	public function test_insert_speed_bump_with_away_from_each_other() {
+		$content = <<<EOT
+This is the first paragraph
+
+This is the second paragraph
+
+This is the third paragraph
+
+This is the fourth paragraph
+
+This is the fifth paragraph
+EOT;
+
+		$expected_content = <<<EOT
+This is the first paragraph
+
+test1
+
+This is the second paragraph
+
+This is the third paragraph
+
+This is the fourth paragraph
+
+This is the fifth paragraph
+
+test2
+EOT;
+
+		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+			'string_to_inject' => function() { return 'test1'; },
+			'minimum_content_length' => 1,
+			'paragraph_offset' => 0,
+		) );
+
+		\Speed_Bumps()->register_speed_bump( 'speed_bump2', array(
+			'string_to_inject' => function() { return 'test2'; },
+			'minimum_content_length' => 1,
+			'paragraph_offset' => 0,
+			'minimum_space_from_other_inserts' => 4,
+		) );
+
+		$new_content = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
+		$this->assertEquals( $expected_content, $new_content );
+	}
+
 }
 
