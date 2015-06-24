@@ -32,4 +32,15 @@ class Injection {
 		return $can_insert;
 	}
 
+	public static function paragraph_not_far_away_enough( $can_insert, $context, $args, $already_inserted ) {
+		$this_paragraph_index = $context['index'];
+		if ( count( $already_inserted ) ) {
+			foreach ( $already_inserted as $speed_bump ) {
+				if ( $this_paragraph_index - $speed_bump['index'] < $args['minimum_space_from_other_inserts'] ) {
+					$can_insert = false;
+				}
+			}
+		}
+		return $can_insert;
+	}
 }

@@ -81,6 +81,7 @@ class Speed_Bumps {
 				'oembed',
 				'image',
 				),
+			'minimum_space_from_other_inserts' => 1,
 			);
 		$args = wp_parse_args( $args, $default );
 		Speed_Bumps::$_speed_bumps_args[ $id ] = $args;
@@ -90,6 +91,7 @@ class Speed_Bumps {
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::content_is_long_enough_to_insert', 10, 4 );
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::this_speed_bump_not_already_inserted', 10, 4 );
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::no_speed_bump_inserted_here', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::paragraph_not_far_away_enough', 10, 4 );
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element', 10, 4 );
 	}
 
