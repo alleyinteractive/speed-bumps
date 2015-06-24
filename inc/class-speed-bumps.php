@@ -28,11 +28,11 @@ class Speed_Bumps {
 	**/
 	private function __wakeup(){}
 
-	private static function setup_filters() {
-		add_filter( 'speed_bumps_inject_content', '\Speed_Bumps\Speed_Bumps::insert_speed_bumps', 10 );
+	private function setup_filters() {
+		add_filter( 'speed_bumps_inject_content', array( $this, 'insert_speed_bumps' ) );
 	}
 
-	public static function insert_speed_bumps( $the_content ) {
+	public function insert_speed_bumps( $the_content ) {
 		$output = array();
 		$already_inserted = array();
 		$parts = preg_split( '/\n\s*\n/', $the_content );
@@ -47,7 +47,7 @@ class Speed_Bumps {
 				'the_content'      => $the_content,
 				);
 
-			foreach ( Speed_Bumps::get_speed_bumps() as $id => $args ) {
+			foreach ( $this->get_speed_bumps() as $id => $args ) {
 
 				if ( $index < $args['paragraph_offset'] ) {
 					break;
@@ -83,9 +83,9 @@ class Speed_Bumps {
 				),
 			);
 		$args = wp_parse_args( $args, $default );
-		Speed_Bumps::$speed_bumps[ $id ] = $args;
+		self::$speed_bumps[ $id ] = $args;
 
-		$filter_id = sprintf( Speed_Bumps::$filter_id, $id );
+		$filter_id = sprintf( self::$filter_id, $id );
 
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::content_is_long_enough_to_insert', 10, 4 );
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::this_speed_bump_not_already_inserted', 10, 4 );
@@ -94,22 +94,22 @@ class Speed_Bumps {
 	}
 
 	public function get_speed_bumps() {
-		return Speed_Bumps::$speed_bumps;
+		return self::$speed_bumps;
 	}
 
 	public function get_speed_bump( $id ) {
-		return Speed_Bumps::$speed_bumps[ $id ];
+		return self::$speed_bumps[ $id ];
 	}
 
-	public static function clear_speed_bump( $id ) {
-		$filter_id = sprintf( Speed_Bumps::$filter_id, $id );
+	public function clear_speed_bump( $id ) {
+		$filter_id = sprintf( self::$filter_id, $id );
 		remove_all_filters( $filter_id );
-		unset( Speed_Bumps::$speed_bumps[ $id ] );
+		unset( self::$speed_bumps[ $id ] );
 	}
 
-	public static function clear_all_speed_bumps() {
-		foreach ( Speed_Bumps::get_speed_bumps() as $id => $args ) {
-			Speed_Bumps::clear_speed_bump( $id );
+	public function clear_all_speed_bumps() {
+		foreach ( $this->get_speed_bumps() as $id => $args ) {
+			$this->clear_speed_bump( $id );
 		}
 	}
 }
