@@ -25,7 +25,7 @@ EOT;
 			'paragraph_offset' => 0,
 		) );
 
-		$newContent = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
+		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
 		$this->assertEquals( $expected_content, $newContent );
 
 	}
@@ -46,7 +46,7 @@ EOT;
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 		) );
 
-		$newContent = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
+		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 	}
 
@@ -57,7 +57,7 @@ EOT;
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 		) );
 
-		$newContent = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
+		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
 		$this->assertNotContains( '<div id="polar-ad"></div>', $newContent );
 
 	}
@@ -85,7 +85,7 @@ EOT;
 			'paragraph_offset' => 1,
 		) );
 
-		$newContent = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
+		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
 	}
@@ -115,7 +115,7 @@ EOT;
 			'paragraph_offset' => 1,
 		) );
 
-		$newContent = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
+		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
 	}
@@ -166,7 +166,7 @@ EOT;
 			'paragraph_offset' => 2,
 		) );
 
-		$newContent = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
+		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
 		$this->assertEquals( $expectedContent, $newContent );
 
 	}
@@ -211,7 +211,7 @@ EOT;
 			'paragraph_offset' => 0,
 		) );
 
-		$new_content = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
+		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
 		$this->assertEquals( $expected_content, $new_content );
 	}
 
@@ -252,9 +252,9 @@ EOT;
 			'paragraph_offset' => 0,
 		) );
 
-		\Speed_Bumps\Speed_Bumps::clear_all_speed_bumps();
+		Speed_Bumps()->clear_all_speed_bumps();
 
-		$new_content = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
+		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
 		$this->assertEquals( $expected_content, $new_content );
 	}
 
@@ -297,9 +297,9 @@ EOT;
 			'paragraph_offset' => 0,
 		) );
 
-		\Speed_Bumps\Speed_Bumps::clear_speed_bump( 'speed_bump2' );
+		Speed_Bumps()->clear_speed_bump( 'speed_bump2' );
 
-		$new_content = \Speed_Bumps\Speed_Bumps::insert_speed_bumps( $content );
+		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
 		$this->assertEquals( $expected_content, $new_content );
 	}
 
