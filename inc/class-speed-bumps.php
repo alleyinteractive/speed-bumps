@@ -73,7 +73,7 @@ class Speed_Bumps {
 		$id = sanitize_key( $id );
 		$default = array(
 			'id' => $id,
-			'string_to_inject' => function() { return ''; },
+			'string_to_inject' => '__return_empty_string',
 			'minimum_content_length' => 1200,
 			'paragraph_offset' => 0,
 			'element_constraints' => array(
