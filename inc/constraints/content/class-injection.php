@@ -2,10 +2,28 @@
 
 namespace Speed_Bumps\Constraints\Content;
 
+/**
+ * Constraints for inserting speed bumps relating to other speed bumps.
+ *
+ * This class holds rules for determining speed bump insertion location based
+ * on the number of other speed bumps which have already been inserted.
+ *
+ * As with all constraint rules, each rule receieves four arguments as parameters.
+ *
+ * @param bool $can_insert Logic as returned from other constraint rules.
+ * @param array $context Context surround the current point in the document
+ * @param array $args Arguments provided in definition of this speed bump
+ * @param array $already_inserted array of speed bumps which have already been inserted
+ *
+ * @return bool True indicates that it is allowable (based on this rule) to insert here, false blocks insertion.
+ */
 class Injection {
 
 	/**
 	 * Has this particular speedbump already been inserted?
+	 *
+	 * Blocks a speed bump from being inserted if it has already been inserted
+	 * elsewhere in the document.
 	 *
 	 */
 	public static function this_speed_bump_not_already_inserted( $can_insert, $context, $args, $already_inserted ) {
@@ -19,6 +37,8 @@ class Injection {
 	/**
 	 * Has another speed bump been inserted at this index?
 	 *
+	 * Blocks a speed bump from being inserted if another speed bump has
+	 * already been inserted at the current index of the document.
 	 */
 	public static function no_speed_bump_inserted_here( $can_insert, $context, $args, $already_inserted ) {
 		$current_index = $context['index'];
@@ -32,6 +52,13 @@ class Injection {
 		return $can_insert;
 	}
 
+	/**
+	 * Is this speed bump far enough away from others to insert here?
+	 *
+	 * Blocks a speed bump from being inserted if it doesn't mean the
+	 * 'minimum_space_from_other_inserts' defined in the speed bumps
+	 * registration arguments.
+	 */
 	public static function paragraph_far_enough_away( $can_insert, $context, $args, $already_inserted ) {
 		$this_paragraph_index = $context['index'];
 		if ( count( $already_inserted ) ) {
