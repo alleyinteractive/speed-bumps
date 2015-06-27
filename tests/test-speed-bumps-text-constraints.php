@@ -5,7 +5,7 @@ class Test_Speed_Bumps_Text_Constraints extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->speed_bump = \Speed_Bumps\Speed_Bumps::get_instance();
+		$this->speed_bumps = Speed_Bumps();
 	}
 
 	public function test_if_content_has_more_than_1200() {
