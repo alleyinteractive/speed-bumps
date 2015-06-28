@@ -62,7 +62,6 @@ class Test_Speed_Bumps_Text_Constraints extends WP_UnitTestCase {
 			'index' => 1,
 		);
 
-
 		$okToInsert = \Speed_Bumps\Constraints\Text\Minimum_Text::meets_minimum_distance_from_article_end_paragraphs( true, $context, $args, array() );
 		$this->assertTrue( $okToInsert );
 
@@ -88,12 +87,11 @@ Fourth paragraph';
 		$context = array(
 			'index' => 1,
 			'total_paragraphs' => 5,
-			'parts' => preg_split(  '/\n\s*\n/', $content )
+			'parts' => preg_split( '/\n\s*\n/', $content ),
 		);
 
 		$okToInsert = \Speed_Bumps\Constraints\Text\Minimum_Text::meets_minimum_distance_from_article_end_words( true, $context, $args, array() );
 		$this->assertTrue( $okToInsert );
-
 
 		$context['index'] = 2;
 		$okToInsert = \Speed_Bumps\Constraints\Text\Minimum_Text::meets_minimum_distance_from_article_end_words( true, $context, $args, array() );

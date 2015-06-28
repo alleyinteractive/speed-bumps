@@ -95,7 +95,7 @@ Fourth paragraph';
 		$context = array(
 			'index' => 2,
 			'total_paragraphs' => 5,
-			'parts' => preg_split(  '/\n\s*\n/', $content )
+			'parts' => preg_split( '/\n\s*\n/', $content ),
 		);
 
 		$already_inserted = array(
@@ -108,7 +108,6 @@ Fourth paragraph';
 
 		$okToInsert = \Speed_Bumps\Constraints\Content\Injection::minimum_space_from_other_inserts_words( true, $context, $args, $already_inserted );
 		$this->assertFalse( $okToInsert );
-
 
 		$context['index'] = 4;
 		$okToInsert = \Speed_Bumps\Constraints\Content\Injection::minimum_space_from_other_inserts_words( true, $context, $args, $already_inserted );
