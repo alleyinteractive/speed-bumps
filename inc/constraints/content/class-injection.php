@@ -32,7 +32,7 @@ class Injection {
 		return $can_insert;
 	}
 
-	public static function paragraph_far_enough_away( $can_insert, $context, $args, $already_inserted ) {
+	public static function minimum_space_from_other_inserts_paragraphs( $can_insert, $context, $args, $already_inserted ) {
 		$this_paragraph_index = $context['index'];
 		if ( count( $already_inserted ) ) {
 			foreach ( $already_inserted as $speed_bump ) {
@@ -41,6 +41,27 @@ class Injection {
 				}
 			}
 		}
+		return $can_insert;
+	}
+
+	public static function minimum_space_from_other_inserts_words( $can_insert, $context, $args, $already_inserted ) {
+		if ( ! isset( $args['minimum_space_from_other_inserts_words'] ) ) {
+			return $can_insert;
+		}
+		if ( count( $already_inserted ) ) {
+			
+			$last_insertion_point = max( wp_list_pluck( $already_inserted, 'index' ) );
+			$content_since_last_insertion = array_slice( $context['parts'], $last_insertion_point, $context['index'] - $last_insertion_point );
+
+			$text_since_last_insert = implode( ' ', $content_since_last_insertion );
+			$words_since_last_insert = array_filter( explode( ' ', $text_since_last_insert ) );
+
+			if ( count( $words_since_last_insert ) < intval( $args['minimum_space_from_other_inserts_words'] ) ) {
+				$can_insert = false;
+			}
+
+		}
+
 		return $can_insert;
 	}
 }

@@ -156,7 +156,8 @@ class Speed_Bumps {
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::meets_minimum_distance_from_article_end_words', 10, 4 );
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::this_speed_bump_not_already_inserted', 10, 4 );
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::no_speed_bump_inserted_here', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::paragraph_far_enough_away', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::minimum_space_from_other_inserts_paragraphs', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::minimum_space_from_other_inserts_words', 10, 4 );
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element', 10, 4 );
 	}
 
