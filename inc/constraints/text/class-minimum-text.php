@@ -1,6 +1,8 @@
 <?php
 namespace Speed_Bumps\Constraints\Text;
 
+use Speed_Bumps\Utils\Text;
+
 class Minimum_Text {
 
 	public static function content_is_long_enough_to_insert( $can_insert, $context, $args, $already_inserted ) {
@@ -38,19 +40,17 @@ class Minimum_Text {
 	 * number of words from end value, if "minimum_words_from_end" is defined
 	 * in the speed bump registration arguments.
 	 *
-	 * Used in conjunction with `meets_minimum_distance_from_article_end_paragraphs`, 
+	 * Used in conjunction with `meets_minimum_distance_from_article_end_paragraphs`,
 	 * to account for cases where very short paragraphs are used.
 	 */
 	public static function meets_minimum_distance_from_article_end_words( $can_insert, $context, $args, $already_inserted ) {
 		if ( ! isset( $args['minimum_words_from_end'] ) ) {
 			return $can_insert;
 		}
-		
-		$remaining_paragraphs = array_slice( $context['parts'], $context['index'] );
-		$remaining_text = implode( ' ', $remaining_paragraphs );
-		$remaining_words = array_filter( explode( ' ', $remaining_text ) );
 
-		if ( count( $remaining_words ) < intval( $args['minimum_words_from_end'] ) ) {
+		$remaining_paragraphs = array_slice( $context['parts'], $context['index'] );
+
+		if ( Text::word_count( $remaining_paragraphs ) < intval( $args['minimum_words_from_end'] ) ) {
 			$can_insert = false;
 		}
 

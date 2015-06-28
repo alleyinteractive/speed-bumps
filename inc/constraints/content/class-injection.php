@@ -1,6 +1,7 @@
 <?php
-
 namespace Speed_Bumps\Constraints\Content;
+
+use Speed_Bumps\Utils\Text;
 
 class Injection {
 
@@ -49,17 +50,13 @@ class Injection {
 			return $can_insert;
 		}
 		if ( count( $already_inserted ) ) {
-			
+
 			$last_insertion_point = max( wp_list_pluck( $already_inserted, 'index' ) );
+
 			$content_since_last_insertion = array_slice( $context['parts'], $last_insertion_point, $context['index'] - $last_insertion_point );
-
-			$text_since_last_insert = implode( ' ', $content_since_last_insertion );
-			$words_since_last_insert = array_filter( explode( ' ', $text_since_last_insert ) );
-
-			if ( count( $words_since_last_insert ) < intval( $args['minimum_space_from_other_inserts_words'] ) ) {
+			if ( Text::word_count( $content_since_last_insertion ) < intval( $args['minimum_space_from_other_inserts_words'] ) ) {
 				$can_insert = false;
 			}
-
 		}
 
 		return $can_insert;
