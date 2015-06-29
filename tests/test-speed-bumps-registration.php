@@ -5,7 +5,7 @@ class Test_Speed_Bumps_Registration extends WP_UnitTestCase {
 	private $speed_bump;
 	public function setUp() {
 		parent::setUp();
-		$this->speed_bumps = \Speed_Bumps\Speed_Bumps::get_instance();
+		$this->speed_bumps = Speed_Bumps();
 	}
 
 	public function test_has_filter_speed_bumps_inject_content() {
