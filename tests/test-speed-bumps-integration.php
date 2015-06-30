@@ -345,7 +345,7 @@ EOT;
 			'minimum_space_from_other_inserts' => 4,
 		) );
 
-		$new_content = \Speed_Bumps()->insert_speed_bumps( $content );
+		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
 		$this->assertEquals( $expected_content, $new_content );
 	}
 
