@@ -1,6 +1,7 @@
 <?php
-
 namespace Speed_Bumps\Constraints\Content;
+
+use Speed_Bumps\Utils\Text;
 
 /**
  * Constraints for inserting speed bumps relating to other speed bumps.
@@ -17,6 +18,7 @@ namespace Speed_Bumps\Constraints\Content;
  *
  * @return bool True indicates that it is allowable (based on this rule) to insert here, false blocks insertion.
  */
+
 class Injection {
 
 	/**
@@ -59,7 +61,7 @@ class Injection {
 	 * 'minimum_space_from_other_inserts' defined in the speed bumps
 	 * registration arguments.
 	 */
-	public static function paragraph_far_enough_away( $can_insert, $context, $args, $already_inserted ) {
+	public static function minimum_space_from_other_inserts_paragraphs( $can_insert, $context, $args, $already_inserted ) {
 		$this_paragraph_index = $context['index'];
 		if ( count( $already_inserted ) ) {
 			foreach ( $already_inserted as $speed_bump ) {
@@ -68,6 +70,23 @@ class Injection {
 				}
 			}
 		}
+		return $can_insert;
+	}
+
+	public static function minimum_space_from_other_inserts_words( $can_insert, $context, $args, $already_inserted ) {
+		if ( ! isset( $args['minimum_space_from_other_inserts_words'] ) ) {
+			return $can_insert;
+		}
+		if ( count( $already_inserted ) ) {
+
+			$last_insertion_point = max( wp_list_pluck( $already_inserted, 'index' ) );
+
+			$content_since_last_insertion = array_slice( $context['parts'], $last_insertion_point, $context['index'] - $last_insertion_point );
+			if ( Text::word_count( $content_since_last_insertion ) < intval( $args['minimum_space_from_other_inserts_words'] ) ) {
+				$can_insert = false;
+			}
+		}
+
 		return $can_insert;
 	}
 }
