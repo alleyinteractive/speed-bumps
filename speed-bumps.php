@@ -93,6 +93,18 @@ class Speed_Bumps {
 		add_filter( 'speed_bumps_inject_content', array( $this, 'insert_speed_bumps' ) );
 	}
 
+	/**
+	 * Inject speed bumps into a block of text, like post content.
+	 *
+	 * Can be called directly, like `Speed_Bumps()->insert_speed_bumps( $post->post_content );`.
+	 *
+	 * More common usage is by adding this function to a filter:
+	 * `add_filter( 'the_content', array( Speed_Bumps(), 'insert_speed_bumps' ), 1 );`
+	 * (Note the early priority, as it should be attached before `wpautop` runs.)
+	 *
+	 * @param string $the_content A block of text. Expected to be pre-texturized.
+	 * @return string The text with all registered speed bumps inserted at appropriate locations if possible.
+	 */
 	public function insert_speed_bumps( $the_content ) {
 		$output = array();
 		$already_inserted = array();
@@ -132,21 +144,79 @@ class Speed_Bumps {
 		return implode( PHP_EOL . PHP_EOL, $output );
 	}
 
+	/**
+	 * Register a speed bump for insertion.
+	 *
+	 * Adds a speed bump, which will be processed in the
+	 * `speed_bumps_insert_content` filter.
+	 *
+	 * @param string $id ID used to reference the speed bump.
+	 * @param array $args Array of arguments governing its behavior.
+	 * @return void
+	 */
 	public function register_speed_bump( $id, $args = array() ) {
 		$id = sanitize_key( $id );
-		$default = array(
-			'id' => $id,
+
+		$defaults = array(
+
+			// This should be a function which returns the content to be inserted
 			'string_to_inject' => '__return_empty_string',
-			'minimum_content_length' => 1200,
-			'paragraph_offset' => 0,
-			'element_constraints' => array(
+
+			// Maximum number of times this can be inserted in a post
+			'maximum_inserts' => 1,
+
+			// Rules which govern the content as a whole
+			'minimum_content_length' => array(
+				'paras' => 8,
+				'chars' => 1200,
+			),
+
+			// Positional rules: distance from start, end, and other elements
+			'from_start' => array(
+				'paras' => 3,
+				'words' => 75,
+			),
+			'from_end' => array(
+				'paras' => 3,
+				'words' => 75,
+			),
+			'from_element' => array(
+
+				// Distance rules (chars/words/paras) applied to all elements listed here
+				'paras' => 1,
+
+				// Can also be an array with an element as the key and an
+				// array containing distance arguments as the value.
 				'iframe',
 				'oembed',
-				'image',
+				'image' => array(
+					'paras' => 2,
 				),
-			'minimum_space_from_other_inserts' => 1,
-			);
+			),
+			'from_speedbump' => array(
+
+				// Distance rules (chars/words/paras) applied to all speed bumps
+				'paras' => 1,
+
+				// can also be an array with a speed bump ID as the key and an
+				// array containing distance arguments as the value
+			),
+
+		);
+
+		// XXX: These old API options need to be handled as well.
+			//'minimum_content_length' => 1200,
+			//'paragraph_offset' => 0,
+			//'element_constraints' => array(
+				//'iframe',
+				//'oembed',
+				//'image',
+				//),
+			//'minimum_space_from_other_inserts' => 1,
+			//);
+
 		$args = wp_parse_args( $args, $default );
+		$args['id'] = $id;
 		self::$speed_bumps[ $id ] = $args;
 
 		$filter_id = sprintf( self::$filter_id, $id );
