@@ -236,13 +236,10 @@ class Speed_Bumps {
 
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::content_is_long_enough_to_insert', 10, 4 );
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::meets_minimum_distance_from_start', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::meets_minimum_distance_from_article_end_paragraphs', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::meets_minimum_distance_from_article_end_words', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::meets_minimum_distance_from_end', 10, 4 );
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::this_speed_bump_not_already_inserted', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::no_speed_bump_inserted_here', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::minimum_space_from_other_inserts_paragraphs', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::minimum_space_from_other_inserts_words', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::minimum_distance_from_other_inserts', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Elements\Element_Constraints::minimum_distance_from_elements', 10, 4 );
 	}
 
 	public function get_speed_bumps() {

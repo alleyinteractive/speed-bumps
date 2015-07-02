@@ -53,6 +53,16 @@ class Minimum_Text {
 		return $can_insert;
 	}
 
+	/**
+	 * Is this point far enough from the start to insert?
+	 *
+	 * Blocks insertion if the current insertion point is less than the minimum
+	 * distance from the start of the content defined in the "from_start"
+	 * option, as measured in the usual units of distance (paras/words/chars).
+	 *
+	 * If an integer is passed, it's treated as a unit of "paras".
+	 *
+	 */
 	public static function meets_minimum_distance_from_start( $can_insert, $context, $args, $already_inserted ) {
 		if ( ! isset( $args['from_start'] ) ) {
 			return $can_insert;
@@ -79,43 +89,35 @@ class Minimum_Text {
 	}
 
 	/**
-	 * Is this point far enough from the end to insert, counting by paragraphs?
+	 * Is this point far enough from the end to insert?
 	 *
 	 * Blocks insertion if the current insertion point is less than the minimum
-	 * paragraphs from end value, if "minimum_paragraphs_from_end" is defined
-	 * in the speed bump registration arguments.
-	 */
-	public static function meets_minimum_distance_from_article_end_paragraphs( $can_insert, $context, $args, $already_inserted ) {
-		if ( ! isset( $args['minimum_paragraphs_from_end'] ) ) {
-			return $can_insert;
-		}
-		$paragraphs_from_end = $context['total_paragraphs'] - $context['index'] - 1;
-		if ( $paragraphs_from_end < intval( $args['minimum_paragraphs_from_end'] ) ) {
-			$can_insert = false;
-		}
-
-		return $can_insert;
-	}
-
-	/**
-	 * Is this point far enough from the end to insert, counting by words?
+	 * distance from the end of the content defined in the "from_end" option,
+	 * as measured in the usual units of distance (paras/words/chars).
 	 *
-	 * Blocks insertion if the current insertion point is less than the minimum
-	 * number of words from end value, if "minimum_words_from_end" is defined
-	 * in the speed bump registration arguments.
+	 * If an integer is passed, it's treated as a unit of "paras".
 	 *
-	 * Used in conjunction with `meets_minimum_distance_from_article_end_paragraphs`,
-	 * to account for cases where very short paragraphs are used.
 	 */
-	public static function meets_minimum_distance_from_article_end_words( $can_insert, $context, $args, $already_inserted ) {
-		if ( ! isset( $args['minimum_words_from_end'] ) ) {
+	public static function meets_minimum_distance_from_end( $can_insert, $context, $args, $already_inserted ) {
+		if ( ! isset( $args['from_end'] ) ) {
 			return $can_insert;
 		}
 
-		$remaining_paragraphs = array_slice( $context['parts'], $context['index'] );
+		if ( is_array( $args['from_end'] ) ) {
+			$from_end = array_slice( $context['parts'], $context['index'] );
 
-		if ( Text::word_count( $remaining_paragraphs ) < intval( $args['minimum_words_from_end'] ) ) {
-			$can_insert = false;
+			foreach( array( 'paras', 'words', 'chars' ) as $unit ) {
+				if ( isset( $args['from_end'][ $unit ] ) &&
+						Comparison::$content_less_than( $unit, $args['from_end'][ $unit ], $from_end ) ) {
+					$can_insert = false;
+				}
+			}
+		}
+
+		if ( is_int( $args['from_end'] ) ) {
+			if ( $args['from_end'] < ( $context['total_paragraphs'] - $index ) ) {
+				$can_insert = false
+			}
 		}
 
 		return $can_insert;
