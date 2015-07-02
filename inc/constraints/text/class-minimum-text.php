@@ -53,6 +53,31 @@ class Minimum_Text {
 		return $can_insert;
 	}
 
+	public static function meets_minimum_distance_from_start( $can_insert, $context, $args, $already_inserted ) {
+		if ( ! isset( $args['from_start'] ) ) {
+			return $can_insert;
+		}
+
+		if ( is_array( $args['from_start'] ) ) {
+			$from_start = array_slice( $context['parts'], 0, $context['index'] );
+
+			foreach( array( 'paras', 'words', 'chars' ) as $unit ) {
+				if ( isset( $args['from_start'][ $unit ] ) &&
+						Comparison::$content_less_than( $unit, $args['from_start'][ $unit ], $from_start ) ) {
+					$can_insert = false;
+				}
+			}
+		}
+
+		if ( is_int( $args['from_start'] ) ) {
+			if ( $args['from_start'] < $index ) {
+				$can_insert = false
+			}
+		}
+
+		return $can_insert;
+	}
+
 	/**
 	 * Is this point far enough from the end to insert, counting by paragraphs?
 	 *
