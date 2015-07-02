@@ -3,6 +3,20 @@ namespace Speed_Bumps\Utils;
 
 class Text {
 
+	public static function split_paragraphs( $content ) {
+		return preg_split( '/\n\s*\n/', $content );
+	}
+
+
+	public static function split_words( $content ) {
+		return array_filter( explode( ' ', strip_tags( $content ) ) );
+	}
+
+
+	public static function split_chars( $content ) {
+		return str_split( $content );
+	}
+
 	/**
 	 * Abstracted helper function for counting the words in a chunk of text.
 	 *
@@ -16,7 +30,7 @@ class Text {
 			$text = implode( ' ', $text );
 		}
 
-		$words = array_filter( explode( ' ', strip_tags( $text ) ) );
+		$words = Text::split_words( $text );
 
 		return count( $words );
 	}

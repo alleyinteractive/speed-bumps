@@ -10,6 +10,8 @@ Text Domain: speed-bumps
 Domain Path: /languages
 */
 
+use Speed_Bumps\Utils\Text;
+
 class Speed_Bumps {
 
 	private static $instance;
@@ -108,7 +110,7 @@ class Speed_Bumps {
 	public function insert_speed_bumps( $the_content ) {
 		$output = array();
 		$already_inserted = array();
-		$parts = preg_split( '/\n\s*\n/', $the_content );
+		$parts = Text::split_paragraphs( $the_content );
 		$total_paragraphs = count( $parts );
 		foreach ( $parts as $index => $part ) {
 			$output[] = $part;
@@ -215,7 +217,7 @@ class Speed_Bumps {
 			//'minimum_space_from_other_inserts' => 1,
 			//);
 
-		$args = wp_parse_args( $args, $default );
+		$args = wp_parse_args( $args, $defaults );
 		$args['id'] = $id;
 		self::$speed_bumps[ $id ] = $args;
 

@@ -2,6 +2,7 @@
 namespace Speed_Bumps\Constraints\Text;
 
 use Speed_Bumps\Utils\Text;
+use Speed_Bumps\Utils\Comparison;
 
 /**
  * Constraints for inserting speed bumps relating to text length.
@@ -28,9 +29,25 @@ class Minimum_Text {
 	 * registration arguments.
 	 */
 	public static function content_is_long_enough_to_insert( $can_insert, $context, $args, $already_inserted ) {
+		if ( ! isset( $args['minimum_content_length'] ) ) {
+			return $can_insert;
+		}
 
-		if ( strlen( $context['the_content'] ) < $args['minimum_content_length'] ) {
-			$can_insert = false;
+		$content = $context['the_content'];
+
+		if ( is_array( $args['minimum_content_length'] ) ) {
+			foreach( array( 'paras', 'words', 'chars' ) as $unit ) {
+				if ( isset( $args['minimum_content_length'][ $unit ] ) &&
+					Comparison::content_less_than( $unit, $args['minimum_content_length'][ $unit ], $content ) ) {
+					$can_insert = false;
+				}
+			}
+		}
+
+		if ( intval( $args['minimum_content_length'] ) ) {
+			if ( Comparison::content_less_than( 'chars', intval( $args['minimum_content_length'] ), $content ) ) {
+				$can_insert = false;
+			}
 		}
 
 		return $can_insert;
