@@ -25,7 +25,7 @@ class Test_Speed_Bumps_Registration extends WP_UnitTestCase {
 		$speed_bump1_args = $this->speed_bumps->get_speed_bump( 'speed_bump1' );
 
 		$this->assertEquals( call_user_func( $speed_bump1_args['string_to_inject'] ), '' );
-		$this->assertEquals( $speed_bump1_args['element_constraints'], array( 'iframe', 'oembed', 'image' ) );
+		$this->assertEquals( $speed_bump1_args['from_element'], array( 'paras' => 1, 0 => 'iframe', 1 => 'oembed', 'image' => array( 'paras' => 2 ) ) );
 		$this->assertEquals( $speed_bump1_args['paragraph_offset'], 0 );
 	}
 

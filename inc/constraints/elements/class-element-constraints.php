@@ -21,14 +21,14 @@ class Element_Constraints {
 	/**
 	 * Is this insertion spot right before or after a disallowed element?
 	 *
-	 * Loops through each of the "element_constraints" defined at speed bump
+	 * Loops through each of the "from_element" defined at speed bump
 	 * registration, and blocks insertion if either the previous or following
 	 * paragraph contains any of them.
 	 *
 	 * To add additional element constraints, you must define your own element
 	 * class which implements the method `paragraph_not_contains_element`.
 	 * The class name will be the uppercased version of the string passed in
-	 * element_constraints at speed bump registration.
+	 * from_element at speed bump registration.
 	 *
 	 * For example if you wanted to add an "hr" contraint, define a class at
 	 * `\Speed_Bumps\Constraints\Elements\Hr` with has a method called
@@ -37,10 +37,15 @@ class Element_Constraints {
 	 */
 	public static function adj_paragraph_not_contains_element( $can_insert, $context, $args, $already_inserted ) {
 
-		$element_constraints = $args['element_constraints'];
+		$from_element = $args['from_element'];
 
-		foreach ( $element_constraints as $constraint ) {
-			$element_to_check = Factory::build( ucfirst( $constraint ) );
+		foreach ( $from_element as $key => $val ) {
+
+			if ( is_int( $key ) ) {
+				$element_to_check = Factory::build( ucfirst( $val ) );
+			} else {
+				$element_to_check = Factory::build( ucfirst( $key ) );
+			}
 			$can_insert_prev_paragraph = $element_to_check->paragraph_not_contains_element( $context['prev_paragraph'] );
 			$can_insert_next_paragraph = $element_to_check->paragraph_not_contains_element( $context['next_paragraph'] );
 

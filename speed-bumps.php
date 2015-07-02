@@ -125,7 +125,7 @@ class Speed_Bumps {
 
 			foreach ( $this->get_speed_bumps() as $id => $args ) {
 
-				if ( $index < $args['paragraph_offset'] ) {
+				if ( $index < $args['from_start'] ) {
 					break;
 				}
 
@@ -219,6 +219,12 @@ class Speed_Bumps {
 
 		$args = wp_parse_args( $args, $defaults );
 		$args['id'] = $id;
+
+		if (isset( $args['element_constraints'] ) ) {
+			$args['from_element'] = $args['element_constraints'];
+			unset( $args['element_constraints'] );
+		}
+
 		self::$speed_bumps[ $id ] = $args;
 
 		$filter_id = sprintf( self::$filter_id, $id );

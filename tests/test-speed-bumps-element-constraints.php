@@ -15,7 +15,7 @@ EOT;
 			'next_paragraph' => '',
 		);
 		$args = array(
-			'element_constraints' => array( 'image' ),
+			'from_element' => array( 'image' ),
 		);
 
 		$can_insert = \Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element( false, $context, $args, false );
@@ -32,7 +32,7 @@ EOT;
 			'next_paragraph' => '',
 		);
 		$args = array(
-			'element_constraints' => array( 'blockquote' ),
+			'from_element' => array( 'blockquote' ),
 		);
 		$can_insert = \Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, false );
 
