@@ -26,11 +26,16 @@ class Injection {
 	 * Has this particular speedbump already been inserted?
 	 *
 	 * Blocks a speed bump from being inserted if it has already been inserted
-	 * elsewhere in the document.
-	 *
+	 * elsewhere in the document the maximum number of times allowable, as set
+	 * by the 'maximum_inserts' argument on speed bump registration.
 	 */
-	public static function this_speed_bump_not_already_inserted( $can_insert, $context, $args, $already_inserted ) {
-		if ( in_array( $args['id'], wp_list_pluck( $already_inserted, 'speed_bump_id' ) ) ) {
+	public static function less_than_maximum_number_of_inserts( $can_insert, $context, $args, $already_inserted ) {
+
+		$this_speed_bump_insertions = array_filter( $already_inserted,
+			function( $insertion ) use ( $args ) { return $insertion['speed_bump_id'] === $args['id']; }
+		);
+
+		if ( count( $this_speed_bump_insertions ) >= $args['maximum_inserts'] ) {
 			$can_insert = false;
 		}
 
@@ -67,7 +72,9 @@ class Injection {
 			return $can_insert;
 		}
 
-		$distance_constraints = array_intersect( array( 'paras' => 1, 'words' => null, 'chars' => null ), $args['from_speedbump'] );
+		$defaults = array( 'paras' => 1, 'words' => null, 'chars' => null );
+
+		$distance_constraints = array_intersect( $defaults, $args['from_speedbump'] );
 
 		$this_paragraph_index = $context['index'];
 
