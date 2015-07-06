@@ -72,7 +72,7 @@ class Injection {
 			return $can_insert;
 		}
 
-		$defaults = array( 'paras' => 1, 'words' => null, 'chars' => null );
+		$defaults = array( 'paragraphs' => 1, 'words' => null, 'characters' => null );
 
 		$distance_constraints = array_intersect( $defaults, $args['from_speedbump'] );
 
@@ -82,7 +82,7 @@ class Injection {
 			foreach ( $already_inserted as $speed_bump ) {
 
 				$distance = Text::content_between_points( $speed_bump['index'], $context['index'] );
-				foreach( array( 'paras', 'words', 'chars' ) as $unit ) {
+				foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 					$constraint = ( isset( $args['from_speedbump'][ $speed_bump['id'] ] ) &&
 							isset( $args['from_speedbump'][ $speed_bump['id'] ][ $unit ] ) ?
 						$args['from_speedbump'][ $speed_bump['id'] ][ $unit ] :

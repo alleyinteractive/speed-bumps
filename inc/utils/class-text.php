@@ -13,7 +13,7 @@ class Text {
 	}
 
 
-	public static function split_chars( $content ) {
+	public static function split_characters( $content ) {
 		return str_split( $content );
 	}
 

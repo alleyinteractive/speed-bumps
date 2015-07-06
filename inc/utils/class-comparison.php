@@ -5,20 +5,20 @@ class Comparison {
 
 	public static function content_less_than( $unit, $measurement, $content ) {
 		switch ( $unit ) {
-		case 'paras':
-			return self::less_than_paras( $measurement, $content );
+		case 'paragraphs':
+			return self::less_than_paragraphs( $measurement, $content );
 		case 'words':
 			return self::less_than_words( $measurement, $content );
-		case 'chars':
-			return self::less_than_chars( $measurement, $content );
+		case 'characters':
+			return self::less_than_characters( $measurement, $content );
 		default:
 			return null;
 		}
 	}
 
-	public static function less_than_paras( $measurement, $content ) {
-		$paras = Text::split_paragraphs( $content );
-		return count( $paras ) < $measurement;
+	public static function less_than_paragraphs( $measurement, $content ) {
+		$paragraphs = Text::split_paragraphs( $content );
+		return count( $paragraphs ) < $measurement;
 	}
 
 	public static function less_than_words( $measurement, $content ) {
@@ -26,9 +26,9 @@ class Comparison {
 		return count( $words ) < $measurement;
 	}
 
-	public static function less_than_chars( $measurement, $content ) {
-		$chars = Text::split_chars( $content );
-		return count( $chars ) < $measurement;
+	public static function less_than_characters( $measurement, $content ) {
+		$characters = Text::split_characters( $content );
+		return count( $characters ) < $measurement;
 	}
 
 }

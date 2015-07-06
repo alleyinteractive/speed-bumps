@@ -169,36 +169,36 @@ class Speed_Bumps {
 
 			// Rules which govern the content as a whole
 			'minimum_content_length' => array(
-				'paras' => 8,
-				'chars' => 1200,
+				'paragraphs' => 8,
+				'characters' => 1200,
 			),
 
 			// Positional rules: distance from start, end, and other elements
 			'from_start' => array(
-				'paras' => 3,
+				'paragraphs' => 3,
 				'words' => 75,
 			),
 			'from_end' => array(
-				'paras' => 3,
+				'paragraphs' => 3,
 				'words' => 75,
 			),
 			'from_element' => array(
 
-				// Distance rules (chars/words/paras) applied to all elements listed here
-				'paras' => 1,
+				// Distance rules (characters/words/paragraphs) applied to all elements listed here
+				'paragraphs' => 1,
 
 				// Can also be an array with an element as the key and an
 				// array containing distance arguments as the value.
 				'iframe',
 				'oembed',
 				'image' => array(
-					'paras' => 2,
+					'paragraphs' => 2,
 				),
 			),
 			'from_speedbump' => array(
 
-				// Distance rules (chars/words/paras) applied to all speed bumps
-				'paras' => 1,
+				// Distance rules (characters/words/paragraphs) applied to all speed bumps
+				'paragraphs' => 1,
 
 				// can also be an array with a speed bump ID as the key and an
 				// array containing distance arguments as the value

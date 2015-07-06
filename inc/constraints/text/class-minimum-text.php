@@ -36,7 +36,7 @@ class Minimum_Text {
 		$content = $context['the_content'];
 
 		if ( is_array( $args['minimum_content_length'] ) ) {
-			foreach( array( 'paras', 'words', 'chars' ) as $unit ) {
+			foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 				if ( isset( $args['minimum_content_length'][ $unit ] ) &&
 					Comparison::content_less_than( $unit, $args['minimum_content_length'][ $unit ], $content ) ) {
 					$can_insert = false;
@@ -45,7 +45,7 @@ class Minimum_Text {
 		}
 
 		if ( intval( $args['minimum_content_length'] ) ) {
-			if ( Comparison::content_less_than( 'chars', intval( $args['minimum_content_length'] ), $content ) ) {
+			if ( Comparison::content_less_than( 'characters', intval( $args['minimum_content_length'] ), $content ) ) {
 				$can_insert = false;
 			}
 		}
@@ -58,9 +58,9 @@ class Minimum_Text {
 	 *
 	 * Blocks insertion if the current insertion point is less than the minimum
 	 * distance from the start of the content defined in the "from_start"
-	 * option, as measured in the usual units of distance (paras/words/chars).
+	 * option, as measured in the usual units of distance (paragraphs/words/characters).
 	 *
-	 * If an integer is passed, it's treated as a unit of "paras".
+	 * If an integer is passed, it's treated as a unit of "paragraphs".
 	 *
 	 */
 	public static function meets_minimum_distance_from_start( $can_insert, $context, $args, $already_inserted ) {
@@ -71,7 +71,7 @@ class Minimum_Text {
 		if ( is_array( $args['from_start'] ) ) {
 			$from_start = array_slice( $context['parts'], 0, $context['index'] );
 
-			foreach( array( 'paras', 'words', 'chars' ) as $unit ) {
+			foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 				if ( isset( $args['from_start'][ $unit ] ) &&
 						Comparison::$content_less_than( $unit, $args['from_start'][ $unit ], $from_start ) ) {
 					$can_insert = false;
@@ -93,9 +93,9 @@ class Minimum_Text {
 	 *
 	 * Blocks insertion if the current insertion point is less than the minimum
 	 * distance from the end of the content defined in the "from_end" option,
-	 * as measured in the usual units of distance (paras/words/chars).
+	 * as measured in the usual units of distance (paragraphs/words/characters).
 	 *
-	 * If an integer is passed, it's treated as a unit of "paras".
+	 * If an integer is passed, it's treated as a unit of "paragraphs".
 	 *
 	 */
 	public static function meets_minimum_distance_from_end( $can_insert, $context, $args, $already_inserted ) {
@@ -106,7 +106,7 @@ class Minimum_Text {
 		if ( is_array( $args['from_end'] ) ) {
 			$from_end = array_slice( $context['parts'], $context['index'] );
 
-			foreach( array( 'paras', 'words', 'chars' ) as $unit ) {
+			foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 				if ( isset( $args['from_end'][ $unit ] ) &&
 						Comparison::$content_less_than( $unit, $args['from_end'][ $unit ], $from_end ) ) {
 					$can_insert = false;
