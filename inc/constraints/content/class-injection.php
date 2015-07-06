@@ -1,6 +1,7 @@
 <?php
 namespace Speed_Bumps\Constraints\Content;
 
+use Speed_Bumps\Utils\Comparison;
 use Speed_Bumps\Utils\Text;
 
 /**
@@ -58,35 +59,36 @@ class Injection {
 	 * Is this speed bump far enough away from others to insert here?
 	 *
 	 * Blocks a speed bump from being inserted if it doesn't mean the
-	 * 'minimum_space_from_other_inserts' defined in the speed bumps
-	 * registration arguments.
+	 * distance defined in the speed bump's 'from_speedbump' registration
+	 * arguments.
 	 */
-	public static function minimum_space_from_other_inserts_paragraphs( $can_insert, $context, $args, $already_inserted ) {
+	public static function meets_minimum_distance_from_other_inserts( $can_insert, $context, $args, $already_inserted ) {
+		if ( ! isset( $args['from_speedbump'] ) ) {
+			return $can_insert;
+		}
+
+		$distance_constraints = array_intersect( array( 'paras' => 1, 'words' => null, 'chars' => null ), $args['from_speedbump'] );
+
 		$this_paragraph_index = $context['index'];
+
 		if ( count( $already_inserted ) ) {
 			foreach ( $already_inserted as $speed_bump ) {
-				if ( $this_paragraph_index - $speed_bump['index'] < $args['minimum_space_from_other_inserts'] ) {
-					$can_insert = false;
+
+				$distance = Text::content_between_points( $speed_bump['index'], $context['index'] );
+				foreach( array( 'paras', 'words', 'chars' ) as $unit ) {
+					$constraint = ( isset( $args['from_speedbump'][ $speed_bump['id'] ] ) &&
+							isset( $args['from_speedbump'][ $speed_bump['id'] ][ $unit ] ) ?
+						$args['from_speedbump'][ $speed_bump['id'] ][ $unit ] :
+							isset( $args['from_speedbump'][ $unit ] ) ?
+								 $args['from_speedbump'][ $unit ] : false;
+					if ( $constraint && Comparison::content_less_than( $unit, $constraint, $distance ) ) {
+						$can_insert = false;
+					}
 				}
 			}
 		}
-		return $can_insert;
-	}
-
-	public static function minimum_space_from_other_inserts_words( $can_insert, $context, $args, $already_inserted ) {
-		if ( ! isset( $args['minimum_space_from_other_inserts_words'] ) ) {
-			return $can_insert;
-		}
-		if ( count( $already_inserted ) ) {
-
-			$last_insertion_point = max( wp_list_pluck( $already_inserted, 'index' ) );
-
-			$content_since_last_insertion = array_slice( $context['parts'], $last_insertion_point, $context['index'] - $last_insertion_point );
-			if ( Text::word_count( $content_since_last_insertion ) < intval( $args['minimum_space_from_other_inserts_words'] ) ) {
-				$can_insert = false;
-			}
-		}
 
 		return $can_insert;
 	}
+
 }
