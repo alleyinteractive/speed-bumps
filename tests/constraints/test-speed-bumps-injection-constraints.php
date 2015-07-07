@@ -1,11 +1,25 @@
 <?php
 
+use Speed_Bumps\Constraints\Content\Injection;
+use Speed_Bumps\Utils\Text;
+
 class Test_Speed_Bumps_Injection_Constraints extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
+
+		$this->content = 'Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something
+
+longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something
+
+longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than
+
+1200Something longer than 1200Something longer
+
+than 1200Something longer than 1200';
+
 	}
 
-	public function test_ad_already_inserted() {
+	public function test_less_than_maximum_number_of_inserts() {
 		$already_inserted = array(
 			array(
 				'index' => 0,
@@ -13,20 +27,20 @@ class Test_Speed_Bumps_Injection_Constraints extends WP_UnitTestCase {
 				'inserted_content' => 'content1',
 			),
 		);
-		$ad_did_inserted = \Speed_Bumps\Constraints\Content\Injection::this_speed_bump_not_already_inserted( true, array( 'index' => 2 ), array( 'id' => 'speed_bump1' ), $already_inserted );
+		$args = array(
+			'id' => 'speed_bump1',
+			'maximum_inserts' => 1,
+		);
 
-		$this->assertFalse( $ad_did_inserted );
+		$okToInsert = Injection::less_than_maximum_number_of_inserts( true, array( 'index' => 2 ), $args, $already_inserted );
+		$this->assertFalse( $okToInsert );
+
+		$args['maximum_inserts'] = 2;
+		$okToInsert = Injection::less_than_maximum_number_of_inserts( true, array( 'index' => 2 ), $args, $already_inserted );
+		$this->assertTrue( $okToInsert );
 	}
 
-	public function test_ad_not_already_inserted() {
-		$already_inserted = array();
-		$ad_did_not_insert = \Speed_Bumps\Constraints\Content\Injection::this_speed_bump_not_already_inserted( true, array( 'index' => 0 ), array( 'id' => 'speed_bump1' ), array() );
-
-		$this->assertTrue( $ad_did_not_insert );
-
-	}
-
-	public function test_ad_already_inserted_here() {
+	public function test_no_speed_bump_inserted_here() {
 		$already_inserted = array(
 			array(
 				'index' => 1,
@@ -34,84 +48,125 @@ class Test_Speed_Bumps_Injection_Constraints extends WP_UnitTestCase {
 				'inserted_content' => 'content1',
 			),
 		);
-		$ad_did_inserted = \Speed_Bumps\Constraints\Content\Injection::no_speed_bump_inserted_here( true, array( 'index' => 1 ), array( 'id' => 'speed_bump2' ), $already_inserted );
 
-		$this->assertFalse( $ad_did_inserted );
-	}
-
-	public function test_ad_not_already_inserted_here() {
-		$already_inserted = array(
-			array(
-				'index' => 0,
-				'speed_bump_id' => 'speed_bump1',
-				'inserted_content' => 'content1',
-			),
-		);
-		$ad_did_inserted = \Speed_Bumps\Constraints\Content\Injection::no_speed_bump_inserted_here( true, array( 'index' => 1 ), array( 'id' => 'speed_bump2' ), $already_inserted );
-
-		$this->assertTrue( $ad_did_inserted );
-	}
-
-	public function test_ad_cannot_be_inserted_after_centain_paragraph() {
-		$already_inserted = array(
-			array(
-				'index' => 0,
-				'speed_bump_id' => 'speed_bump1',
-				'inserted_content' => 'content1',
-			),
-		);
-		$ad_did_inserted = \Speed_Bumps\Constraints\Content\Injection::minimum_space_from_other_inserts_paragraphs( true, array( 'index' => 1 ), array( 'id' => 'speed_bump2', 'minimum_space_from_other_inserts' => 4 ), $already_inserted );
-
-		$this->assertFalse( $ad_did_inserted );
-	}
-
-	public function test_ad_can_be_inserted_after_centain_paragraph() {
-		$already_inserted = array(
-			array(
-				'index' => 0,
-				'speed_bump_id' => 'speed_bump1',
-				'inserted_content' => 'content1',
-			),
-		);
-		$ad_did_inserted = \Speed_Bumps\Constraints\Content\Injection::minimum_space_from_other_inserts_paragraphs( true, array( 'index' => 5 ), array( 'id' => 'speed_bump2', 'minimum_space_from_other_inserts' => 4 ), $already_inserted );
-
-		$this->assertTrue( $ad_did_inserted );
-	}
-
-	public function test_minimum_words_from_previous_insertion() {
-
-		$args = array( 'minimum_space_from_other_inserts_words' => 75 );
-
-		$content = 'First paragraph
-
-Second paragraph.
-
-Third paragraph.
-
-A long paragraph, full of turns and twists. <!--lorem-->Ea commodo consequat. Duis splople autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum.
-
-Fourth paragraph';
-
-		$context = array(
-			'index' => 2,
-			'total_paragraphs' => 5,
-			'parts' => preg_split( '/\n\s*\n/', $content ),
-		);
-
-		$already_inserted = array(
-			array(
-				'index' => 0,
-				'speed_bump_id' => 'speed_bump1',
-				'inserted_content' => 'content1',
-			),
-		);
-
-		$okToInsert = \Speed_Bumps\Constraints\Content\Injection::minimum_space_from_other_inserts_words( true, $context, $args, $already_inserted );
+		$okToInsert = Injection::no_speed_bump_inserted_here( true, array( 'index' => 1 ), array( 'id' => 'speed_bump2' ), $already_inserted );
 		$this->assertFalse( $okToInsert );
 
-		$context['index'] = 4;
-		$okToInsert = \Speed_Bumps\Constraints\Content\Injection::minimum_space_from_other_inserts_words( true, $context, $args, $already_inserted );
+		$okToInsert = Injection::no_speed_bump_inserted_here( true, array( 'index' => 2 ), array( 'id' => 'speed_bump2' ), $already_inserted );
+		$this->assertTrue( $okToInsert );
+	}
+
+	public function test_meets_minimum_distance_from_other_inserts_paragraphs() {
+		$already_inserted = array(
+			array(
+				'index' => 0,
+				'speed_bump_id' => 'speed_bump1',
+				'inserted_content' => 'content1',
+			),
+		);
+
+		$context = array(
+			'the_content' => $this->content,
+			'index' => 1,
+			'parts' => Text::split_paragraphs( $this->content ),
+		);
+
+		$args = array(
+			'id' => 'speed_bump2',
+			'from_speedbump' => array(
+				'paragraphs' => 2,
+			),
+		);
+
+		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertFalse( $okToInsert );
+
+		$context['index'] = 3;
+		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
 		$this->assertTrue( $okToInsert );
 
+		$args['from_speedbump']['speed_bump1'] = array( 'paragraphs' => 4 );
+		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertFalse( $okToInsert );
+
+		$args['from_speedbump']['speed_bump1'] = array( 'paragraphs' => 1 );
+		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertTrue( $okToInsert );
+	}
+
+	public function test_meets_minimum_distance_from_other_inserts_words() {
+		$already_inserted = array(
+			array(
+				'index' => 0,
+				'speed_bump_id' => 'speed_bump1',
+				'inserted_content' => 'content1',
+			),
+		);
+
+		$context = array(
+			'the_content' => $this->content,
+			'index' => 1,
+			'parts' => Text::split_paragraphs( $this->content ),
+		);
+
+		$args = array(
+			'id' => 'speed_bump2',
+			'from_speedbump' => array(
+				'words' => 80,
+			),
+		);
+
+		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertFalse( $okToInsert );
+
+		$context['index'] = 3;
+		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertTrue( $okToInsert );
+
+		$args['from_speedbump']['speed_bump1'] = array( 'words' => 200 );
+		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertFalse( $okToInsert );
+
+		$args['from_speedbump']['speed_bump1'] = array( 'words' => 20 );
+		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertTrue( $okToInsert );
+	}
+
+	public function test_meets_minimum_distance_from_other_inserts_characters() {
+		$already_inserted = array(
+			array(
+				'index' => 0,
+				'speed_bump_id' => 'speed_bump1',
+				'inserted_content' => 'content1',
+			),
+		);
+
+		$context = array(
+			'the_content' => $this->content,
+			'index' => 1,
+			'parts' => Text::split_paragraphs( $this->content ),
+		);
+
+		$args = array(
+			'id' => 'speed_bump2',
+			'from_speedbump' => array(
+				'characters' => 600,
+			),
+		);
+
+		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertFalse( $okToInsert );
+
+		$context['index'] = 3;
+		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertTrue( $okToInsert );
+
+		$args['from_speedbump']['speed_bump1'] = array( 'characters' => 1500 );
+		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertFalse( $okToInsert );
+
+		$args['from_speedbump']['speed_bump1'] = array( 'characters' => 50 );
+		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertTrue( $okToInsert );
 	}
 }

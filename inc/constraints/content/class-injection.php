@@ -74,20 +74,20 @@ class Injection {
 
 		$defaults = array( 'paragraphs' => 1, 'words' => null, 'characters' => null );
 
-		$distance_constraints = array_intersect( $defaults, $args['from_speedbump'] );
+		$distance_constraints = array_intersect_key( $defaults, $args['from_speedbump'] );
 
 		$this_paragraph_index = $context['index'];
 
 		if ( count( $already_inserted ) ) {
 			foreach ( $already_inserted as $speed_bump ) {
 
-				$distance = Text::content_between_points( $speed_bump['index'], $context['index'] );
+				$distance = Text::content_between_points( $context['parts'], $speed_bump['index'], $context['index'] );
 				foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
-					$constraint = ( isset( $args['from_speedbump'][ $speed_bump['id'] ] ) &&
-							isset( $args['from_speedbump'][ $speed_bump['id'] ][ $unit ] ) ?
-						$args['from_speedbump'][ $speed_bump['id'] ][ $unit ] :
-							isset( $args['from_speedbump'][ $unit ] ) ?
-								 $args['from_speedbump'][ $unit ] : false;
+					$constraint = isset( $args['from_speedbump'][ $unit ] ) ?  $args['from_speedbump'][ $unit ] : false;
+					if ( isset( $args['from_speedbump'][ $speed_bump['speed_bump_id'] ] ) &&
+							isset( $args['from_speedbump'][ $speed_bump['speed_bump_id'] ][ $unit ] ) ) {
+						$constraint = $args['from_speedbump'][ $speed_bump['speed_bump_id'] ][ $unit ];
+					}
 					if ( $constraint && Comparison::content_less_than( $unit, $constraint, $distance ) ) {
 						$can_insert = false;
 					}
