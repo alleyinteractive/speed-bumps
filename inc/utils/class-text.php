@@ -4,16 +4,25 @@ namespace Speed_Bumps\Utils;
 class Text {
 
 	public static function split_paragraphs( $content ) {
+		if ( is_array( $content ) ) {
+			$content = implode( "\r\n\r\n", $content );
+		}
 		return preg_split( '/\n\s*\n/', $content );
 	}
 
 
 	public static function split_words( $content ) {
+		if ( is_array( $content ) ) {
+			$content = implode( " ", $content );
+		}
 		return array_filter( explode( ' ', strip_tags( $content ) ) );
 	}
 
 
 	public static function split_characters( $content ) {
+		if ( is_array( $content ) ) {
+			$content = implode( "", $content );
+		}
 		return str_split( $content );
 	}
 

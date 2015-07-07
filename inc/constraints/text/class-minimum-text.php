@@ -73,7 +73,7 @@ class Minimum_Text {
 
 			foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 				if ( isset( $args['from_start'][ $unit ] ) &&
-						Comparison::$content_less_than( $unit, $args['from_start'][ $unit ], $from_start ) ) {
+						Comparison::content_less_than( $unit, $args['from_start'][ $unit ], $from_start ) ) {
 					$can_insert = false;
 				}
 			}
@@ -81,7 +81,7 @@ class Minimum_Text {
 
 		if ( is_int( $args['from_start'] ) ) {
 			if ( $args['from_start'] < $index ) {
-				$can_insert = false
+				$can_insert = false;
 			}
 		}
 
@@ -108,7 +108,7 @@ class Minimum_Text {
 
 			foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 				if ( isset( $args['from_end'][ $unit ] ) &&
-						Comparison::$content_less_than( $unit, $args['from_end'][ $unit ], $from_end ) ) {
+						Comparison::content_less_than( $unit, $args['from_end'][ $unit ], $from_end ) ) {
 					$can_insert = false;
 				}
 			}
@@ -116,7 +116,7 @@ class Minimum_Text {
 
 		if ( is_int( $args['from_end'] ) ) {
 			if ( $args['from_end'] < ( $context['total_paragraphs'] - $index ) ) {
-				$can_insert = false
+				$can_insert = false;
 			}
 		}
 
