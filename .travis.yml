@@ -1,3 +1,5 @@
+sudo: false
+
 language: php
 
 notifications:
@@ -12,9 +14,8 @@ env:
   - WP_VERSION=latest WP_MULTISITE=0
 
 cache:
- directories:
-  - vendor
-  - node_modules
+  - composer
+  - npm
 
 matrix:
   include:
