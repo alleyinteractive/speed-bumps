@@ -37,8 +37,9 @@ class Text {
 	 * @return array Array of paragraphs between these two points.
 	 */
 	public static function content_between_points( $parts, $index_1, $index_2 ) {
-		$start_point = min( $index_1, $index_2 );
-		$length = absint( $index_2 - $index_1 );
+		$start_point = max( 0, min( $index_1, $index_2 ) );
+		$end_point = min( count( $parts ), max( $index_1, $index_2 ) );
+		$length = absint( $end_point - $start_point );
 
 		return array_slice( $parts, $start_point, $length );
 	}

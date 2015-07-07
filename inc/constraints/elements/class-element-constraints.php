@@ -1,6 +1,8 @@
 <?php
 namespace Speed_Bumps\Constraints\Elements;
 
+use Speed_Bumps\Utils\Text;
+
 /**
  * Constraints for inserting speed bumps relating to surrounding elements.
  *
@@ -37,20 +39,34 @@ class Element_Constraints {
 	 */
 	public static function adj_paragraph_not_contains_element( $can_insert, $context, $args, $already_inserted ) {
 
-		$from_element = $args['from_element'];
+		$defaults = array( 'paragraphs' => 1, 'words' => null, 'characters' => null );
+		$distance_constraints = array_intersect_key( $defaults, $args['from_element'] );
+		$from_element = array_diff_key( $args['from_element'], $defaults );
 
-		foreach ( $from_element as $key => $val ) {
+		if ( ! empty( $from_element ) ) {
 
-			if ( is_int( $key ) ) {
-				$element_to_check = Factory::build( ucfirst( $val ) );
-			} else {
-				$element_to_check = Factory::build( ucfirst( $key ) );
-			}
-			$can_insert_prev_paragraph = $element_to_check->paragraph_not_contains_element( $context['prev_paragraph'] );
-			$can_insert_next_paragraph = $element_to_check->paragraph_not_contains_element( $context['next_paragraph'] );
+			foreach ( $from_element as $key => $val ) {
 
-			if ( ! $can_insert_prev_paragraph || ! $can_insert_next_paragraph ) {
-				$can_insert = false;
+				if ( is_int( $key ) ) {
+					$element_to_check = Factory::build( ucfirst( $val ) );
+				} else {
+					$element_to_check = Factory::build( ucfirst( $key ) );
+					if ( isset( $val['paragraphs'] ) ) {
+						$distance_constraints['paragraphs'] = $val['paragraphs'];
+					}
+				}
+
+				$paragraphs_to_check = Text::content_between_points(
+					$context['parts'],
+					$context['index'] - $distance_constraints['paragraphs'],
+					$context['index'] + $distance_constraints['paragraphs']
+				);
+
+				foreach( $paragraphs_to_check as $paragraph ) {
+					if ( ! $element_to_check->paragraph_not_contains_element( $paragraph ) ) {
+						$can_insert = false;
+					}
+				}
 			}
 		}
 

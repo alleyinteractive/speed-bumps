@@ -1,24 +1,74 @@
 <?php
 
+use Speed_Bumps\Utils\Text;
+use Speed_Bumps\Constraints\Elements\Element_Constraints;
+
 class Test_Speed_Bumps_Element_Constraints extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
+
+		$this->content = '<blockquote>Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something</blockquote>
+
+longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something
+
+longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than 1200Something longer than
+
+1200Something longer than 1200Something longer
+
+than 1200Something longer than 1200';
 	}
 
-	public function test_if_the_paragraph_not_passed_constraint_check() {
-		$content = <<<EOT
-Some text before blockquote <blockquote>Awesome quote</blockquote> <img src=""></img>
-EOT;
+	public function test_meets_minimum_distance_from_elements_paragraphs() {
 		$context = array(
-			'prev_paragraph' => $content,
-			'next_paragraph' => '',
-		);
-		$args = array(
-			'from_element' => array( 'image' ),
+			'the_content' => $this->content,
+			'parts' => Text::split_paragraphs( $this->content ),
+			'index' => 1,
 		);
 
-		$can_insert = \Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element( false, $context, $args, false );
+		$args = array(
+			'from_element' => array(
+				'paragraphs' => 2,
+				'blockquote',
+			),
+		);
+
+		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$this->assertFalse( $okToInsert );
+
+		$context['index'] = 3;
+		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$this->assertTrue( $okToInsert );
+
+		$args['from_element'] = array(
+			'paragraphs' => 2,
+			'blockquote' => array(
+				'paragraphs' => 4
+			)
+		);
+		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$this->assertFalse( $okToInsert );
+
+		$args['from_element']['blockquote'] = array( 'paragraphs' => 1 );
+		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$this->assertTrue( $okToInsert );
+	}
+
+	/*
+	public function test_if_the_paragraph_not_passed_constraint_check() {
+		$context = array(
+			'the_content' => $this->content,
+			'index' => 1,
+			'parts' => Text::split_paragraphs( $this->content ),
+		);
+		$args = array(
+			'from_element' => array(
+				'paragraphs' => 2,
+				'blockquote'
+			),
+		);
+
+		$can_insert = Element_Constraints::adj_paragraph_not_contains_element( false, $context, $args, false );
 
 		$this->assertFalse( $can_insert );
 	}
@@ -138,4 +188,5 @@ EOT;
 		$this->assertFalse( $can_insert );
 
 	}
+	 */
 }
