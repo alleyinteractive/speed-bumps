@@ -39,32 +39,39 @@ class Element_Constraints {
 	 */
 	public static function adj_paragraph_not_contains_element( $can_insert, $context, $args, $already_inserted ) {
 
-		$defaults = array( 'paragraphs' => 1, 'words' => null, 'characters' => null );
-		$distance_constraints = array_intersect_key( $defaults, $args['from_element'] );
+		$defaults = array_flip( array( 'paragraphs', 'words', 'characters' ) );
+		$base_distance_constraints = array_intersect_key( $args['from_element'], $defaults );
+
 		$from_element = array_diff_key( $args['from_element'], $defaults );
 
 		if ( ! empty( $from_element ) ) {
 
 			foreach ( $from_element as $key => $val ) {
 
+				$distance_constraints = $base_distance_constraints;
+
 				if ( is_int( $key ) ) {
 					$element_to_check = Factory::build( ucfirst( $val ) );
 				} else {
 					$element_to_check = Factory::build( ucfirst( $key ) );
-					if ( isset( $val['paragraphs'] ) ) {
-						$distance_constraints['paragraphs'] = $val['paragraphs'];
+
+					foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
+						if ( isset( $val[ $unit ] ) ) {
+							$distance_constraints[ $unit ] = $val[ $unit ];
+						}
 					}
 				}
 
-				$paragraphs_to_check = Text::content_between_points(
-					$context['parts'],
-					$context['index'] - $distance_constraints['paragraphs'],
-					$context['index'] + $distance_constraints['paragraphs']
-				);
+				foreach ( array_filter( $distance_constraints ) as $unit => $measurement ) {
 
-				foreach( $paragraphs_to_check as $paragraph ) {
-					if ( ! $element_to_check->paragraph_not_contains_element( $paragraph ) ) {
-						$can_insert = false;
+					$paragraphs_to_check = Text::content_within_distance_of(
+						$context['parts'], $context['index'], $unit, $measurement
+					);
+
+					foreach( $paragraphs_to_check as $paragraph ) {
+						if ( ! $element_to_check->paragraph_not_contains_element( $paragraph ) ) {
+							$can_insert = false;
+						}
 					}
 				}
 			}

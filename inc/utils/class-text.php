@@ -45,6 +45,53 @@ class Text {
 	}
 
 	/**
+	 * Get the content within a certain distance of a given index
+	 *
+	 * Given two indexes, return an array of paragraphs between those two indexes.
+	 *
+	 * @param array Parts; array of all paragraphs in content
+	 * @param int Current index
+	 * @param string Unit to measure distance from (characters/words/paragraphs)
+	 * @param int Number of units to count away from initial index in either direction
+	 * @return array Array of paragraphs between these two points, inclusive.
+	 */
+	public static function content_within_distance_of( $parts, $index, $unit, $measure ) {
+
+		if ( 'paragraphs' === $unit ) {
+			return self::content_between_points( $parts, $index - $measure, $index + $measure );
+		}
+
+		$paragraphs = array();
+
+		$p = $index; $count_backward = 0;
+		while ( $count_backward < $measure && $p > 0 ) {
+			$p--;
+			array_unshift( $paragraphs, $parts[ $p ] );
+			$count_backward += self::count_units( $parts[ $p ], $unit );
+		}
+
+		$p = $index; $count_forward = 0;
+		while ( $count_forward < $measure && $p < count( $parts ) ) {
+			array_push( $paragraphs, $parts[ $p ] );
+			$count_forward += self::count_units( $parts[ $p ], $unit );
+			$p++;
+		}
+
+		return $paragraphs;
+	}
+
+	public static function count_units( $text, $unit ) {
+		switch ( $unit ) {
+			case 'words':
+				return self::word_count( $text );
+			case 'characters':
+				return strlen( $text );
+			default:
+				return false;
+		}
+	}
+
+	/**
 	 * Abstracted helper function for counting the words in a chunk of text.
 	 *
 	 * Given either a string of text or an array of strings, will split it into words and return the word count

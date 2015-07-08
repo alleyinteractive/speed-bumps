@@ -54,6 +54,76 @@ than 1200Something longer than 1200';
 		$this->assertTrue( $okToInsert );
 	}
 
+	public function test_meets_minimum_distance_from_elements_words() {
+		$context = array(
+			'the_content' => $this->content,
+			'parts' => Text::split_paragraphs( $this->content ),
+			'index' => 1,
+		);
+
+		$args = array(
+			'from_element' => array(
+				'words' => 60,
+				'blockquote',
+			),
+		);
+
+		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$this->assertFalse( $okToInsert );
+
+		$context['index'] = 3;
+		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$this->assertTrue( $okToInsert );
+
+		$args['from_element'] = array(
+			'words' => 60,
+			'blockquote' => array(
+				'words' => 120
+			)
+		);
+		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$this->assertFalse( $okToInsert );
+
+		$args['from_element']['blockquote'] = array( 'words' => 1 );
+		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$this->assertTrue( $okToInsert );
+	}
+
+	public function test_meets_minimum_distance_from_elements_characters() {
+		$context = array(
+			'the_content' => $this->content,
+			'parts' => Text::split_paragraphs( $this->content ),
+			'index' => 1,
+		);
+
+		$args = array(
+			'from_element' => array(
+				'characters' => 450,
+				'blockquote',
+			),
+		);
+
+		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$this->assertFalse( $okToInsert );
+
+		$context['index'] = 3;
+		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$this->assertTrue( $okToInsert );
+
+		$args['from_element'] = array(
+			'characters' => 450,
+			'blockquote' => array(
+				'characters' => 1500
+			)
+		);
+		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$this->assertFalse( $okToInsert );
+
+		$args['from_element']['blockquote'] = array( 'characters' => 1 );
+		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$this->assertTrue( $okToInsert );
+	}
+
 	/*
 	public function test_if_the_paragraph_not_passed_constraint_check() {
 		$context = array(
