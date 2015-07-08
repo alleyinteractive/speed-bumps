@@ -37,7 +37,7 @@ class Element_Constraints {
 	 * "paragraph_not_contains_element" which checks that a string of text
 	 * doesn't contain an `<hr>`.
 	 */
-	public static function adj_paragraph_not_contains_element( $can_insert, $context, $args, $already_inserted ) {
+	public static function meets_minimum_distance_from_elements( $can_insert, $context, $args, $already_inserted ) {
 
 		$defaults = array_flip( array( 'paragraphs', 'words', 'characters' ) );
 		$base_distance_constraints = array_intersect_key( $args['from_element'], $defaults );

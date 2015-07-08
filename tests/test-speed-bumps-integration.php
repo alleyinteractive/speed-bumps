@@ -21,8 +21,9 @@ EOT;
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
-			'minimum_content_length' => 1,
-			'from_start' => 0,
+			'minimum_content_length' => false,
+			'from_start' => false,
+			'from_end' => false,
 		) );
 
 		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
@@ -42,8 +43,11 @@ Something longer than 1200Something longer than 1200Something longer than 1200So
 
 <div id="polar-ad"></div>
 EOT;
-		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
+			'from_start' => false,
+			'from_end' => false,
+			'minimum_content_length' => array( 'characters' => 1200 )
 		) );
 
 		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
@@ -55,6 +59,9 @@ EOT;
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
+			'from_start' => false,
+			'from_end' => false,
+			'minimum_content_length' => array( 'characters' => 1200 )
 		) );
 
 		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
@@ -83,6 +90,8 @@ EOT;
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 			'from_start' => 1,
+			'from_end' => false,
+			'minimum_content_length' => false
 		) );
 
 		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
@@ -110,9 +119,15 @@ EOT;
 <div id="polar-ad"></div>
 EOT;
 
-		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
+			'minimum_content_length' => false,
 			'from_start' => 1,
+			'from_end' => null,
+			'from_element' => array(
+				'paragraphs' => 1,
+				'image'
+			)
 		) );
 
 		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
@@ -164,6 +179,12 @@ EOT;
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 			'from_start' => 2,
+			'from_element' => array(
+				'paragraphs' => 1,
+				'iframe',
+				'images',
+				'embed'
+			)
 		) );
 
 		$newContent = Speed_Bumps()->insert_speed_bumps( $content );

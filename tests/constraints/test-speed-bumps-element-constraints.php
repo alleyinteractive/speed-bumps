@@ -33,11 +33,11 @@ than 1200Something longer than 1200';
 			),
 		);
 
-		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertFalse( $okToInsert );
 
 		$context['index'] = 3;
-		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertTrue( $okToInsert );
 
 		$args['from_element'] = array(
@@ -46,11 +46,11 @@ than 1200Something longer than 1200';
 				'paragraphs' => 4
 			)
 		);
-		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertFalse( $okToInsert );
 
 		$args['from_element']['blockquote'] = array( 'paragraphs' => 1 );
-		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertTrue( $okToInsert );
 	}
 
@@ -68,11 +68,11 @@ than 1200Something longer than 1200';
 			),
 		);
 
-		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertFalse( $okToInsert );
 
 		$context['index'] = 3;
-		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertTrue( $okToInsert );
 
 		$args['from_element'] = array(
@@ -81,11 +81,11 @@ than 1200Something longer than 1200';
 				'words' => 120
 			)
 		);
-		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertFalse( $okToInsert );
 
 		$args['from_element']['blockquote'] = array( 'words' => 1 );
-		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertTrue( $okToInsert );
 	}
 
@@ -103,11 +103,11 @@ than 1200Something longer than 1200';
 			),
 		);
 
-		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertFalse( $okToInsert );
 
 		$context['index'] = 3;
-		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertTrue( $okToInsert );
 
 		$args['from_element'] = array(
@@ -116,11 +116,11 @@ than 1200Something longer than 1200';
 				'characters' => 1500
 			)
 		);
-		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertFalse( $okToInsert );
 
 		$args['from_element']['blockquote'] = array( 'characters' => 1 );
-		$okToInsert = Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, array() );
+		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertTrue( $okToInsert );
 	}
 
