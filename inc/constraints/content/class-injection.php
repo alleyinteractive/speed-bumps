@@ -77,7 +77,7 @@ class Injection {
 			$from_speed_bump = array();
 		} else {
 			$defaults = array( 'paragraphs' => 1, 'words' => null, 'characters' => null );
-			$base_distance_constraints = array_intersect_key( $defaults, (array) $args['from_speedbump'] );
+			$base_distance_constraints = array_intersect_key( (array) $args['from_speedbump'], $defaults );
 			$from_speedbump = array_diff_key( $args['from_speedbump'], $defaults );
 		}
 
@@ -110,6 +110,7 @@ class Injection {
 
 						$measurement = $args['from_speedbump'][ $speed_bump['speed_bump_id'] ][ $unit ];
 					}
+
 					if ( $measurement && Comparison::content_less_than( $unit, $measurement, $distance ) ) {
 						$can_insert = false;
 					}
