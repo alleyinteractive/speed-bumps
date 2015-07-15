@@ -99,7 +99,7 @@ EOT;
 
 	}
 
-	public function test_algorithm_paragraph_with_image_at_the_end() {
+	public function test_distance_from_image_element() {
 
 		$content = <<<EOT
 	First paragraph, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
@@ -137,7 +137,7 @@ EOT;
 
 	}
 
-	public function test_algorithm_should_place_the_ad_50_percent_from_the_start() {
+	public function test_avoid_image_iframe_and_embeds() {
 		$content = <<<EOT
 	First paragraph, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
@@ -180,12 +180,15 @@ EOT;
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
-			'from_start' => 2,
+			'from_start' => null,
+			'from_end' => null,
 			'from_element' => array(
 				'paragraphs' => 1,
+				'words' => 1,
+				'characters' => 1,
 				'iframe',
-				'images',
-				'embed'
+				'image',
+				'oembed'
 			)
 		) );
 
@@ -225,13 +228,17 @@ EOT;
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return 'test1'; },
 			'minimum_content_length' => 1,
-			'from_start' => 0,
+			'from_start' => null,
+			'from_end' => null,
+			'from_speedbump' => 1,
 		) );
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump2', array(
 			'string_to_inject' => function() { return 'test2'; },
 			'minimum_content_length' => 1,
-			'from_start' => 0,
+			'from_start' => null,
+			'from_end' => null,
+			'from_speedbump' => 1,
 		) );
 
 		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
@@ -312,12 +319,14 @@ EOT;
 			'string_to_inject' => function() { return 'test1'; },
 			'minimum_content_length' => 1,
 			'from_start' => 0,
+			'from_end' => null,
 		) );
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump2', array(
 			'string_to_inject' => function() { return 'test2'; },
 			'minimum_content_length' => 1,
 			'from_start' => 0,
+			'from_end' => null,
 		) );
 
 		Speed_Bumps()->clear_speed_bump( 'speed_bump2' );
@@ -326,7 +335,7 @@ EOT;
 		$this->assertEquals( $expected_content, $new_content );
 	}
 
-	public function test_insert_speed_bump_with_away_from_each_other() {
+	public function test_minimum_distance_between_two_speed_bumps() {
 		$content = <<<EOT
 This is the first paragraph
 
@@ -358,14 +367,16 @@ EOT;
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return 'test1'; },
 			'minimum_content_length' => 1,
-			'from_start' => 0,
+			'from_start' => null,
+			'from_end' => null,
 		) );
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump2', array(
 			'string_to_inject' => function() { return 'test2'; },
 			'minimum_content_length' => 1,
-			'from_start' => 0,
-			'minimum_space_from_other_inserts' => 4,
+			'from_start' => null,
+			'from_end' => null,
+			'from_speedbump' => 4,
 		) );
 
 		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
