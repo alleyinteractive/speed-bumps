@@ -58,7 +58,8 @@ class Text {
 	public static function content_within_distance_of( $parts, $index, $unit, $measure ) {
 
 		if ( 'paragraphs' === $unit ) {
-			return self::content_between_points( $parts, $index - $measure, $index + $measure );
+			// Since the insertion point we're counting from is *after* the paragraph whose index we're using:
+			return self::content_between_points( $parts, $index + 1 - $measure, $index + 1 + $measure );
 		}
 
 		$paragraphs = array();
