@@ -64,17 +64,17 @@ class Text {
 		$paragraphs = array();
 
 		$p = $index; $count_backward = 0;
-		while ( $count_backward < $measure && $p > 0 ) {
-			$p--;
+		while ( $count_backward < $measure && $p >= 0 ) {
 			array_unshift( $paragraphs, $parts[ $p ] );
 			$count_backward += self::count_units( $parts[ $p ], $unit );
+			$p--;
 		}
 
 		$p = $index; $count_forward = 0;
-		while ( $count_forward < $measure && $p < count( $parts ) ) {
+		while ( $count_forward <= $measure && $p < count( $parts ) - 1 ) {
+			$p++;
 			array_push( $paragraphs, $parts[ $p ] );
 			$count_forward += self::count_units( $parts[ $p ], $unit );
-			$p++;
 		}
 
 		return $paragraphs;
