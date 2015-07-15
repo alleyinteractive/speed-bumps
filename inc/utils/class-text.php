@@ -5,9 +5,9 @@ class Text {
 
 	public static function split_paragraphs( $content ) {
 		if ( is_array( $content ) ) {
-			$content = implode( "\r\n\r\n", $content );
+			$content = implode( "\n\n", $content );
 		}
-		return preg_split( '/\n\s*\n/', $content );
+		return array_filter( preg_split( '/\n\s*\n/', $content ) );
 	}
 
 
