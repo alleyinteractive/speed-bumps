@@ -72,23 +72,45 @@ class Injection {
 			return $can_insert;
 		}
 
-		$defaults = array( 'paragraphs' => 1, 'words' => null, 'characters' => null );
+		if ( is_int( $args['from_speedbump'] ) ) {
+			$base_distance_constraints = array( 'paragraphs' => $args['from_speedbump'] );
+			$from_speed_bump = array();
+		} else {
+			$defaults = array( 'paragraphs' => 1, 'words' => null, 'characters' => null );
+			$base_distance_constraints = array_intersect_key( $defaults, (array) $args['from_speedbump'] );
+			$from_speedbump = array_diff_key( $args['from_speedbump'], $defaults );
+		}
 
-		$distance_constraints = array_intersect_key( $defaults, $args['from_speedbump'] );
 
 		$this_paragraph_index = $context['index'];
 
 		if ( count( $already_inserted ) ) {
+
 			foreach ( $already_inserted as $speed_bump ) {
 
+				$distance_constraints = $base_distance_constraints;
+
+				if ( isset( $from_speedbump[ $speed_bump['speed_bump_id'] ] ) &&
+						is_array( $from_speedbump[ $speed_bump['speed_bump_id'] ] ) ) {
+
+					foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
+
+						if ( isset( $from_speedbump[ $speed_bump['speed_bump_id'] ][ $unit ] ) ) {
+							$distance_constraints[ $unit ] = $from_speedbump[ $speed_bump['speed_bump_id'] ][ $unit ];
+						}
+					}
+				}
+
 				$distance = Text::content_between_points( $context['parts'], $speed_bump['index'], $context['index'] );
-				foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
-					$constraint = isset( $args['from_speedbump'][ $unit ] ) ?  $args['from_speedbump'][ $unit ] : false;
+
+				foreach ( $distance_constraints as $unit => $measurement ) {
+
 					if ( isset( $args['from_speedbump'][ $speed_bump['speed_bump_id'] ] ) &&
 							isset( $args['from_speedbump'][ $speed_bump['speed_bump_id'] ][ $unit ] ) ) {
-						$constraint = $args['from_speedbump'][ $speed_bump['speed_bump_id'] ][ $unit ];
+
+						$measurement = $args['from_speedbump'][ $speed_bump['speed_bump_id'] ][ $unit ];
 					}
-					if ( $constraint && Comparison::content_less_than( $unit, $constraint, $distance ) ) {
+					if ( $measurement && Comparison::content_less_than( $unit, $measurement, $distance ) ) {
 						$can_insert = false;
 					}
 				}
