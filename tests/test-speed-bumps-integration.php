@@ -122,10 +122,12 @@ EOT;
 		Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 			'minimum_content_length' => false,
-			'from_start' => 1,
+			'from_start' => null,
 			'from_end' => null,
 			'from_element' => array(
-				'paragraphs' => 1,
+				'paragraphs' => 0,
+				'words' => 10,
+				'characters' => 50,
 				'image'
 			)
 		) );
