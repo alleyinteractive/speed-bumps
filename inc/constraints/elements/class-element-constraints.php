@@ -55,7 +55,7 @@ class Element_Constraints {
 				} else {
 					$element_to_check = Factory::build( ucfirst( $key ) );
 
-					foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
+					foreach ( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 						if ( isset( $val[ $unit ] ) ) {
 							$distance_constraints[ $unit ] = $val[ $unit ];
 						}
@@ -68,7 +68,7 @@ class Element_Constraints {
 						$context['parts'], $context['index'], $unit, $measurement
 					);
 
-					foreach( $paragraphs_to_check as $paragraph ) {
+					foreach ( $paragraphs_to_check as $paragraph ) {
 						if ( ! $element_to_check->paragraph_not_contains_element( $paragraph ) ) {
 							$can_insert = false;
 						}

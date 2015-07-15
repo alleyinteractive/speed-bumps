@@ -43,8 +43,8 @@ than 1200Something longer than 1200';
 		$args['from_element'] = array(
 			'paragraphs' => 2,
 			'blockquote' => array(
-				'paragraphs' => 4
-			)
+				'paragraphs' => 4,
+			),
 		);
 		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertFalse( $okToInsert );
@@ -78,8 +78,8 @@ than 1200Something longer than 1200';
 		$args['from_element'] = array(
 			'words' => 60,
 			'blockquote' => array(
-				'words' => 120
-			)
+				'words' => 120,
+			),
 		);
 		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertFalse( $okToInsert );
@@ -113,8 +113,8 @@ than 1200Something longer than 1200';
 		$args['from_element'] = array(
 			'characters' => 450,
 			'blockquote' => array(
-				'characters' => 1500
-			)
+				'characters' => 1500,
+			),
 		);
 		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
 		$this->assertFalse( $okToInsert );

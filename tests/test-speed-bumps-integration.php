@@ -47,7 +47,7 @@ EOT;
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 			'from_start' => false,
 			'from_end' => false,
-			'minimum_content_length' => array( 'characters' => 1200 )
+			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
 
 		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
@@ -61,7 +61,7 @@ EOT;
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 			'from_start' => false,
 			'from_end' => false,
-			'minimum_content_length' => array( 'characters' => 1200 )
+			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
 
 		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
@@ -91,7 +91,7 @@ EOT;
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
 			'from_start' => 1,
 			'from_end' => false,
-			'minimum_content_length' => false
+			'minimum_content_length' => false,
 		) );
 
 		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
@@ -128,8 +128,8 @@ EOT;
 				'paragraphs' => 0,
 				'words' => 10,
 				'characters' => 50,
-				'image'
-			)
+				'image',
+			),
 		) );
 
 		$newContent = Speed_Bumps()->insert_speed_bumps( $content );
@@ -188,8 +188,8 @@ EOT;
 				'characters' => 1,
 				'iframe',
 				'image',
-				'oembed'
-			)
+				'oembed',
+			),
 		) );
 
 		$newContent = Speed_Bumps()->insert_speed_bumps( $content );

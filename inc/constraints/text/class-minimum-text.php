@@ -36,7 +36,7 @@ class Minimum_Text {
 		$content = $context['the_content'];
 
 		if ( is_array( $args['minimum_content_length'] ) ) {
-			foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
+			foreach ( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 				if ( isset( $args['minimum_content_length'][ $unit ] ) &&
 					Comparison::content_less_than( $unit, $args['minimum_content_length'][ $unit ], $content ) ) {
 					$can_insert = false;
@@ -71,7 +71,7 @@ class Minimum_Text {
 		if ( is_array( $args['from_start'] ) ) {
 			$from_start = array_slice( $context['parts'], 0, $context['index'] );
 
-			foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
+			foreach ( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 				if ( isset( $args['from_start'][ $unit ] ) &&
 						Comparison::content_less_than( $unit, $args['from_start'][ $unit ], $from_start ) ) {
 					$can_insert = false;
@@ -106,7 +106,7 @@ class Minimum_Text {
 		if ( is_array( $args['from_end'] ) ) {
 			$from_end = array_slice( $context['parts'], $context['index'] );
 
-			foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
+			foreach ( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 				if ( isset( $args['from_end'][ $unit ] ) &&
 						Comparison::content_less_than( $unit, $args['from_end'][ $unit ], $from_end ) ) {
 					$can_insert = false;

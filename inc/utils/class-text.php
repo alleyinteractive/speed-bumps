@@ -13,7 +13,7 @@ class Text {
 
 	public static function split_words( $content ) {
 		if ( is_array( $content ) ) {
-			$content = implode( " ", $content );
+			$content = implode( ' ', $content );
 		}
 		return array_filter( explode( ' ', strip_tags( $content ) ) );
 	}
@@ -21,7 +21,7 @@ class Text {
 
 	public static function split_characters( $content ) {
 		if ( is_array( $content ) ) {
-			$content = implode( "", $content );
+			$content = implode( '', $content );
 		}
 		return str_split( $content );
 	}

@@ -81,7 +81,6 @@ class Injection {
 			$from_speedbump = array_diff_key( $args['from_speedbump'], $defaults );
 		}
 
-
 		$this_paragraph_index = $context['index'];
 
 		if ( count( $already_inserted ) ) {
@@ -93,7 +92,7 @@ class Injection {
 				if ( isset( $from_speedbump[ $speed_bump['speed_bump_id'] ] ) &&
 						is_array( $from_speedbump[ $speed_bump['speed_bump_id'] ] ) ) {
 
-					foreach( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
+					foreach ( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 
 						if ( isset( $from_speedbump[ $speed_bump['speed_bump_id'] ][ $unit ] ) ) {
 							$distance_constraints[ $unit ] = $from_speedbump[ $speed_bump['speed_bump_id'] ][ $unit ];
