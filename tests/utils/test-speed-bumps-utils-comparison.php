@@ -40,5 +40,13 @@ Duis adipiscing dui quam. Duis posuere tortor sit amet.';
 		$this->assertTrue( Comparison::content_less_than( 'paragraphs', 5, $four_paragraphs ) );
 
 	}
+
+	public function test_less_than_one_paragraph() {
+		$paragraph = array(
+			'Nam venenatis neque quis mauris. Proin felis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam quam. Nam felis velit, semper nec, aliquam nec, iaculis vel, mi. Nullam et augue vitae nunc tristique vehicula. Suspendisse eget elit. Duis adipiscing dui quam. Duis posuere tortor sit amet.'
+		);
+
+		$this->assertFalse( Comparison::content_less_than( 'paragraphs', 1, $paragraph ) );
+	}
 }
 
