@@ -206,17 +206,6 @@ class Speed_Bumps {
 
 		);
 
-		// XXX: These old API options need to be handled as well.
-			//'minimum_content_length' => 1200,
-			//'paragraph_offset' => 0,
-			//'element_constraints' => array(
-				//'iframe',
-				//'oembed',
-				//'image',
-				//),
-			//'minimum_space_from_other_inserts' => 1,
-			//);
-
 		$args = wp_parse_args( $args, $defaults );
 		$args['id'] = $id;
 
