@@ -80,7 +80,7 @@ class Minimum_Text {
 		}
 
 		if ( is_int( $args['from_start'] ) ) {
-			if ( $args['from_start'] < $context['index'] ) {
+			if ( $args['from_start'] > $context['index'] ) {
 				$can_insert = false;
 			}
 		}
@@ -115,7 +115,7 @@ class Minimum_Text {
 		}
 
 		if ( is_int( $args['from_end'] ) ) {
-			if ( $args['from_end'] < ( $context['total_paragraphs'] - $context['index'] ) ) {
+			if ( $args['from_end'] >= ( $context['total_paragraphs'] - $context['index'] ) ) {
 				$can_insert = false;
 			}
 		}
