@@ -152,6 +152,9 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 			'from_start' => 0,
 			'from_end' => null,
 			'from_speedbump' => 4,
+			'from_element' => array(
+				'paragraphs' => 1, 'image'
+			)
 		) );
 
 		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
