@@ -39,6 +39,15 @@ class Element_Constraints {
 	 */
 	public static function meets_minimum_distance_from_elements( $can_insert, $context, $args, $already_inserted ) {
 
+		// Support passing an integer here, which will be treated as a unit of "paragraphs"
+		if ( is_int( $args['from_element'] ) ) {
+			$args['from_element'] = array( 'paragraphs' => $args['from_element'] );
+		}
+
+		if ( ! is_array( $args['from_element'] ) ) {
+			return $can_insert;
+		}
+
 		$defaults = array_flip( array( 'paragraphs', 'words', 'characters' ) );
 		$base_distance_constraints = array_intersect_key( $args['from_element'], $defaults );
 

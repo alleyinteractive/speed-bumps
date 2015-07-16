@@ -68,7 +68,12 @@ class Injection {
 	 * arguments.
 	 */
 	public static function meets_minimum_distance_from_other_inserts( $can_insert, $context, $args, $already_inserted ) {
-		if ( ! isset( $args['from_speedbump'] ) ) {
+
+		// Support passing an integer here, which will be treated as a unit of "paragraphs"
+		if ( is_int( $args['from_speedbump'] ) ) {
+			$args['from_speedbump'] = array( 'paragraphs' => $args['from_speedbump'] );
+		}
+		if ( ! is_array( $args['from_speedbump'] ) ) {
 			return $can_insert;
 		}
 
