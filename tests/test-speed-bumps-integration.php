@@ -24,7 +24,9 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
-			'from_start' => 2,
+			'from_start' => array(
+				'paragraphs' => 2,
+			),
 			'from_end' => false,
 			'from_element' => false,
 			'minimum_content_length' => array( 'characters' => 1200 ),
