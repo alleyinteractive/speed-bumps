@@ -19,7 +19,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 			'from_start' => false,
 			'from_end' => false,
 		));
-		add_filter( 'the_content', array( Speed_Bumps(), 'insert_speed_bumps' ) );
+		add_filter( 'the_content', 'insert_speed_bumps' );
 
 		$content = 'At a recent dinner, a friend confided that she was spending her masturbation sessions with a new lover: porn GIFs. “They’re incredible,” she said. I didn’t get it give you up.
 

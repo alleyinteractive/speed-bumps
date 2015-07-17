@@ -270,3 +270,7 @@ add_action( 'init', 'Speed_Bumps' );
 function register_speed_bump( $id, $args = array() ) {
 	return Speed_Bumps()->register_speed_bump( $id, $args );
 }
+
+function insert_speed_bumps( $thecontent ) {
+	return Speed_Bumps()->insert_speed_bumps( $thecontent );
+}
