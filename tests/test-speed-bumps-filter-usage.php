@@ -5,7 +5,6 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->speed_bumps = Speed_Bumps();
-		$this->speed_bumps->clear_all_speed_bumps();
 	}
 
 	public function tearDown() {
@@ -16,8 +15,9 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 	public function test_speed_bump_filter_usage() {
 		$this->speed_bumps->register_speed_bump( 'speed_bump_test', array(
 			'string_to_inject' => function() { return '<div id="speed-bump-test"></div>'; },
-			'element_constraints' => array(),
-			'paragraph_offset' => 1,
+			'minimum_content_length' => false,
+			'from_start' => false,
+			'from_end' => false,
 		));
 
 		add_filter( 'the_content', function( $content ) {
