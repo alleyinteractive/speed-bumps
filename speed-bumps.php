@@ -273,3 +273,7 @@ function register_speed_bump( $id, $args = array() ) {
 function insert_speed_bumps( $thecontent ) {
 	return Speed_Bumps()->insert_speed_bumps( $thecontent );
 }
+
+function clear_speed_bump( $id ) {
+	return Speed_Bumps()->clear_speed_bump( $id );
+}

@@ -10,6 +10,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 	public function tearDown() {
 		parent::tearDown();
 		$this->speed_bumps->clear_speed_bump( 'speed_bump_test' );
+		$this->speed_bumps->clear_speed_bump( 'rickroll' );
 	}
 
 	public function test_speed_bump_filter_usage() {
@@ -20,18 +21,69 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 			'from_end' => false,
 		));
 		add_filter( 'the_content', 'insert_speed_bumps' );
-
-		$content = 'At a recent dinner, a friend confided that she was spending her masturbation sessions with a new lover: porn GIFs. “They’re incredible,” she said. I didn’t get it give you up.
-
-I know what a GIF is—four to six seconds of silent video looped. That seems like the perfect amount of time to capture a kitten falling into a garbage can or Tina Fey rolling her eyes, but the notion that one moving image could translate into a satisfactory—nay, “incredible”—sexual experience? Well, that didn’t compute. So she passed me her phone.
-
-And then, I was gone.
-
-While GIFs may seem like a flash in the pan—really, how can four seconds turn you on?—the nature of the loop actually allows the viewer to spend an elongated amount of time taking in the presented scenario. GIFs give the viewer time to notice the caress of a hand floating from neck to shoulder to forearm, the tensing of an abdomen, the arching of a back, and the reflex of a thigh. After a few loops, you may find yourself empathizing with the players involved. Maybe you can even feel what they’re feeling.
-
-Of course, porn GIFs don’t appeal only to women, but the “microporn” does appear to have struck a unique chord with the ladies, according to Hester—an audience known to feel alienated by mainstream porn, historically geared toward men. Spend five minutes on Tumblr, and you’ll find yourself sucked into a pulsing subculture of porn GIFs curated for women, living on pages like Porn-Gifs-For-Women and YummyPornForGirls. GIFs that almost exclusively spotlight erotic female pleasure.';
-		$post_id = $this->factory->post->create( array( 'post_content' => $content ) );
+		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$post = get_post( $post_id );
 		$this->assertContains( '<div id="speed-bump-test"></div>', apply_filters( 'the_content', $post->post_content ) );
+	}
+
+	public function test_rickroll_example_with_filter() {
+		register_speed_bump( 'rickroll', array(
+			'string_to_inject' => function() { return '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>'; },
+			'from_start' => 2,
+			'from_end' => false,
+			'from_element' => false,
+			'minimum_content_length' => array( 'characters' => 1200 ),
+		) );
+		add_filter( 'the_content', 'insert_speed_bumps' );
+		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
+		$post = get_post( $post_id );
+		$this->assertSpeedBumpAtParagraph( apply_filters( 'the_content', $post->post_content ), 4, '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>' );
+	}
+
+	public function test_rickroll_example_with_insert() {
+		register_speed_bump( 'rickroll', array(
+			'string_to_inject' => function() { return '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>'; },
+			'from_start' => 2,
+			'from_end' => false,
+			'from_element' => false,
+			'minimum_content_length' => array( 'characters' => 1200 ),
+		) );
+		add_filter( 'the_content', 'insert_speed_bumps' );
+		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
+		$post = get_post( $post_id );
+		$this->assertSpeedBumpAtParagraph( insert_speed_bumps( $post->post_content ), 4, '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>' );
+	}
+
+	private function get_dummy_content() {
+		$content = <<<EOT
+Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.
+
+Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
+
+A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+
+Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.
+
+The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen.
+
+She packed her seven versalia, put her initial into the belt and made herself on the way.
+
+When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.
+
+Pityful a rethoric question ran over her cheek, then she continued her way. On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word "and" and the Little Blind Text should
+EOT;
+		return $content;
+	}
+
+	private function assertSpeedBumpAtParagraph( $content_to_test, $speed_bump_paragraph, $injected_string ) {
+		$parts = preg_split( '/\n\s*\n/', $content_to_test );
+		$actual_speed_bump_paragraph = array_search( $injected_string, $parts );
+
+		if ( false === $actual_speed_bump_paragraph ) {
+			$this->fail( 'The speed bump is not in the content' );
+		}
+
+		$this->assertEquals( $speed_bump_paragraph, ++$actual_speed_bump_paragraph );
+
 	}
 }
