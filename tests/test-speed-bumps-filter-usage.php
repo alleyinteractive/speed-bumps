@@ -19,10 +19,8 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 			'from_start' => false,
 			'from_end' => false,
 		));
+		add_filter( 'the_content', array( Speed_Bumps(), 'insert_speed_bumps' ) );
 
-		add_filter( 'the_content', function( $content ) {
-			return apply_filters( 'speed_bumps_inject_content', $content );
-		}, 1 );
 		$content = 'At a recent dinner, a friend confided that she was spending her masturbation sessions with a new lover: porn GIFs. “They’re incredible,” she said. I didn’t get it give you up.
 
 I know what a GIF is—four to six seconds of silent video looped. That seems like the perfect amount of time to capture a kitten falling into a garbage can or Tina Fey rolling her eyes, but the notion that one moving image could translate into a satisfactory—nay, “incredible”—sexual experience? Well, that didn’t compute. So she passed me her phone.
