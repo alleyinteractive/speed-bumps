@@ -264,7 +264,6 @@ add_action( 'init', 'Speed_Bumps' );
  * The Public API for this plugin.
  *
  * All functions that should be available in the global namespace are listed here.
- * This would be done with `use` statements in PHP 5.6+.
  *
  */
 function register_speed_bump( $id, $args = array() ) {
