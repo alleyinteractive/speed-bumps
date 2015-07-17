@@ -10,6 +10,8 @@ Text Domain: speed-bumps
 Domain Path: /languages
 */
 
+use Speed_Bumps\Utils\Text;
+
 class Speed_Bumps {
 
 	private static $instance;
@@ -93,10 +95,22 @@ class Speed_Bumps {
 		add_filter( 'speed_bumps_inject_content', array( $this, 'insert_speed_bumps' ) );
 	}
 
+	/**
+	 * Inject speed bumps into a block of text, like post content.
+	 *
+	 * Can be called directly, like `Speed_Bumps()->insert_speed_bumps( $post->post_content );`.
+	 *
+	 * More common usage is by adding this function to a filter:
+	 * `add_filter( 'the_content', array( Speed_Bumps(), 'insert_speed_bumps' ), 1 );`
+	 * (Note the early priority, as it should be attached before `wpautop` runs.)
+	 *
+	 * @param string $the_content A block of text. Expected to be pre-texturized.
+	 * @return string The text with all registered speed bumps inserted at appropriate locations if possible.
+	 */
 	public function insert_speed_bumps( $the_content ) {
 		$output = array();
 		$already_inserted = array();
-		$parts = preg_split( '/\n\s*\n/', $the_content );
+		$parts = Text::split_paragraphs( $the_content );
 		$total_paragraphs = count( $parts );
 		foreach ( $parts as $index => $part ) {
 			$output[] = $part;
@@ -107,11 +121,11 @@ class Speed_Bumps {
 				'total_paragraphs' => $total_paragraphs,
 				'the_content'      => $the_content,
 				'parts'            => $parts,
-				);
+			);
 
 			foreach ( $this->get_speed_bumps() as $id => $args ) {
 
-				if ( $index < $args['paragraph_offset'] ) {
+				if ( $index < $args['from_start'] ) {
 					break;
 				}
 
@@ -132,33 +146,89 @@ class Speed_Bumps {
 		return implode( PHP_EOL . PHP_EOL, $output );
 	}
 
+	/**
+	 * Register a speed bump for insertion.
+	 *
+	 * Adds a speed bump, which will be processed in the
+	 * `speed_bumps_insert_content` filter.
+	 *
+	 * @param string $id ID used to reference the speed bump.
+	 * @param array $args Array of arguments governing its behavior.
+	 * @return void
+	 */
 	public function register_speed_bump( $id, $args = array() ) {
 		$id = sanitize_key( $id );
-		$default = array(
-			'id' => $id,
+
+		$defaults = array(
+
+			// This should be a function which returns the content to be inserted
 			'string_to_inject' => '__return_empty_string',
-			'minimum_content_length' => 1200,
-			'paragraph_offset' => 0,
-			'element_constraints' => array(
+
+			// Maximum number of times this can be inserted in a post
+			'maximum_inserts' => 1,
+
+			// Rules which govern the content as a whole
+			'minimum_content_length' => array(
+				'paragraphs' => 8,
+				'characters' => 1200,
+			),
+
+			// Positional rules: distance from start, end, and other elements
+			'from_start' => array(
+				'paragraphs' => 3,
+				'words' => 75,
+			),
+			'from_end' => array(
+				'paragraphs' => 3,
+				'words' => 75,
+			),
+			'from_element' => array(
+
+				// Distance rules (characters/words/paragraphs) applied to all elements listed here
+				'paragraphs' => 1,
+
+				// Can also be an array with an element as the key and an
+				// array containing distance arguments as the value.
 				'iframe',
 				'oembed',
-				'image',
+				'image' => array(
+					'paragraphs' => 2,
 				),
-			'minimum_space_from_other_inserts' => 1,
-			);
-		$args = wp_parse_args( $args, $default );
+			),
+			'from_speedbump' => array(
+
+				// Distance rules (characters/words/paragraphs) applied to all speed bumps
+				'paragraphs' => 1,
+
+				// can also be an array with a speed bump ID as the key and an
+				// array containing distance arguments as the value
+			),
+
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+		$args['id'] = $id;
+
+		if (isset( $args['element_constraints'] ) ) {
+			$args['from_element'] = $args['element_constraints'];
+			unset( $args['element_constraints'] );
+		}
+
+		if (isset( $args['paragraph_offset'] ) ) {
+			$args['from_start'] = $args['paragraph_offset'];
+			unset( $args['paragraph_offset'] );
+		}
+
 		self::$speed_bumps[ $id ] = $args;
 
 		$filter_id = sprintf( self::$filter_id, $id );
 
 		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::content_is_long_enough_to_insert', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::meets_minimum_distance_from_article_end_paragraphs', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::meets_minimum_distance_from_article_end_words', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::this_speed_bump_not_already_inserted', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::no_speed_bump_inserted_here', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::minimum_space_from_other_inserts_paragraphs', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::minimum_space_from_other_inserts_words', 10, 4 );
-		add_filter( $filter_id, '\Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::meets_minimum_distance_from_start', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Text\Minimum_Text::meets_minimum_distance_from_end', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::less_than_maximum_number_of_inserts', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Content\Injection::meets_minimum_distance_from_other_inserts', 10, 4 );
+		add_filter( $filter_id, '\Speed_Bumps\Constraints\Elements\Element_Constraints::meets_minimum_distance_from_elements', 10, 4 );
 	}
 
 	public function get_speed_bumps() {

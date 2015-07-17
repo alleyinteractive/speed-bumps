@@ -21,4 +21,10 @@ And double-line breaks for paragraphs...  --- That counts as a word too. So does
 		$this->assertEquals( 50, $wc );
 	}
 
+	public function test_count_zero_distance() {
+		$zero_distance = array();
+
+		$this->assertEquals( 0, count( \Speed_Bumps\Utils\Text::split_paragraphs( $zero_distance ) ) );
+		$this->assertEquals( 0, count( \Speed_Bumps\Utils\Text::split_words( $zero_distance ) ) );
+	}
 }

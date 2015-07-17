@@ -10,8 +10,9 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
-			'minimum_content_length' => 1,
-			'paragraph_offset' => 0,
+			'minimum_content_length' => false,
+			'from_start' => false,
+			'from_end' => false,
 		) );
 
 		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
@@ -23,8 +24,10 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
-			'minimum_content_length' => 1,
-			'paragraph_offset' => 2,
+			'from_start' => 2,
+			'from_end' => false,
+			'from_element' => false,
+			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
 
 		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
@@ -36,6 +39,9 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
+			'from_start' => false,
+			'from_end' => false,
+			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
 
 		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
@@ -47,13 +53,17 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
-			'paragraph_offset' => 3,
+			'from_start' => 3,
+			'from_end' => null,
+			'minimum_content_length' => null,
+			'from_element' => array(
+				'paragraphs' => 1, 'image',
+			),
 		) );
 
 		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
 		$this->assertSpeedBumpAtParagraph( $new_content, 7, '<div id="polar-ad"></div>' );
 	}
-
 
 	public function test_two_speed_bumps_injected() {
 		$content = $this->get_dummy_content();
@@ -61,13 +71,17 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return 'test1'; },
 			'minimum_content_length' => 1,
-			'paragraph_offset' => 0,
+			'from_start' => null,
+			'from_end' => null,
+			'from_speedbump' => 1,
 		) );
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump2', array(
 			'string_to_inject' => function() { return 'test2'; },
 			'minimum_content_length' => 1,
-			'paragraph_offset' => 0,
+			'from_start' => null,
+			'from_end' => null,
+			'from_speedbump' => 1,
 		) );
 
 		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
@@ -83,13 +97,13 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return 'test1'; },
 			'minimum_content_length' => 1,
-			'paragraph_offset' => 0,
+			'from_start' => 0,
 		) );
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump2', array(
 			'string_to_inject' => function() { return 'test2'; },
 			'minimum_content_length' => 1,
-			'paragraph_offset' => 0,
+			'from_start' => 0,
 		) );
 
 		Speed_Bumps()->clear_all_speed_bumps();
@@ -127,14 +141,19 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return 'test1'; },
 			'minimum_content_length' => 1,
-			'paragraph_offset' => 0,
+			'from_start' => 0,
+			'from_end' => null,
 		) );
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump2', array(
 			'string_to_inject' => function() { return 'test2'; },
 			'minimum_content_length' => 1,
-			'paragraph_offset' => 0,
-			'minimum_space_from_other_inserts' => 4,
+			'from_start' => 0,
+			'from_end' => null,
+			'from_speedbump' => 4,
+			'from_element' => array(
+				'paragraphs' => 1, 'image',
+			),
 		) );
 
 		$new_content = Speed_Bumps()->insert_speed_bumps( $content );

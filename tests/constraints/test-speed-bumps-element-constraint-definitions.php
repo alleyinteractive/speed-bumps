@@ -1,44 +1,6 @@
 <?php
 
-class Test_Speed_Bumps_Element_Constraints extends WP_UnitTestCase {
-
-	public function setUp() {
-		parent::setUp();
-	}
-
-	public function test_if_the_paragraph_not_passed_constraint_check() {
-		$content = <<<EOT
-Some text before blockquote <blockquote>Awesome quote</blockquote> <img src=""></img>
-EOT;
-		$context = array(
-			'prev_paragraph' => $content,
-			'next_paragraph' => '',
-		);
-		$args = array(
-			'element_constraints' => array( 'image' ),
-		);
-
-		$can_insert = \Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element( false, $context, $args, false );
-
-		$this->assertFalse( $can_insert );
-	}
-
-	public function test_if_the_paragraph_passed_constraint_check() {
-		$content = <<<EOT
-Some text
-EOT;
-		$context = array(
-			'prev_paragraph' => $content,
-			'next_paragraph' => '',
-		);
-		$args = array(
-			'element_constraints' => array( 'blockquote' ),
-		);
-		$can_insert = \Speed_Bumps\Constraints\Elements\Element_Constraints::adj_paragraph_not_contains_element( true, $context, $args, false );
-
-		$this->assertTrue( $can_insert );
-	}
-
+class Test_Speed_Bumps_Element_Constraints_Definitions extends WP_UnitTestCase {
 
 	public function test_if_the_paragraph_has_blockquote() {
 		$content = <<<EOT
@@ -138,4 +100,5 @@ EOT;
 		$this->assertFalse( $can_insert );
 
 	}
+
 }
