@@ -13,7 +13,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 	}
 
 	public function test_speed_bump_filter_usage() {
-		$this->speed_bumps->register_speed_bump( 'speed_bump_test', array(
+		register_speed_bump( 'speed_bump_test', array(
 			'string_to_inject' => function() { return '<div id="speed-bump-test"></div>'; },
 			'minimum_content_length' => false,
 			'from_start' => false,
