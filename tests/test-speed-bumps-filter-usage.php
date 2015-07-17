@@ -16,7 +16,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 		$this->speed_bumps->register_speed_bump( 'speed_bump_test', array(
 			'string_to_inject' => function() { return '<div id="speed-bump-test"></div>'; },
 			'element_constraints' => array(),
-			'paragraph_offset' => 1
+			'paragraph_offset' => 1,
 		));
 
 		add_filter( 'the_content', function( $content ) {
