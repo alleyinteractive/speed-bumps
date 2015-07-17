@@ -5,6 +5,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->speed_bumps = Speed_Bumps();
+		$this->speed_bumps->clear_all_speed_bumps();
 	}
 
 	public function tearDown() {
