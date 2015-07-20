@@ -60,7 +60,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 
 		$non_rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$non_rick_roll_post = get_post( $non_rick_roll_id );
-	
+
 		$rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_rick_rolly_content() ) );
 		$rick_roll_post = get_post( $rick_roll_id );
 
@@ -89,7 +89,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 
 		$non_rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$non_rick_roll_post = get_post( $non_rick_roll_id );
-	
+
 		$rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_rick_rolly_content() ) );
 		$rick_roll_post = get_post( $non_rick_roll_id );
 
