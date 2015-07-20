@@ -5,12 +5,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->speed_bumps = Speed_Bumps();
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-		$this->speed_bumps->clear_speed_bump( 'speed_bump_test' );
-		$this->speed_bumps->clear_speed_bump( 'rickroll' );
+		add_filter( 'the_content', 'insert_speed_bumps', 1 );
 	}
 
 	public function test_speed_bump_filter_usage() {
@@ -20,10 +15,10 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 			'from_start' => false,
 			'from_end' => false,
 		));
-		add_filter( 'the_content', 'insert_speed_bumps' );
 		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$post = get_post( $post_id );
 		$this->assertContains( '<div id="speed-bump-test"></div>', apply_filters( 'the_content', $post->post_content ) );
+		$this->speed_bumps->clear_speed_bump( 'speed_bump_test' );
 	}
 
 	public function test_rickroll_example_with_filter() {
@@ -34,10 +29,10 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 			'from_element' => false,
 			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
-		add_filter( 'the_content', 'insert_speed_bumps' );
 		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$post = get_post( $post_id );
-		$this->assertSpeedBumpAtParagraph( apply_filters( 'the_content', $post->post_content ), 4, '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>' );
+		$this->assertContains( '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>', apply_filters( 'the_content', $post->post_content ) );
+		$this->speed_bumps->clear_speed_bump( 'rickroll' );
 	}
 
 	public function test_rickroll_example_with_insert() {
@@ -48,10 +43,10 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 			'from_element' => false,
 			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
-		add_filter( 'the_content', 'insert_speed_bumps' );
 		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$post = get_post( $post_id );
 		$this->assertSpeedBumpAtParagraph( insert_speed_bumps( $post->post_content ), 4, '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>' );
+		$this->speed_bumps->clear_speed_bump( 'rickroll' );
 	}
 
 	public function test_rickroll_example_with_two_filters() {
@@ -62,13 +57,12 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 			'from_element' => false,
 			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
-		add_filter( 'the_content', 'insert_speed_bumps' );
 
 		$non_rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$non_rick_roll_post = get_post( $non_rick_roll_id );
 	
 		$rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_rick_rolly_content() ) );
-		$rick_roll_post = get_post( $non_rick_roll_id );
+		$rick_roll_post = get_post( $rick_roll_id );
 
 		add_filter( 'speed_bumps_rickroll_constraints', 'give_you_up', 10, 4 );
 
@@ -81,6 +75,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 
 		$this->assertContains( '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>', insert_speed_bumps( $rick_roll_post->post_content ) );
 		$this->assertNotContains( '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>', insert_speed_bumps( $non_rick_roll_post->post_content ) );
+		$this->speed_bumps->clear_speed_bump( 'rickroll' );
 	}
 
 	public function test_rickroll_example_with_two_filters_and_removal() {
@@ -91,7 +86,6 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 			'from_element' => false,
 			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
-		add_filter( 'the_content', 'insert_speed_bumps' );
 
 		$non_rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$non_rick_roll_post = get_post( $non_rick_roll_id );
@@ -99,10 +93,11 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 		$rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_rick_rolly_content() ) );
 		$rick_roll_post = get_post( $non_rick_roll_id );
 
-		add_filter( 'speed_bumps_rickroll_constraints', '__return_false' );
+		add_filter( 'speed_bumps_rickroll_constraints', '__return_false', 11 );
 
 		$this->assertNotContains( '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>', insert_speed_bumps( $rick_roll_post->post_content ) );
 		$this->assertNotContains( '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>', insert_speed_bumps( $non_rick_roll_post->post_content ) );
+		$this->speed_bumps->clear_speed_bump( 'rickroll' );
 	}
 
 	private function get_dummy_content() {
