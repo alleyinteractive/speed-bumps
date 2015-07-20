@@ -34,6 +34,14 @@ add_filter( 'the_content', 'insert_speed_bumps', 1 );
 
 This registration results in the `string_to_inject` value being injected at the first opportunity based on the default rules (e.g. on posts longer than 1200 characters, following the third paragraph OR following the paragraph which contains the 75th word, whichever comes later).
 
+Let's say you wanted the speed bump higher in the content. You could modify the `from_start` parameter to declare that the speed bump can be inserted after the first paragraph (yes, like good engineers, we count from zero).
+```
+register_speed_bump( 'speed_bump_sample', array(
+	'string_to_inject' => function() { return '<div id="speed-bump-sample"></div>'; },
+	'from_start' => 0,
+));
+```
+
 You can also selectively insert speed bumps into a string of content by calling Speed Bumps directly:
 
 ```
