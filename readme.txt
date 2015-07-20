@@ -28,14 +28,11 @@ The simplest way to have Speed Bumps process all of your content and insert spee
 ```
 register_speed_bump( 'speed_bump_sample', array(
 	'string_to_inject' => function() { return '<div id="speed-bump-sample"></div>'; },
-	'minimum_content_length' => false,
-	'from_start' => false,
-	'from_end' => false,
 ));
 add_filter( 'the_content', 'insert_speed_bumps', 1 );
 ```
 
-This registration results in the `string_to_inject` value being injected at the end of the content. Let's say you wanted to instead insert the string as early as possible; you would instead declare `'from_start' => array( 'paragraphs' => 0 )` instead.
+This registration results in the `string_to_inject` value being injected at the first opportunity based on the default rules (e.g. on posts longer than 1200 characters, following the third paragraph OR following the paragraph which contains the 75th word, whichever comes later).
 
 You can also selectively insert speed bumps into a string of content by calling Speed Bumps directly:
 
