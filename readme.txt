@@ -10,7 +10,7 @@ Intelligently insert "speed bumps" into site content.
 
 == Description ==
 
-Speed Bumps programmatically inserts "speed bumps" into site content based on business needs. This plugin requires code-level configuration.
+Speed Bumps inserts "speed bumps" into site content based on business needs. This plugin requires code-level configuration.
 
 Need a 300x250 unit inserted 3 paragraphs down on every story greater than 9 paragraphs long? Speed Bumps makes seemingly complex business requests like this simple to implement within your WordPress environment.
 
@@ -23,7 +23,7 @@ It's a plugin! Install it like any other.
 
 Onec you've installed the plugin, you'll have to register one or more speed bumps in order for it to have any effect. You'll also have to specifically call Speed Bumps to filter your content - the plugin doesn't attach any filters to `the_content` or other hooks by itself.
 
-The simplest way to have Speed Bumps process all of your content and insert speed bumps into content everywhere is simply adding this filter:
+The simplest way to have Speed Bumps process all of your content and insert speed bumps into content everywhere is simply adding the filter following registration:
 
 ```
 register_speed_bump( 'speed_bump_sample', array(
@@ -89,7 +89,7 @@ You could also disable it altogether with this filter (although why you would di
 add_filter( 'speed_bumps_rickroll_constraints', '__return_false' );
 ```
 
-= How do I remove rules =
+= How to remove default rules? =
 
 Each rule is hooked to that speed bump's "constraints" filter. To remove a rule, simply remove the filter which defines that rule, like these lines which remove the default rules for your speed bump:
 
