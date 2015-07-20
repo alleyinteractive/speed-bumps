@@ -6,15 +6,15 @@
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
-Intelligently insert "speed bumps" into a piece of content.
+Intelligently insert "speed bumps" into site content.
 
 ## Description ##
 
 Speed Bumps programmatically inserts "speed bumps" into site content based on business needs. This plugin requires code-level configuration.
 
-Need a 300x250 unit inserted 3 pagraphs down on every story greater than 9 paragraphs long? Speed Bumps makes seemingly complex business requests like this simple to implement within your WordPress environment.
+Need a 300x250 unit inserted 3 paragraphs down on every story greater than 9 paragraphs long? Speed Bumps makes seemingly complex business requests like this simple to implement within your WordPress environment.
 
-Any number of "speed bumps" can be registered, from graphical elements to advertising units to recirculation modules. Each speed bump inherits a default set of overridable rules, or the speed bump can dictate its own logic regarding acceptable placement.
+Any number of "speed bumps" can be registered, from graphical elements to advertising units to recirculation modules. Each speed bump inherits a default set of overridable rules, and the speed bump can also dictate its own logic regarding acceptable placement.
 
 
 ## Installation ##
@@ -23,7 +23,7 @@ It's a plugin! Install it like any other.
 
 Onec you've installed the plugin, you'll have to register one or more speed bumps in order for it to have any effect. You'll also have to specifically call Speed Bumps to filter your content - the plugin doesn't attach any filters to `the_content` or other hooks by itself.
 
-The simplest way to have Speed Bumps process all of your content and insert speed bumps into content everywhere is to simply add this filter:
+The simplest way to have Speed Bumps process all of your content and insert speed bumps into content everywhere is simply adding this filter:
 
 ```
 register_speed_bump( 'speed_bump_sample', array(
@@ -35,7 +35,7 @@ register_speed_bump( 'speed_bump_sample', array(
 add_filter( 'the_content', 'insert_speed_bumps', 1 );
 ```
 
-This registration results in the `string_to_inject` value being injected at the end of the content. Let's say you wanted to instead insert the string as early as posisble; you would instead declare `'from_start' => array( 'paragraphs' => 0 )` instead.
+This registration results in the `string_to_inject` value being injected at the end of the content. Let's say you wanted to instead insert the string as early as possible; you would instead declare `'from_start' => array( 'paragraphs' => 0 )` instead.
 
 You can also selectively insert speed bumps into a string of content by calling Speed Bumps directly:
 
