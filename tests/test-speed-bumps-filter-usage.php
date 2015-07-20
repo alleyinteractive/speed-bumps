@@ -4,7 +4,6 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->speed_bumps = Speed_Bumps();
 		add_filter( 'the_content', 'insert_speed_bumps', 1 );
 	}
 
@@ -18,7 +17,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$post = get_post( $post_id );
 		$this->assertContains( '<div id="speed-bump-test"></div>', apply_filters( 'the_content', $post->post_content ) );
-		$this->speed_bumps->clear_speed_bump( 'speed_bump_test' );
+		clear_speed_bump( 'speed_bump_test' );
 	}
 
 	public function test_speed_bump_filter_usage_needy() {
@@ -33,7 +32,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$post = get_post( $post_id );
 		$this->assertContains( '<iframe width="560" height="315" src="https://www.youtube.com/embed/YwlVgpXXJS0" frameborder="0" allowfullscreen></iframe>', apply_filters( 'the_content', $post->post_content ) );
-		$this->speed_bumps->clear_speed_bump( 'needy_rickroll' );
+		clear_speed_bump( 'needy_rickroll' );
 	}
 
 	public function test_rickroll_example_with_filter() {
@@ -47,7 +46,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$post = get_post( $post_id );
 		$this->assertContains( '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>', apply_filters( 'the_content', $post->post_content ) );
-		$this->speed_bumps->clear_speed_bump( 'rickroll' );
+		clear_speed_bump( 'rickroll' );
 	}
 
 	public function test_rickroll_example_with_insert() {
@@ -61,7 +60,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$post = get_post( $post_id );
 		$this->assertSpeedBumpAtParagraph( insert_speed_bumps( $post->post_content ), 4, '<video>This is the best video imaginable</video>' );
-		$this->speed_bumps->clear_speed_bump( 'rickroll' );
+		clear_speed_bump( 'rickroll' );
 	}
 
 	public function test_rickroll_example_with_two_filters() {
@@ -90,7 +89,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 
 		$this->assertContains( '<video>This is the worst video imaginable</video>', insert_speed_bumps( $rick_roll_post->post_content ) );
 		$this->assertNotContains( '<video>This is the worst video imaginable</video>', insert_speed_bumps( $non_rick_roll_post->post_content ) );
-		$this->speed_bumps->clear_speed_bump( 'rickroll' );
+		clear_speed_bump( 'rickroll' );
 	}
 
 	public function test_rickroll_example_with_two_filters_and_removal() {
@@ -112,7 +111,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 
 		$this->assertNotContains( '<video>This is the most mediocre video imaginable</video>', insert_speed_bumps( $rick_roll_post->post_content ) );
 		$this->assertNotContains( '<video>This is the most mediocre video imaginable</video>', insert_speed_bumps( $non_rick_roll_post->post_content ) );
-		$this->speed_bumps->clear_speed_bump( 'rickroll' );
+		clear_speed_bump( 'rickroll' );
 	}
 
 	private function get_dummy_content() {
