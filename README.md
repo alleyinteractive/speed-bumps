@@ -6,15 +6,15 @@
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
-Intelligently insert "speed bumps" into site content.
+Intelligently insert speed bumps into site content.
 
 ## Description ##
 
-Speed Bumps inserts "speed bumps" into site content based on business needs. This plugin requires code-level configuration.
+Speed Bumps inserts speed bumps into site content based on business needs. This plugin requires code-level configuration.
 
 Need a 300x250 unit inserted 3 paragraphs down on every story greater than 9 paragraphs long? Speed Bumps makes seemingly complex business requests like this simple to implement within your WordPress environment.
 
-Any number of "speed bumps" can be registered, from graphical elements to advertising units to recirculation modules. Each speed bump inherits a default set of overridable rules, and the speed bump can also dictate its own logic regarding acceptable placement.
+Any number of speed bumps can be registered, from graphical elements to advertising units to recirculation modules. Each speed bump inherits a default set of overridable rules, and the speed bump can also dictate its own logic regarding acceptable placement.
 
 
 ## Installation ##
