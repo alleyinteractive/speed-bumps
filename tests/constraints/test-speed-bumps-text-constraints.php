@@ -72,13 +72,13 @@ than 1200Something longer than 1200';
 			'the_content' => $this->content,
 			'parts' => Text::split_paragraphs( $this->content ),
 			'total_paragraphs' => 5,
-			'index' => 2,
+			'index' => 1,
 		);
 
 		$okToInsert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
 		$this->assertTrue( $okToInsert );
 
-		$context['index'] = 1;
+		$context['index'] = 0;
 		$okToInsert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
 		$this->assertFalse( $okToInsert );
 	}
@@ -91,13 +91,13 @@ than 1200Something longer than 1200';
 			'the_content' => $this->content,
 			'parts' => Text::split_paragraphs( $this->content ),
 			'total_paragraphs' => 5,
-			'index' => 4,
+			'index' => 1,
 		);
 
 		$okToInsert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
 		$this->assertTrue( $okToInsert );
 
-		$context['index'] = 1;
+		$context['index'] = 0;
 		$okToInsert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
 		$this->assertFalse( $okToInsert );
 	}
@@ -110,13 +110,13 @@ than 1200Something longer than 1200';
 			'the_content' => $this->content,
 			'parts' => Text::split_paragraphs( $this->content ),
 			'total_paragraphs' => 5,
-			'index' => 4,
+			'index' => 1,
 		);
 
 		$okToInsert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
 		$this->assertTrue( $okToInsert );
 
-		$context['index'] = 1;
+		$context['index'] = 0;
 		$okToInsert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
 		$this->assertFalse( $okToInsert );
 	}
