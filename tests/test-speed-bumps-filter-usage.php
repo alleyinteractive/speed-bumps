@@ -8,6 +8,31 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 	}
 
 	public function test_speed_bump_filter_usage() {
+		/* Removing all default filters so we can test placement */
+		remove_all_filters( 'the_content', 10 );
+		register_speed_bump( 'speed_bump_test', array(
+			'string_to_inject' => function() { return '<div id="speed-bump-test"></div>'; },
+		));
+		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
+		$post = get_post( $post_id );
+		$this->assertSpeedBumpAtParagraph( apply_filters( 'the_content', $post->post_content ), 5, '<div id="speed-bump-test"></div>' );
+		clear_speed_bump( 'speed_bump_test' );
+	}
+
+	public function test_speed_bump_filter_usage_needy() {
+		/* Removing all default filters so we can test placement */
+		remove_all_filters( 'the_content', 10 );
+		register_speed_bump( 'needy_rickroll', array(
+			'string_to_inject' => function() { return '<iframe width="560" height="315" src="https://www.youtube.com/embed/YwlVgpXXJS0" frameborder="0" allowfullscreen></iframe>'; },
+			'from_start' => 0,
+		));
+		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
+		$post = get_post( $post_id );
+		$this->assertSpeedBumpAtParagraph( apply_filters( 'the_content', $post->post_content ), 2, '<iframe width="560" height="315" src="https://www.youtube.com/embed/YwlVgpXXJS0" frameborder="0" allowfullscreen></iframe>' );
+		clear_speed_bump( 'needy_rickroll' );
+	}
+
+	public function test_speed_bump_filter_usage_with_default_filters() {
 		register_speed_bump( 'speed_bump_test', array(
 			'string_to_inject' => function() { return '<div id="speed-bump-test"></div>'; },
 		));
@@ -15,17 +40,6 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 		$post = get_post( $post_id );
 		$this->assertContains( '<div id="speed-bump-test"></div>', apply_filters( 'the_content', $post->post_content ) );
 		clear_speed_bump( 'speed_bump_test' );
-	}
-
-	public function test_speed_bump_filter_usage_needy() {
-		register_speed_bump( 'needy_rickroll', array(
-			'string_to_inject' => function() { return '<iframe width="560" height="315" src="https://www.youtube.com/embed/YwlVgpXXJS0" frameborder="0" allowfullscreen></iframe>'; },
-			'from_start' => 0,
-		));
-		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
-		$post = get_post( $post_id );
-		$this->assertContains( '<iframe width="560" height="315" src="https://www.youtube.com/embed/YwlVgpXXJS0" frameborder="0" allowfullscreen></iframe>', apply_filters( 'the_content', $post->post_content ) );
-		clear_speed_bump( 'needy_rickroll' );
 	}
 
 	public function test_rickroll_example_with_filter() {
