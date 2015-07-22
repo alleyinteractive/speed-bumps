@@ -10,9 +10,6 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 	public function test_speed_bump_filter_usage() {
 		register_speed_bump( 'speed_bump_test', array(
 			'string_to_inject' => function() { return '<div id="speed-bump-test"></div>'; },
-			'minimum_content_length' => false,
-			'from_start' => false,
-			'from_end' => false,
 		));
 		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$post = get_post( $post_id );
@@ -23,11 +20,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 	public function test_speed_bump_filter_usage_needy() {
 		register_speed_bump( 'needy_rickroll', array(
 			'string_to_inject' => function() { return '<iframe width="560" height="315" src="https://www.youtube.com/embed/YwlVgpXXJS0" frameborder="0" allowfullscreen></iframe>'; },
-			'minimum_content_length' => false,
-			'from_start' => array(
-				'paragraphs' => 2,
-			),
-			'from_end' => false,
+ 			'from_start' => 0,
 		));
 		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$post = get_post( $post_id );
@@ -38,10 +31,9 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 	public function test_rickroll_example_with_filter() {
 		register_speed_bump( 'rickroll', array(
 			'string_to_inject' => function() { return '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>'; },
-			'from_start' => 2,
+			'minimum_content_length' => false,
+			'from_start' => false,
 			'from_end' => false,
-			'from_element' => false,
-			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
 		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$post = get_post( $post_id );
@@ -52,24 +44,22 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 	public function test_rickroll_example_with_insert() {
 		register_speed_bump( 'rickroll', array(
 			'string_to_inject' => function() { return '<video>This is the best video imaginable</video>'; },
-			'from_start' => 2,
+			'minimum_content_length' => false,
+			'from_start' => false,
 			'from_end' => false,
-			'from_element' => false,
-			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
 		$post_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
 		$post = get_post( $post_id );
-		$this->assertSpeedBumpAtParagraph( insert_speed_bumps( $post->post_content ), 4, '<video>This is the best video imaginable</video>' );
+		$this->assertSpeedBumpAtParagraph( insert_speed_bumps( $post->post_content ), 2, '<video>This is the best video imaginable</video>' );
 		clear_speed_bump( 'rickroll' );
 	}
 
 	public function test_rickroll_example_with_two_filters() {
 		register_speed_bump( 'rickroll', array(
 			'string_to_inject' => function() { return '<video>This is the worst video imaginable</video>'; },
-			'from_start' => 2,
+			'minimum_content_length' => false,
+			'from_start' => false,
 			'from_end' => false,
-			'from_element' => false,
-			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
 
 		$non_rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
@@ -95,10 +85,9 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 	public function test_rickroll_example_with_two_filters_and_removal() {
 		register_speed_bump( 'rickroll', array(
 			'string_to_inject' => function() { return '<video>This is the most mediocre video imaginable</video>'; },
-			'from_start' => 2,
+			'minimum_content_length' => false,
+			'from_start' => false,
 			'from_end' => false,
-			'from_element' => false,
-			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
 
 		$non_rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
