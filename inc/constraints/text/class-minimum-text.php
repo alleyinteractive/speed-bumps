@@ -69,7 +69,7 @@ class Minimum_Text {
 		}
 
 		if ( is_array( $args['from_start'] ) ) {
-			$from_start = array_slice( $context['parts'], 0, $context['index'] );
+			$from_start = array_slice( $context['parts'], 0, $context['index'] + 1 );
 
 			foreach ( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 				if ( isset( $args['from_start'][ $unit ] ) &&
@@ -104,7 +104,7 @@ class Minimum_Text {
 		}
 
 		if ( is_array( $args['from_end'] ) ) {
-			$from_end = array_slice( $context['parts'], $context['index'] );
+			$from_end = array_slice( $context['parts'], $context['index'] + 1 );
 
 			foreach ( array( 'paragraphs', 'words', 'characters' ) as $unit ) {
 				if ( isset( $args['from_end'][ $unit ] ) &&

@@ -24,14 +24,16 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return '<div id="polar-ad"></div>'; },
-			'from_start' => 2,
+			'from_start' => array(
+				'paragraphs' => 2,
+			),
 			'from_end' => false,
 			'from_element' => false,
 			'minimum_content_length' => array( 'characters' => 1200 ),
 		) );
 
 		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
-		$this->assertSpeedBumpAtParagraph( $new_content, 4, '<div id="polar-ad"></div>' );
+		$this->assertSpeedBumpAtParagraph( $new_content, 3, '<div id="polar-ad"></div>' );
 	}
 
 	public function test_speed_bump_not_inserted_with_content_less_than_1200() {
@@ -118,13 +120,12 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return 'test1'; },
 			'minimum_content_length' => 1,
-			'paragraph_offset' => 0,
+			'from_start' => 0,
 		) );
 
 		\Speed_Bumps()->register_speed_bump( 'speed_bump2', array(
 			'string_to_inject' => function() { return 'test2'; },
 			'minimum_content_length' => 1,
-			'paragraph_offset' => 0,
 		) );
 
 		Speed_Bumps()->clear_speed_bump( 'speed_bump2' );
