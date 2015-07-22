@@ -256,3 +256,20 @@ function Speed_Bumps() {
 
 add_action( 'init', 'Speed_Bumps' );
 
+/**
+ * The Public API for this plugin.
+ *
+ * All functions that should be available in the global namespace are listed here.
+ *
+ */
+function register_speed_bump( $id, $args = array() ) {
+	return Speed_Bumps()->register_speed_bump( $id, $args );
+}
+
+function insert_speed_bumps( $thecontent ) {
+	return Speed_Bumps()->insert_speed_bumps( $thecontent );
+}
+
+function clear_speed_bump( $id ) {
+	return Speed_Bumps()->clear_speed_bump( $id );
+}
