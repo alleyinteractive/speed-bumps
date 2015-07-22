@@ -16,6 +16,7 @@ Need a 300x250 unit inserted 3 paragraphs down on every story greater than 9 par
 
 Any number of speed bumps can be registered, from graphical elements to advertising units to recirculation modules. Each speed bump inherits a default set of overridable rules, and the speed bump can also dictate its own logic regarding acceptable placement.
 
+To report bugs or feature requests, [please use Github issues](https://github.com/fusioneng/speed-bumps).
 
 ## Installation ##
 
@@ -34,7 +35,7 @@ add_filter( 'the_content', 'insert_speed_bumps', 1 );
 
 This registration results in the `string_to_inject` value being injected at the first opportunity based on the default rules (e.g. on posts longer than 1200 characters, following the third paragraph OR following the paragraph which contains the 75th word, whichever comes later).
 
-Let's say you wanted the speed bump higher in the content. You could modify the `from_start` parameter to declare that the speed bump can be inserted after the first paragraph (yes, like good engineers, we count from zero).
+Let's say you wanted the speed bump higher in the content. You could modify the `from_start` parameter to declare that the speed bump can be inserted after the first paragraph (yes, like good engineers, we prefer zero-base indexing).
 ```
 register_speed_bump( 'speed_bump_sample', array(
 	'string_to_inject' => function() { return '<div id="speed-bump-sample"></div>'; },
