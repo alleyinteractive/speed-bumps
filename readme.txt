@@ -56,7 +56,7 @@ echo speed_bumps_inject_content( $content_to_be_inserted_into );
 The default options for speed bumps are currently:
 
 - Never insert in a post fewer than 1200 character long.
-- Can be anywhere, including before the first paragraph.
+- Can be anywhere, except before the first paragraph.
 - Cannot be inserted before or after an image, embed, or iframe.
 - Must be at least one paragraph from other insertions.
 
