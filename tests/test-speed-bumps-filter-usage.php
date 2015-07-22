@@ -94,7 +94,7 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 		$rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_rick_rolly_content() ) );
 		$rick_roll_post = get_post( $non_rick_roll_id );
 
-		add_filter( 'speed_bumps_rickroll_constraints', '__return_false', 11 );
+		add_filter( 'speed_bumps_rickroll_constraints', '__return_false' );
 
 		$this->assertNotContains( '<video>This is the most mediocre video imaginable</video>', insert_speed_bumps( $rick_roll_post->post_content ) );
 		$this->assertNotContains( '<video>This is the most mediocre video imaginable</video>', insert_speed_bumps( $non_rick_roll_post->post_content ) );
