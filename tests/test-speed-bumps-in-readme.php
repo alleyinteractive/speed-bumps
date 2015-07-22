@@ -1,6 +1,6 @@
 <?php
 
-class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
+class Test_Speed_Bumps_In_Readme extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
