@@ -36,7 +36,7 @@ add_filter( 'the_content', 'insert_speed_bumps', 1 );
 
 This registration results in the `string_to_inject` value being injected at the first opportunity based on the default rules (e.g. on posts longer than 1200 characters, following the third paragraph OR following the paragraph which contains the 75th word, whichever comes later).
 
-Let's say you wanted the speed bump higher in the content. You could modify the `from_start` parameter to declare that the speed bump can be inserted after the first paragraph (yes, like good engineers, we prefer zero-base indexing).
+Let's say you wanted the speed bump higher in the content. You could modify the `from_start` parameter to declare that the speed bump can be inserted after the first paragraph (yes, like good engineers, we prefer zero-based indexing).
 ```
 register_speed_bump( 'speed_bump_sample', array(
 	'string_to_inject' => function() { return '<div id="speed-bump-sample"></div>'; },
@@ -47,7 +47,7 @@ register_speed_bump( 'speed_bump_sample', array(
 You can also selectively insert speed bumps into a string of content by calling Speed Bumps directly:
 
 ```
-echo speed_bumps_inject_content( $content_to_be_inserted_into );
+echo insert_speed_bumps( $content_to_be_inserted_into );
 ```
 
 == Frequently Asked Questions ==
@@ -56,10 +56,12 @@ echo speed_bumps_inject_content( $content_to_be_inserted_into );
 
 The default options for speed bumps are currently:
 
-- Never insert in a post fewer than 1200 character long.
-- Can be anywhere, except before the first paragraph.
-- Cannot be inserted before or after an image, embed, or iframe.
-- Must be at least one paragraph from other insertions.
+- Never insert in a post fewer than 8 paragraphs long, or fewer than 1200 character.
+- Never insert before the the third paragraph, or 75 words.
+- Never insert fewer than 3 paragraphs or 75 words from the end of the article.
+- At least one paragraph from an iframe or embed.
+- At least two paragraphs from an image.
+- At least one paragraph from any other speed bump in the post.
 
 = How to add more specific rules? =
 
