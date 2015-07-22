@@ -69,9 +69,6 @@ Simple, stupid example: You have a speed bump called "rickroll" which inserts a 
 ```
 register_speed_bump( 'rickroll', array(
 	'string_to_inject' => function() { return '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>'; },
-	'minimum_content_length' => false,
-	'from_start' => false,
-	'from_end' => false,
 ));
 add_filter( 'the_content', 'insert_speed_bumps', 1 );
 ```
