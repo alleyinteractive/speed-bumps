@@ -94,7 +94,46 @@ class Test_Speed_Bumps_Filter_Usage extends WP_UnitTestCase {
 		$rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_rick_rolly_content() ) );
 		$rick_roll_post = get_post( $non_rick_roll_id );
 
+		add_filter( 'speed_bumps_rickroll_constraints', 'let_you_go', 10, 4 );
+
+		function let_you_go( $can_insert, $context, $args, $already_inserted ) {
+			if ( ! preg_match( '/give [^ ]+ up/i', $context['prev_paragraph'] ) ) {
+				$can_insert = false;
+			}
+			return $can_insert;
+		}
+
 		add_filter( 'speed_bumps_rickroll_constraints', '__return_false' );
+
+		$this->assertNotContains( '<video>This is the most mediocre video imaginable</video>', insert_speed_bumps( $rick_roll_post->post_content ) );
+		$this->assertNotContains( '<video>This is the most mediocre video imaginable</video>', insert_speed_bumps( $non_rick_roll_post->post_content ) );
+		clear_speed_bump( 'rickroll' );
+	}
+
+	public function test_rickroll_example_with_two_filters_and_removal_at_lower_priority() {
+		register_speed_bump( 'rickroll', array(
+			'string_to_inject' => function() { return '<video>This is the most mediocre video imaginable</video>'; },
+			'minimum_content_length' => false,
+			'from_start' => false,
+			'from_end' => false,
+		) );
+
+		$non_rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_dummy_content() ) );
+		$non_rick_roll_post = get_post( $non_rick_roll_id );
+
+		$rick_roll_id = $this->factory->post->create( array( 'post_content' => $this->get_rick_rolly_content() ) );
+		$rick_roll_post = get_post( $non_rick_roll_id );
+
+		add_filter( 'speed_bumps_rickroll_constraints', 'desert_you', 10, 4 );
+
+		function desert_you( $can_insert, $context, $args, $already_inserted ) {
+			if ( ! preg_match( '/give [^ ]+ up/i', $context['prev_paragraph'] ) ) {
+				$can_insert = false;
+			}
+			return $can_insert;
+		}
+
+		add_filter( 'speed_bumps_rickroll_constraints', '__return_false', 9 );
 
 		$this->assertNotContains( '<video>This is the most mediocre video imaginable</video>', insert_speed_bumps( $rick_roll_post->post_content ) );
 		$this->assertNotContains( '<video>This is the most mediocre video imaginable</video>', insert_speed_bumps( $non_rick_roll_post->post_content ) );
