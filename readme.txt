@@ -108,3 +108,10 @@ remove_filter( 'speed_bumps_{id}_constraints', '\Speed_Bumps\Constraints\Content
 remove_filter( 'speed_bumps_{id}_constraints', '\Speed_Bumps\Constraints\Content\Injection::meets_minimum_distance_from_other_inserts' );
 remove_filter( 'speed_bumps_{id}_constraints', '\Speed_Bumps\Constraints\Elements\Element_Constraints::meets_minimum_distance_from_elements' );
 ```
+
+== Changelog ==
+
+= 0.1.0 (July 22, 2015) =
+
+* Initial release.
+* [Full release notes](http://fus.in/1MidK1N)
