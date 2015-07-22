@@ -56,8 +56,8 @@ echo insert_speed_bumps( $content_to_be_inserted_into );
 
 The default options for speed bumps are currently:
 
-- Never insert in a post fewer than 8 paragraphs long, or fewer than 1200 character.
-- Never insert before the the third paragraph, or 75 words.
+- Never insert in a post fewer than 8 paragraphs long, or fewer than 1200 characters.
+- Never insert before the the third paragraph, or before 75 words into the post.
 - Never insert fewer than 3 paragraphs or 75 words from the end of the article.
 - At least one paragraph from an iframe or embed.
 - At least two paragraphs from an image.
