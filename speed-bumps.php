@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Speed-bumps
-Version: 0.1-alpha
+Version: 0.1.0
 Description: A Plugin to insert a piece of content intelligently.
 Author: Fusion Engineering
 Author URI: http://fusion.net
