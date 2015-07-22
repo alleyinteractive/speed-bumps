@@ -64,11 +64,14 @@ The default options for speed bumps are currently:
 
 Adding a custom rule for a speed bump is a matter of defining a function and hooking it to the `speed_bumps_{id}_constraints` filter. The function hooked to that filter will receive several arguments to determine the state of the content, surrounding paragraphs, and other context, and can return `false` to block insertion.
 
-**Simple, stupid example:** You have a speed bump called "rickroll" which inserts a beautiful musical video throughout your content.   
+**Simple, stupid example:** You have a speed bump called "rickroll" which inserts a beautiful musical video throughout your content. You _really_ need this viral bump (publisher's words, not yours) so you disable minimum content length and the rules regarding acceptable speed bump distance from start/end of the post. Greedy!  
 
 ```
 register_speed_bump( 'rickroll', array(
 	'string_to_inject' => function() { return '<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>'; },
+	'minimum_content_length' => false,
+	'from_start' => false,
+	'from_end' => false,
 ));
 add_filter( 'the_content', 'insert_speed_bumps', 1 );
 ```
