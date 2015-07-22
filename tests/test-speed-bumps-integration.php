@@ -33,7 +33,7 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 		) );
 
 		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
-		$this->assertSpeedBumpAtParagraph( $new_content, 4, '<div id="polar-ad"></div>' );
+		$this->assertSpeedBumpAtParagraph( $new_content, 3, '<div id="polar-ad"></div>' );
 	}
 
 	public function test_speed_bump_not_inserted_with_content_less_than_1200() {
