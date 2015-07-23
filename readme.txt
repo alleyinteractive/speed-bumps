@@ -1,7 +1,7 @@
 === Speed Bumps ===
-Contributors: fusioneng, goldenapples, noppanit
+Contributors: fusionengineering, goldenapples, noppanit
 Tags: content, advertising, recirculation
-Requires at least: 3.0.1
+Requires at least: 4.2
 Stable tag: 0.1.0
 Tested up to: 4.3
 License: GPLv2 or later
@@ -113,7 +113,7 @@ remove_filter( 'speed_bumps_{id}_constraints', '\Speed_Bumps\Constraints\Element
 
 == Changelog ==
 
-= 0.1.0 (July 22, 2015) =
+= 0.1.0 (July 23, 2015) =
 
 * Initial release.
-* [Full release notes](http://fus.in/1MidK1N)
+* [Full release notes](http://fusion.net/story/170253/meet-speed-bumps-our-newest-open-source-release/)
