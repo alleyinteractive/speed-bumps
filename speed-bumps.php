@@ -65,7 +65,7 @@ class Speed_Bumps {
 	 * - and used as a path segment of a directory within the `/inc/` directory,
 	 * - and the file containing the class itself will be named `class-{classname}.php`
 	 */
-	function spl_autoload($class) {
+	function spl_autoload( $class ) {
 
 		// project-specific namespace
 		$prefix = 'Speed_Bumps';
@@ -87,7 +87,7 @@ class Speed_Bumps {
 		//If the file exists....
 		if ( file_exists( $file ) ) {
 			//Require the file
-			require($file);
+			require( $file );
 		}
 	}
 

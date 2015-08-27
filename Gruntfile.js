@@ -44,11 +44,11 @@ module.exports = function( grunt ) {
 
 		phpcs: {
 			application: {
-				src: ['inc/**/*.php', 'tests/**/*.php']
+				src: './',
 			},
 			options: {
-				bin: 'vendor/bin/phpcs',
-				standard: 'WordPress-VIP'
+				bin: "vendor/bin/phpcs --extensions=php --ignore=\"*/vendor/*,*/node_modules/*,dev.php\"",
+				standard: "phpcs.ruleset.xml"
 			}
 		}
 	} );
