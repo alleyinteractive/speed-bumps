@@ -109,6 +109,7 @@ class Speed_Bumps {
 	 */
 	public function insert_speed_bumps( $the_content ) {
 		global $_wp_filters_backed_up, $wp_filter;
+		$_wp_filters_backed_up = array();
 		$output = array();
 		$already_inserted = array();
 		$parts = Text::split_paragraphs( $the_content );
