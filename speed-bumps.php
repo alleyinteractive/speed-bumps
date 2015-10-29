@@ -108,6 +108,8 @@ class Speed_Bumps {
 	 * @return string The text with all registered speed bumps inserted at appropriate locations if possible.
 	 */
 	public function insert_speed_bumps( $the_content ) {
+		global $_wp_filters_backed_up, $wp_filter;
+		$_wp_filters_backed_up = array();
 		$output = array();
 		$already_inserted = array();
 		$parts = Text::split_paragraphs( $the_content );
@@ -139,6 +141,7 @@ class Speed_Bumps {
 			}
 		}
 
+		$this->reset_all_speed_bumps();
 		return implode( PHP_EOL . PHP_EOL, $output );
 	}
 
@@ -231,6 +234,17 @@ class Speed_Bumps {
 		return self::$speed_bumps;
 	}
 
+	public function get_speed_bumps_filters() {
+		$speed_bumps = $this->get_speed_bumps();
+		$filter_pattern = self::$filter_id;
+
+		return array_map(
+			function( $id ) use ( $filter_pattern ) {
+				return sprintf( $filter_pattern, $id );
+			}, array_keys( $speed_bumps )
+		);
+	}
+
 	public function get_speed_bump( $id ) {
 		return self::$speed_bumps[ $id ];
 	}
@@ -244,6 +258,21 @@ class Speed_Bumps {
 	public function clear_all_speed_bumps() {
 		foreach ( $this->get_speed_bumps() as $id => $args ) {
 			$this->clear_speed_bump( $id );
+		}
+	}
+
+	/**
+	 * Restore any filters which were removed by
+	 * `Insertion::less_than_maximum_number_of_inserts`
+	 */
+	public function reset_all_speed_bumps() {
+		global $_wp_filters_backed_up, $wp_filter;
+
+		if ( is_array( $_wp_filters_backed_up ) ) {
+			foreach ( $_wp_filters_backed_up as $hook => $filters ) {
+				$wp_filter[ $hook ] = $filters;
+			}
+			$_wp_filters_backed_up = array();
 		}
 	}
 }

@@ -30,12 +30,20 @@ class Injection {
 	 * by the 'maximum_inserts' argument on speed bump registration.
 	 */
 	public static function less_than_maximum_number_of_inserts( $can_insert, $context, $args, $already_inserted ) {
+		global $_wp_filters_backed_up, $wp_filter;
 
 		$this_speed_bump_insertions = array_filter( $already_inserted,
 			function( $insertion ) use ( $args ) { return $insertion['speed_bump_id'] === $args['id']; }
 		);
 
 		if ( count( $this_speed_bump_insertions ) >= $args['maximum_inserts'] ) {
+			$current_filter = current_filter();
+			if ( $current_filter && in_array( $current_filter, Speed_Bumps()->get_speed_bumps_filters() ) ) {
+				$_wp_filters_backed_up[ $current_filter ] = $wp_filter[ $current_filter ];
+				remove_all_filters( $current_filter );
+				add_filter( $current_filter, '__return_false' );
+			}
+
 			$can_insert = false;
 		}
 
