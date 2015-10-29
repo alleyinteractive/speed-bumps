@@ -38,9 +38,11 @@ class Injection {
 
 		if ( count( $this_speed_bump_insertions ) >= $args['maximum_inserts'] ) {
 			$current_filter = current_filter();
-			$_wp_filters_backed_up[ $current_filter ] = $wp_filter[ $current_filter ];
-			remove_all_filters( $current_filter );
-			add_filter( $current_filter, '__return_false' );
+			if ( $current_filter && in_array( $current_filter, Speed_Bumps()->get_speed_bumps_filters() ) ) {
+				$_wp_filters_backed_up[ $current_filter ] = $wp_filter[ $current_filter ];
+				remove_all_filters( $current_filter );
+				add_filter( $current_filter, '__return_false' );
+			}
 
 			$can_insert = false;
 		}
