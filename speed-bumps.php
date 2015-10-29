@@ -108,6 +108,7 @@ class Speed_Bumps {
 	 * @return string The text with all registered speed bumps inserted at appropriate locations if possible.
 	 */
 	public function insert_speed_bumps( $the_content ) {
+		global $_wp_filters_backed_up, $wp_filter;
 		$output = array();
 		$already_inserted = array();
 		$parts = Text::split_paragraphs( $the_content );
@@ -137,6 +138,14 @@ class Speed_Bumps {
 					);
 				}
 			}
+		}
+
+		// Restore any filters which were removed by `Insertion::less_than_maximum_number_of_inserts`
+		if ( is_array( $_wp_filters_backed_up ) ) {
+			foreach ( $_wp_filters_backed_up as $hook => $filters ) {
+				$wp_filter[ $hook ] = $filters;
+			}
+			$_wp_filters_backed_up = array();
 		}
 
 		return implode( PHP_EOL . PHP_EOL, $output );
