@@ -131,7 +131,8 @@ class Speed_Bumps {
 
 					$content_to_be_inserted = call_user_func( $args['string_to_inject'], $context, $already_inserted );
 
-					$output[] = $content_to_be_inserted;
+					$output[] = apply_filters( 'speed_bumps_content_inserted', $content_to_be_inserted, $context, $already_inserted );
+
 					$already_inserted[] = array(
 						'index' => $index,
 						'speed_bump_id' => $id,
