@@ -327,7 +327,6 @@ class Speed_Bumps {
 		if ( isset( $wp_filter[ $filter_id ] )
 				&& in_array( $filter_id, Speed_Bumps()->get_speed_bumps_filters(), true ) ) {
 
-
 			$_wp_filters_backed_up[ $filter_id ] = $wp_filter[ $filter_id ];
 			remove_all_filters( $filter_id );
 
