@@ -195,7 +195,10 @@ class Speed_Bumps {
 			// Maximum number of times this can be inserted in a post
 			'maximum_inserts' => 1,
 
-			// Minimum times this should be inserted, if 'last_ditch_rules' is true
+			// Minimum times this should be inserted, if 'last_ditch_fallback' is true
+			// (NOTE: this doesn't mean the speed bump will necessarily be inserted this
+			// number of times; but if it has been inserted fewer times than this at the end
+			// of the content, a "last ditch" insertion will be processed.)
 			'minimum_inserts' => 1,
 			'last_ditch_fallback' => false,
 
