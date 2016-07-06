@@ -348,9 +348,15 @@ class Speed_Bumps {
 	/**
 	 * Skip all remaining constraint checks at the current insertion point.
 	 *
-	 * Can be run as a return value from a filter, in which case it returns the
-	 * $return_value passed into it, removes all other filters, and adds an
+	 * Removes all constraint checks for a speed bump temporarily, and adds an
 	 * action to reset the speed bump after the current insertion point.
+	 * Usually called from a constraint filter through `return_false_and_skip`
+	 * or `return_true_and_skip`.
+	 *
+	 * Skipping insertion points early when you know that a speed bump can't be
+	 * inserted can improve performance greatly, as otherwise the plugin will
+	 * run all the constraint filters at every paragraph of the content. With
+	 * regex-heavy rules, this can become very slow.
 	 *
 	 * @return void
 	 */
