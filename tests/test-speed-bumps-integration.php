@@ -3,6 +3,7 @@
 class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
+		\Speed_Bumps()->clear_all_speed_Bumps();
 	}
 
 	public function test_speed_bump_insertion_based_on_constraint_filter() {
@@ -195,6 +196,70 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 		$content = $this->get_dummy_content();
 
 		$this->assertNotContains( 'shortcircuited speed bump', Speed_Bumps()->insert_speed_bumps( $content ) );
+	}
+
+	public function test_speed_bump_last_ditch_insertion() {
+		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+			'string_to_inject' => function( $context ) { return ( ! empty( $context['last_ditch'] ) ) ? 'last ditch' : 'normal insert'; },
+			'minimum_content_length' => 1500,
+			'from_start' => 0,
+			'from_end' => null,
+			'last_ditch_fallback' => true,
+		) );
+
+		$content = $this->get_dummy_content();
+		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
+
+		$this->assertSpeedBumpAtParagraph( $new_content, 10, 'last ditch' );
+	}
+
+	public function test_speed_bump_last_ditch_insertion_minimum_inserts() {
+		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+			'string_to_inject' => function( $context ) { return ( ! empty( $context['last_ditch'] ) ) ? 'last ditch' : 'normal insert'; },
+			'minimum_inserts' => 2,
+			'from_start' => array( 'paragraphs' => 6 ),
+			'from_end' => null,
+			'last_ditch_fallback' => true,
+		) );
+
+		$content = $this->get_dummy_content();
+		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
+
+		$this->assertSpeedBumpAtParagraph( $new_content, 8, 'normal insert' );
+		$this->assertSpeedBumpAtParagraph( $new_content, 11, 'last ditch' );
+	}
+
+	public function test_speed_bump_last_ditch_insertion_callable() {
+		// Prepare the test case class to pass into closures (for PHP <=5.3)
+		$testcase = $this;
+
+		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+			'string_to_inject' => function() { return 'last ditch'; },
+			'minimum_content_length' => 1500,
+			'from_start' => 200000,
+			'from_end' => null,
+			'last_ditch_fallback' => function( $context ) use ( $testcase ) {
+				$testcase->assertTrue( $context['last_ditch'] );
+				return true;
+			},
+		) );
+
+		$content = $this->get_dummy_content();
+		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
+
+		\Speed_Bumps()->clear_all_speed_Bumps();
+
+		\Speed_Bumps()->register_speed_bump( 'speed_bump2', array(
+			'string_to_inject' => function() { return 'second speed bump'; },
+			'minimum_content_length' => 1500,
+			'from_start' => 200000,
+			'from_end' => null,
+			'last_ditch_fallback' => function( $context ) use ( $testcase ) {
+				$testcase->assertTrue( $context['last_ditch'] );
+				return false;
+			},
+		) );
+		$this->assertNotContains( $new_content, 'second speed bump' );
 	}
 
 	private function get_dummy_content() {

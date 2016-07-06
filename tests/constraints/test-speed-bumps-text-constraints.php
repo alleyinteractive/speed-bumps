@@ -32,7 +32,7 @@ than 1200Something longer than 1200';
 
 		$args = array( 'minimum_content_length' => array( 'words' => 180 ) );
 		$ok_to_insert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
-		$this->assertEquals( Speed_Bumps::return_false_and_remove_all(), $ok_to_insert );
+		$this->assertFalse( $ok_to_insert );
 	}
 
 	public function test_minimum_content_length_paragraphs() {
@@ -46,7 +46,7 @@ than 1200Something longer than 1200';
 
 		$args = array( 'minimum_content_length' => array( 'paragraphs' => 6 ) );
 		$ok_to_insert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
-		$this->assertEquals( Speed_Bumps::return_false_and_remove_all(), $ok_to_insert );
+		$this->assertFalse( $ok_to_insert );
 
 	}
 
@@ -61,7 +61,7 @@ than 1200Something longer than 1200';
 
 		$args = array( 'minimum_content_length' => array( 'characters' => 1600 ) );
 		$ok_to_insert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
-		$this->assertEquals( Speed_Bumps::return_false_and_remove_all(), $ok_to_insert );
+		$this->assertFalse( $ok_to_insert );
 	}
 
 	public function test_meets_minimum_distance_from_start_paragraphs() {

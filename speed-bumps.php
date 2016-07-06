@@ -172,6 +172,34 @@ class Speed_Bumps {
 			}
 		}
 
+		// Apply "last ditch" insertion rules for any speed bumps that implement them
+		$context['last_ditch'] = true;
+
+		foreach ( $this->get_speed_bumps() as $id => $args ) {
+
+			if ( ! empty( $args['last_ditch_fallback'] ) ) {
+
+				if ( is_callable( $args['last_ditch_fallback'] ) ) {
+					$can_insert = call_user_func( $args['last_ditch_fallback'], $context, $already_inserted );
+				} else {
+					$inserted = array_filter( $already_inserted, function( $insert ) use ( $id ) { return $insert['speed_bump_id'] === $id; } );
+					$can_insert = ( count( $inserted ) < $args['minimum_inserts'] );
+				}
+
+				if ( $can_insert ) {
+					$content_to_be_inserted = call_user_func( $args['string_to_inject'], $context, $already_inserted );
+
+					$output[] = apply_filters( 'speed_bumps_content_inserted', $content_to_be_inserted, $args, $context, $already_inserted );
+
+					$already_inserted[] = array(
+						'index' => $index,
+						'speed_bump_id' => $id,
+						'inserted_content' => $content_to_be_inserted,
+					);
+				}
+			}
+		}
+
 		$this->reset_all_speed_bumps();
 		return implode( PHP_EOL . PHP_EOL, $output );
 	}
@@ -196,6 +224,13 @@ class Speed_Bumps {
 
 			// Maximum number of times this can be inserted in a post
 			'maximum_inserts' => 1,
+
+			// Minimum times this should be inserted, if 'last_ditch_fallback' is true
+			// (NOTE: this doesn't mean the speed bump will necessarily be inserted this
+			// number of times; but if it has been inserted fewer times than this at the end
+			// of the content, a "last ditch" insertion will be processed.)
+			'minimum_inserts' => 1,
+			'last_ditch_fallback' => false,
 
 			// Rules which govern the content as a whole
 			'minimum_content_length' => array(
