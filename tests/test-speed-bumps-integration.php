@@ -193,7 +193,7 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 			'minimum_content_length' => 1500,
 			'from_start' => 0,
 			'from_end' => null,
-			'last_ditch_fallback' => true
+			'last_ditch_fallback' => true,
 		) );
 
 		$content = $this->get_dummy_content();
@@ -208,7 +208,7 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 			'minimum_inserts' => 2,
 			'from_start' => array( 'paragraphs' => 6 ),
 			'from_end' => null,
-			'last_ditch_fallback' => true
+			'last_ditch_fallback' => true,
 		) );
 
 		$content = $this->get_dummy_content();

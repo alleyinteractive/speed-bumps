@@ -127,7 +127,7 @@ class Speed_Bumps {
 
 			foreach ( $this->get_speed_bumps() as $id => $args ) {
 
-				if ( apply_filters( 'speed_bumps_'. $id . '_constraints', true, $context, $args, $already_inserted ) ) {
+				if ( apply_filters( 'speed_bumps_' . $id . '_constraints', true, $context, $args, $already_inserted ) ) {
 
 					$content_to_be_inserted = call_user_func( $args['string_to_inject'], $context, $already_inserted );
 
@@ -169,7 +169,6 @@ class Speed_Bumps {
 				}
 			}
 		}
-
 
 		$this->reset_all_speed_bumps();
 		return implode( PHP_EOL . PHP_EOL, $output );
