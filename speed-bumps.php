@@ -294,42 +294,51 @@ class Speed_Bumps {
 
 	// Public control structures, which can be called by speed bumps
 	public static function return_false_and_skip() {
-		return self::skip_insertion_point( false );
+		self::skip_current_insertion_point();
+		return false;
 	}
 
 	public static function return_false_and_remove_all() {
-		self::remove_speed_bump();
+		self::remove_current_speed_bump();
 		return false;
 	}
 
 	public static function return_true_and_skip() {
-		return self::skip_insertion_point( true );
+		self::skip_current_insertion_point();
+		return true;
 	}
 
 	public static function return_true_and_remove_all() {
-		self::remove_speed_bump();
+		self::remove_current_speed_bump();
 		return true;
+	}
+
+	/**
+	 * Prevent the current speed bump from running over the rest of the content.
+	 *
+	 * Removes a speed bump completely. Usually called through
+	 * `return_false_and_remove_all` or `return_true_and_remove_all`.
+	 *
+	 * @uses Speed_Bumps::remove_speed_bump
+	 * @return void
+	 */
+	public static function remove_current_speed_bump() {
+		self::remove_speed_bump( current_filter() );
 	}
 
 	/**
 	 * Prevent a speed bump from running over the rest of the content.
 	 *
-	 * Run when a constraint function returns one of the special constant values
-	 * SPEED_BUMPS_RETURN_FALSE_AND_REMOVE_ALL or SPEED_BUMPS_RETURN_TRUE_AND_REMOVE_ALL.
+	 * Removes a speed bump completely. Usually called through
+	 * `return_false_and_remove_all` or `return_true_and_remove_all`.
 	 *
-	 * @param string $speed_bump_id Defaults to the value of current_filter().
+	 * @param string $filter_id Filter ID of speed bump to remove
+	 * @return void
 	 */
-	public static function remove_speed_bump( $speed_bump_id = null ) {
+	public static function remove_speed_bump( $filter_id ) {
 		global $_wp_filters_backed_up, $wp_filter;
 
-		if ( $speed_bump_id ) {
-			$filter_id = sprintf( self::$filter_id, $speed_bump_id );
-		} else {
-			$filter_id = current_filter();
-		}
-
-		if ( isset( $wp_filter[ $filter_id ] )
-				&& in_array( $filter_id, Speed_Bumps()->get_speed_bumps_filters(), true ) ) {
+		if ( in_array( $filter_id, Speed_Bumps()->get_speed_bumps_filters(), true ) ) {
 			$_wp_filters_backed_up[ $filter_id ] = $wp_filter[ $filter_id ];
 			remove_all_filters( $filter_id );
 			add_filter( $filter_id, '__return_false' );
@@ -343,9 +352,9 @@ class Speed_Bumps {
 	 * $return_value passed into it, removes all other filters, and adds an
 	 * action to reset the speed bump after the current insertion point.
 	 *
-	 * @param bool The $can_insert value which should be returned from the current filter.
+	 * @return void
 	 */
-	public static function skip_insertion_point( $return_value = false ) {
+	public static function skip_current_insertion_point() {
 		global $_wp_filters_backed_up, $wp_filter;
 
 		$filter_id = current_filter();
@@ -356,18 +365,19 @@ class Speed_Bumps {
 			$_wp_filters_backed_up[ $filter_id ] = $wp_filter[ $filter_id ];
 			remove_all_filters( $filter_id );
 
-			// pushing another method on to the end of the current filter, which restores it
+			// Restore the speed bump after the current insertion point has been processed
 			add_action( 'speed_bumps_constraints_completed', 'Speed_Bumps::restore_speed_bump' );
 		}
-
-		return $return_value;
 	}
 
 	/**
-	 * Restore a speed bump that was temporarily removed using
-	 * `skip_insertion_point()`.
+	 * Restore a speed bump that was skipped for an insertion point
 	 *
-	 * @param bool $return_value Required, since this function is hooked as a regular ilter
+	 * Run after all constraint filters have been processed at an insertion
+	 * point. Restores the speed bump which was temporarily removed using
+	 * `remove_current_speed_bump` or `skip_current_insertion_point()`.
+	 *
+	 * @param string Speed bump filter id
 	 */
 	public static function restore_speed_bump( $speed_bump_filter ) {
 		global $wp_filter, $_wp_filters_backed_up;

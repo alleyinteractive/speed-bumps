@@ -59,7 +59,7 @@ class Test_Speed_Bumps_Registration extends WP_UnitTestCase {
 			'the_content'      => '',
 			'parts'            => array(),
 		);
-		Speed_Bumps::remove_speed_bump( '1' );
+		Speed_Bumps::remove_speed_bump( 'speed_bumps_1_constraints' );
 
 		global $_wp_filters_backed_up, $wp_filter;
 		$this->assertNotEmpty( $_wp_filters_backed_up['speed_bumps_1_constraints'] );
