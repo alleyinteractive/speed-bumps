@@ -3,6 +3,7 @@ namespace Speed_Bumps\Constraints\Content;
 
 use Speed_Bumps\Utils\Comparison;
 use Speed_Bumps\Utils\Text;
+use Speed_Bumps;
 
 /**
  * Constraints for inserting speed bumps relating to other speed bumps.
@@ -37,14 +38,7 @@ class Injection {
 		);
 
 		if ( count( $this_speed_bump_insertions ) >= $args['maximum_inserts'] ) {
-			$current_filter = current_filter();
-			if ( $current_filter && in_array( $current_filter, Speed_Bumps()->get_speed_bumps_filters(), true ) ) {
-				$_wp_filters_backed_up[ $current_filter ] = $wp_filter[ $current_filter ];
-				remove_all_filters( $current_filter );
-				add_filter( $current_filter, '__return_false' );
-			}
-
-			$can_insert = false;
+			$can_insert = Speed_Bumps::return_false_and_remove_all();
 		}
 
 		return $can_insert;

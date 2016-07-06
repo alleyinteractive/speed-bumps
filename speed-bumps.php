@@ -127,10 +127,32 @@ class Speed_Bumps {
 
 			foreach ( $this->get_speed_bumps() as $id => $args ) {
 
-				if ( apply_filters( 'speed_bumps_' . $id . '_constraints', true, $context, $args, $already_inserted ) ) {
+				$speed_bump_filter = sprintf( self::$filter_id, $id );
+
+				/**
+				 * Filter whether a speed bump can be inserted at a given location
+				 *
+				 * This filter is dynamically named "speed_bump_{id}_constraints", and is the main logic of
+				 * this plugin. Returning false from this filter means that the speed bump will not be
+				 * inserted.
+				 *
+				 * @param bool  $can_insert        Whether the speed bump can be inserted here
+				 * @param array $args              Speed bump rules
+				 * @param array $context           Current insertion point context
+				 * @param array $already_inserted  Other speed bumps which have been inserted
+				 */
+				if ( apply_filters( $speed_bump_filter, true, $context, $args, $already_inserted ) ) {
 
 					$content_to_be_inserted = call_user_func( $args['string_to_inject'], $context, $already_inserted );
 
+					/**
+					 * Filter the output of a speed bump.
+					 *
+					 * @param string $content_to_be_inserted Output of speed bump
+					 * @param array  $args                   Speed bump rules
+					 * @param array  $context                Current insertion point context
+					 * @param array  $already_inserted       Other speed bumps which have been inserted
+					 */
 					$output[] = apply_filters( 'speed_bumps_content_inserted', $content_to_be_inserted, $args, $context, $already_inserted );
 
 					$already_inserted[] = array(
@@ -139,6 +161,14 @@ class Speed_Bumps {
 						'inserted_content' => $content_to_be_inserted,
 					);
 				}
+
+				/**
+				 * Fires after all constraints on a speed bump are completed for an insertion point
+				 *
+				 * @param string $speed_bump_filter The speed bump's filter name
+				 * @param array  $context           Current insertion point context
+				 */
+				do_action( 'speed_bumps_constraints_completed', $speed_bump_filter );
 			}
 		}
 
@@ -297,11 +327,119 @@ class Speed_Bumps {
 		}
 	}
 
+	// Public control structures, which can be called by speed bumps
+	public static function return_false_and_skip() {
+		self::skip_current_insertion_point();
+		return false;
+	}
+
+	public static function return_false_and_remove_all() {
+		self::remove_current_speed_bump();
+		return false;
+	}
+
+	public static function return_true_and_skip() {
+		self::skip_current_insertion_point();
+		return true;
+	}
+
+	public static function return_true_and_remove_all() {
+		self::remove_current_speed_bump();
+		return true;
+	}
+
 	/**
-	 * Restore any filters which were removed by
-	 * `Insertion::less_than_maximum_number_of_inserts`
+	 * Prevent the current speed bump from running over the rest of the content.
+	 *
+	 * Removes a speed bump completely. Usually called through
+	 * `return_false_and_remove_all` or `return_true_and_remove_all`.
+	 *
+	 * @uses Speed_Bumps::remove_speed_bump
+	 * @return void
 	 */
-	public function reset_all_speed_bumps() {
+	public static function remove_current_speed_bump() {
+		self::remove_speed_bump( current_filter() );
+	}
+
+	/**
+	 * Prevent a speed bump from running over the rest of the content.
+	 *
+	 * Removes a speed bump completely. Usually called through
+	 * `return_false_and_remove_all` or `return_true_and_remove_all`.
+	 *
+	 * @param string $filter_id Filter ID of speed bump to remove
+	 * @return void
+	 */
+	public static function remove_speed_bump( $filter_id ) {
+		global $_wp_filters_backed_up, $wp_filter;
+
+		if ( in_array( $filter_id, Speed_Bumps()->get_speed_bumps_filters(), true ) ) {
+			$_wp_filters_backed_up[ $filter_id ] = $wp_filter[ $filter_id ];
+			remove_all_filters( $filter_id );
+			add_filter( $filter_id, '__return_false' );
+		}
+	}
+
+	/**
+	 * Skip all remaining constraint checks at the current insertion point.
+	 *
+	 * Removes all constraint checks for a speed bump temporarily, and adds an
+	 * action to reset the speed bump after the current insertion point.
+	 * Usually called from a constraint filter through `return_false_and_skip`
+	 * or `return_true_and_skip`.
+	 *
+	 * Skipping insertion points early when you know that a speed bump can't be
+	 * inserted can improve performance greatly, as otherwise the plugin will
+	 * run all the constraint filters at every paragraph of the content. With
+	 * regex-heavy rules, this can become very slow.
+	 *
+	 * @return void
+	 */
+	public static function skip_current_insertion_point() {
+		global $_wp_filters_backed_up, $wp_filter;
+
+		$filter_id = current_filter();
+
+		if ( isset( $wp_filter[ $filter_id ] )
+				&& in_array( $filter_id, Speed_Bumps()->get_speed_bumps_filters(), true ) ) {
+
+			$_wp_filters_backed_up[ $filter_id ] = $wp_filter[ $filter_id ];
+			remove_all_filters( $filter_id );
+
+			// Restore the speed bump after the current insertion point has been processed
+			add_action( 'speed_bumps_constraints_completed', 'Speed_Bumps::restore_speed_bump' );
+		}
+	}
+
+	/**
+	 * Restore a speed bump that was skipped for an insertion point
+	 *
+	 * Run after all constraint filters have been processed at an insertion
+	 * point. Restores the speed bump which was temporarily removed using
+	 * `remove_current_speed_bump` or `skip_current_insertion_point()`.
+	 *
+	 * @param string Speed bump filter id
+	 */
+	public static function restore_speed_bump( $speed_bump_filter ) {
+		global $wp_filter, $_wp_filters_backed_up;
+
+		if ( isset( $_wp_filters_backed_up[ $speed_bump_filter ] )
+				&& in_array( $speed_bump_filter, Speed_Bumps()->get_speed_bumps_filters(), true ) ) {
+
+			$wp_filter[ $speed_bump_filter ] = $_wp_filters_backed_up[ $speed_bump_filter ];
+			unset( $_wp_filters_backed_up[ $speed_bump_filter ] );
+		}
+
+		remove_action( 'speed_bumps_constraints_completed', 'Speed_Bumps::restore_speed_bump' );
+	}
+
+	/**
+	 * Restore any filters removed by `remove_current_speed_bump_filters()`.
+	 *
+	 * Run at the end of processing the content, so that more than one content string can be processed in a
+	 * single WP instance.
+	 */
+	public static function reset_all_speed_bumps() {
 		global $_wp_filters_backed_up, $wp_filter;
 
 		if ( is_array( $_wp_filters_backed_up ) ) {

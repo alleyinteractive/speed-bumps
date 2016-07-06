@@ -187,6 +187,17 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 
 	}
 
+	public function test_speed_bump_filter_can_shortcircuit_other_constraints() {
+		Speed_Bumps()->register_speed_bump( 'new_sb', array( 'string_to_inject' => function() { return 'shortcircuited speed bump'; } ) );
+		remove_all_filters( 'speed_bumps_new_sb_constraints' );
+		add_filter( 'speed_bumps_new_sb_constraints', '__return_true', 10 );
+		add_filter( 'speed_bumps_new_sb_constraints', function() { Speed_Bumps::return_false_and_skip(); return false; }, 9 );
+
+		$content = $this->get_dummy_content();
+
+		$this->assertNotContains( 'shortcircuited speed bump', Speed_Bumps()->insert_speed_bumps( $content ) );
+	}
+
 	public function test_speed_bump_last_ditch_insertion() {
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function( $context ) { return ( ! empty( $context['last_ditch'] ) ) ? 'last ditch' : 'normal insert'; },

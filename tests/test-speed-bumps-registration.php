@@ -59,15 +59,7 @@ class Test_Speed_Bumps_Registration extends WP_UnitTestCase {
 			'the_content'      => '',
 			'parts'            => array(),
 		);
-		$args = Speed_Bumps()->get_speed_bump( '1' );
-		$already_inserted = array(
-			array(
-				'index' => 0,
-				'speed_bump_id' => '1',
-				'inserted_content' => '',
-			),
-		);
-		apply_filters( 'speed_bumps_1_constraints', true, $context, $args, $already_inserted );
+		Speed_Bumps::remove_speed_bump( 'speed_bumps_1_constraints' );
 
 		global $_wp_filters_backed_up, $wp_filter;
 		$this->assertNotEmpty( $_wp_filters_backed_up['speed_bumps_1_constraints'] );

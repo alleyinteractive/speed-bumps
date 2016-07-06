@@ -33,7 +33,7 @@ than 1200Something longer than 1200';
 		);
 
 		$ok_to_insert = Injection::less_than_maximum_number_of_inserts( true, array( 'index' => 2 ), $args, $already_inserted );
-		$this->assertFalse( $ok_to_insert );
+		$this->assertEquals( Speed_Bumps::return_false_and_remove_all(), $ok_to_insert );
 
 		$args['maximum_inserts'] = 2;
 		$ok_to_insert = Injection::less_than_maximum_number_of_inserts( true, array( 'index' => 2 ), $args, $already_inserted );
