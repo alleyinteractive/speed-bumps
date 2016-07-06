@@ -219,13 +219,16 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 	}
 
 	public function test_speed_bump_last_ditch_insertion_callable() {
+		// Prepare the test case class to pass into closures (for PHP <=5.3)
+		$testcase = $this;
+
 		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
 			'string_to_inject' => function() { return 'last ditch'; },
 			'minimum_content_length' => 1500,
 			'from_start' => 200000,
 			'from_end' => null,
-			'last_ditch_fallback' => function( $context ) {
-				$this->assertTrue( $context['last_ditch'] );
+			'last_ditch_fallback' => function( $context ) use ( $testcase ) {
+				$testcase->assertTrue( $context['last_ditch'] );
 				return true;
 			}
 		) );
@@ -240,8 +243,8 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 			'minimum_content_length' => 1500,
 			'from_start' => 200000,
 			'from_end' => null,
-			'last_ditch_fallback' => function( $context ) {
-				$this->assertTrue( $context['last_ditch'] );
+			'last_ditch_fallback' => function( $context ) use ( $testcase ) {
+				$testcase->assertTrue( $context['last_ditch'] );
 				return false;
 			}
 		) );
