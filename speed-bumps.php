@@ -129,10 +129,30 @@ class Speed_Bumps {
 
 				$speed_bump_filter = sprintf( self::$filter_id, $id );
 
+				/**
+				 * Filter whether a speed bump can be inserted at a given location
+				 *
+				 * This filter is dynamically named "speed_bump_{id}_constraints", and is the main logic of
+				 * this plugin. Returning false from this filter means that the speed bump will not be
+				 * inserted.
+				 *
+				 * @param bool  $can_insert        Whether the speed bump can be inserted here
+				 * @param array $args              Speed bump rules
+				 * @param array $context           Current insertion point context
+				 * @param array $already_inserted  Other speed bumps which have been inserted
+				 */
 				if ( apply_filters( $speed_bump_filter, true, $context, $args, $already_inserted ) ) {
 
 					$content_to_be_inserted = call_user_func( $args['string_to_inject'], $context, $already_inserted );
 
+					/**
+					 * Filter the output of a speed bump.
+					 *
+					 * @param string $content_to_be_inserted Output of speed bump
+					 * @param array  $args                   Speed bump rules
+					 * @param array  $context                Current insertion point context
+					 * @param array  $already_inserted       Other speed bumps which have been inserted
+					 */
 					$output[] = apply_filters( 'speed_bumps_content_inserted', $content_to_be_inserted, $args, $context, $already_inserted );
 
 					$already_inserted[] = array(
@@ -142,7 +162,13 @@ class Speed_Bumps {
 					);
 				}
 
-				do_action( 'done_speed_bump_constraints', $speed_bump_filter );
+				/**
+				 * Fires after all constraints on a speed bump are completed for an insertion point
+				 *
+				 * @param string $speed_bump_filter The speed bump's filter name
+				 * @param array  $context           Current insertion point context
+				 */
+				do_action( 'speed_bumps_constraints_completed', $speed_bump_filter );
 			}
 		}
 
@@ -331,7 +357,7 @@ class Speed_Bumps {
 			remove_all_filters( $filter_id );
 
 			// pushing another method on to the end of the current filter, which restores it
-			add_action( 'done_speed_bump_constraints', 'Speed_Bumps::restore_speed_bump' );
+			add_action( 'speed_bumps_constraints_completed', 'Speed_Bumps::restore_speed_bump' );
 		}
 
 		return $return_value;
@@ -353,7 +379,7 @@ class Speed_Bumps {
 			unset( $_wp_filters_backed_up[ $speed_bump_filter ] );
 		}
 
-		remove_action( 'done_speed_bump_constraints', 'Speed_Bumps::restore_speed_bump' );
+		remove_action( 'speed_bumps_constraints_completed', 'Speed_Bumps::restore_speed_bump' );
 	}
 
 	/**
