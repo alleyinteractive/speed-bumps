@@ -150,7 +150,7 @@ class Speed_Bumps {
 			if ( ! empty( $args['last_ditch_fallback'] ) ) {
 
 				if ( is_callable( $args['last_ditch_fallback'] ) ) {
-					$insert_last_ditch_speed_bump = call_user_func( $args['last_ditch_fallback'], $context, $already_inserted );
+					$can_insert = call_user_func( $args['last_ditch_fallback'], $context, $already_inserted );
 				} else {
 					$inserted = array_filter( $already_inserted, function( $insert ) use ( $id ) { return $insert['speed_bump_id'] === $id; } );
 					$can_insert = ( count( $inserted ) < $args['minimum_inserts'] );
