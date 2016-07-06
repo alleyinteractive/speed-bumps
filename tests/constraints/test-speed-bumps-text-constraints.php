@@ -27,12 +27,12 @@ than 1200Something longer than 1200';
 		);
 
 		$args = array( 'minimum_content_length' => array( 'words' => 150 ) );
-		$okToInsert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 
 		$args = array( 'minimum_content_length' => array( 'words' => 180 ) );
-		$okToInsert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 	}
 
 	public function test_minimum_content_length_paragraphs() {
@@ -41,12 +41,12 @@ than 1200Something longer than 1200';
 		);
 
 		$args = array( 'minimum_content_length' => array( 'paragraphs' => 5 ) );
-		$okToInsert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 
 		$args = array( 'minimum_content_length' => array( 'paragraphs' => 6 ) );
-		$okToInsert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 
 	}
 
@@ -56,12 +56,12 @@ than 1200Something longer than 1200';
 		);
 
 		$args = array( 'minimum_content_length' => array( 'characters' => 1200 ) );
-		$okToInsert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 
 		$args = array( 'minimum_content_length' => array( 'characters' => 1600 ) );
-		$okToInsert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Minimum_Text::content_is_long_enough_to_insert( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 	}
 
 	public function test_meets_minimum_distance_from_start_paragraphs() {
@@ -75,12 +75,12 @@ than 1200Something longer than 1200';
 			'index' => 1,
 		);
 
-		$okToInsert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 
 		$context['index'] = 0;
-		$okToInsert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 	}
 
 	public function test_meets_minimum_distance_from_start_words() {
@@ -94,12 +94,12 @@ than 1200Something longer than 1200';
 			'index' => 1,
 		);
 
-		$okToInsert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 
 		$context['index'] = 0;
-		$okToInsert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 	}
 
 	public function test_meets_minimum_distance_from_start_characters() {
@@ -113,12 +113,12 @@ than 1200Something longer than 1200';
 			'index' => 1,
 		);
 
-		$okToInsert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 
 		$context['index'] = 0;
-		$okToInsert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Minimum_Text::meets_minimum_distance_from_start( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 	}
 
 	public function test_meets_minimum_distance_from_end_paragraphs() {
@@ -132,12 +132,12 @@ than 1200Something longer than 1200';
 			'index' => 1,
 		);
 
-		$okToInsert = Minimum_Text::meets_minimum_distance_from_end( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Minimum_Text::meets_minimum_distance_from_end( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 
 		$context['index'] = 4;
-		$okToInsert = Minimum_Text::meets_minimum_distance_from_end( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Minimum_Text::meets_minimum_distance_from_end( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 	}
 
 	public function test_meets_minimum_distance_from_end_words() {
@@ -151,12 +151,12 @@ than 1200Something longer than 1200';
 			'index' => 1,
 		);
 
-		$okToInsert = Minimum_Text::meets_minimum_distance_from_end( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Minimum_Text::meets_minimum_distance_from_end( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 
 		$context['index'] = 4;
-		$okToInsert = Minimum_Text::meets_minimum_distance_from_end( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Minimum_Text::meets_minimum_distance_from_end( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 	}
 
 	public function test_meets_minimum_distance_from_end_characters() {
@@ -170,11 +170,11 @@ than 1200Something longer than 1200';
 			'index' => 1,
 		);
 
-		$okToInsert = Minimum_Text::meets_minimum_distance_from_end( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Minimum_Text::meets_minimum_distance_from_end( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 
 		$context['index'] = 4;
-		$okToInsert = Minimum_Text::meets_minimum_distance_from_end( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Minimum_Text::meets_minimum_distance_from_end( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 	}
 }
