@@ -32,12 +32,12 @@ than 1200Something longer than 1200';
 			'maximum_inserts' => 1,
 		);
 
-		$okToInsert = Injection::less_than_maximum_number_of_inserts( true, array( 'index' => 2 ), $args, $already_inserted );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Injection::less_than_maximum_number_of_inserts( true, array( 'index' => 2 ), $args, $already_inserted );
+		$this->assertFalse( $ok_to_insert );
 
 		$args['maximum_inserts'] = 2;
-		$okToInsert = Injection::less_than_maximum_number_of_inserts( true, array( 'index' => 2 ), $args, $already_inserted );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Injection::less_than_maximum_number_of_inserts( true, array( 'index' => 2 ), $args, $already_inserted );
+		$this->assertTrue( $ok_to_insert );
 	}
 
 	public function test_no_speed_bump_inserted_here() {
@@ -49,11 +49,11 @@ than 1200Something longer than 1200';
 			),
 		);
 
-		$okToInsert = Injection::no_speed_bump_inserted_here( true, array( 'index' => 1 ), array( 'id' => 'speed_bump2' ), $already_inserted );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Injection::no_speed_bump_inserted_here( true, array( 'index' => 1 ), array( 'id' => 'speed_bump2' ), $already_inserted );
+		$this->assertFalse( $ok_to_insert );
 
-		$okToInsert = Injection::no_speed_bump_inserted_here( true, array( 'index' => 2 ), array( 'id' => 'speed_bump2' ), $already_inserted );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Injection::no_speed_bump_inserted_here( true, array( 'index' => 2 ), array( 'id' => 'speed_bump2' ), $already_inserted );
+		$this->assertTrue( $ok_to_insert );
 	}
 
 	public function test_meets_minimum_distance_from_other_inserts_paragraphs() {
@@ -78,20 +78,20 @@ than 1200Something longer than 1200';
 			),
 		);
 
-		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertFalse( $ok_to_insert );
 
 		$context['index'] = 3;
-		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertTrue( $ok_to_insert );
 
 		$args['from_speedbump']['speed_bump1'] = array( 'paragraphs' => 4 );
-		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertFalse( $ok_to_insert );
 
 		$args['from_speedbump']['speed_bump1'] = array( 'paragraphs' => 1 );
-		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertTrue( $ok_to_insert );
 	}
 
 	public function test_meets_minimum_distance_from_other_inserts_words() {
@@ -116,20 +116,20 @@ than 1200Something longer than 1200';
 			),
 		);
 
-		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertFalse( $ok_to_insert );
 
 		$context['index'] = 3;
-		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertTrue( $ok_to_insert );
 
 		$args['from_speedbump']['speed_bump1'] = array( 'words' => 200 );
-		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertFalse( $ok_to_insert );
 
 		$args['from_speedbump']['speed_bump1'] = array( 'words' => 20 );
-		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertTrue( $ok_to_insert );
 	}
 
 	public function test_meets_minimum_distance_from_other_inserts_characters() {
@@ -154,19 +154,19 @@ than 1200Something longer than 1200';
 			),
 		);
 
-		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertFalse( $ok_to_insert );
 
 		$context['index'] = 3;
-		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertTrue( $ok_to_insert );
 
 		$args['from_speedbump']['speed_bump1'] = array( 'characters' => 1500 );
-		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertFalse( $ok_to_insert );
 
 		$args['from_speedbump']['speed_bump1'] = array( 'characters' => 50 );
-		$okToInsert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Injection::meets_minimum_distance_from_other_inserts( true, $context, $args, $already_inserted );
+		$this->assertTrue( $ok_to_insert );
 	}
 }

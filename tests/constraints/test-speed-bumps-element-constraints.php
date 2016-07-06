@@ -33,12 +33,12 @@ than 1200Something longer than 1200';
 			),
 		);
 
-		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 
 		$context['index'] = 3;
-		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 
 		$args['from_element'] = array(
 			'paragraphs' => 2,
@@ -46,12 +46,12 @@ than 1200Something longer than 1200';
 				'paragraphs' => 4,
 			),
 		);
-		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 
 		$args['from_element']['blockquote'] = array( 'paragraphs' => 1 );
-		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 	}
 
 	public function test_meets_minimum_distance_from_elements_words() {
@@ -68,12 +68,12 @@ than 1200Something longer than 1200';
 			),
 		);
 
-		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 
 		$context['index'] = 3;
-		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 
 		$args['from_element'] = array(
 			'words' => 60,
@@ -81,12 +81,12 @@ than 1200Something longer than 1200';
 				'words' => 120,
 			),
 		);
-		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 
 		$args['from_element']['blockquote'] = array( 'words' => 1 );
-		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 	}
 
 	public function test_meets_minimum_distance_from_elements_characters() {
@@ -103,12 +103,12 @@ than 1200Something longer than 1200';
 			),
 		);
 
-		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 
 		$context['index'] = 3;
-		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 
 		$args['from_element'] = array(
 			'characters' => 450,
@@ -116,12 +116,12 @@ than 1200Something longer than 1200';
 				'characters' => 1500,
 			),
 		);
-		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
-		$this->assertFalse( $okToInsert );
+		$ok_to_insert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
+		$this->assertFalse( $ok_to_insert );
 
 		$args['from_element']['blockquote'] = array( 'characters' => 1 );
-		$okToInsert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
-		$this->assertTrue( $okToInsert );
+		$ok_to_insert = Element_Constraints::meets_minimum_distance_from_elements( true, $context, $args, array() );
+		$this->assertTrue( $ok_to_insert );
 	}
 
 }
