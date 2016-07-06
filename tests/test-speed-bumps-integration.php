@@ -230,7 +230,7 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 			'last_ditch_fallback' => function( $context ) use ( $testcase ) {
 				$testcase->assertTrue( $context['last_ditch'] );
 				return true;
-			}
+			},
 		) );
 
 		$content = $this->get_dummy_content();
@@ -246,7 +246,7 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 			'last_ditch_fallback' => function( $context ) use ( $testcase ) {
 				$testcase->assertTrue( $context['last_ditch'] );
 				return false;
-			}
+			},
 		) );
 		$this->assertNotContains( $new_content, 'second speed bump' );
 	}
