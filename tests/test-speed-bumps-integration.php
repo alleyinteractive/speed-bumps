@@ -199,7 +199,22 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
 
 		$this->assertSpeedBumpAtParagraph( $new_content, 19, 'last ditch' );
+	}
 
+	public function test_speed_bump_last_ditch_insertion_minimum_inserts() {
+		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+			'string_to_inject' => function( $context ) { return ( ! empty( $context['last_ditch'] ) ) ? 'last ditch' : 'normal insert'; },
+			'minimum_inserts' => 2,
+			'from_start' => array( 'paragraphs' => 6 ),
+			'from_end' => null,
+			'last_ditch_fallback' => true
+		) );
+
+		$content = $this->get_dummy_content();
+		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
+
+		$this->assertSpeedBumpAtParagraph( $new_content, 14, 'normal insert' );
+		$this->assertSpeedBumpAtParagraph( $new_content, 20, 'last ditch' );
 	}
 
 	private function get_dummy_content() {
