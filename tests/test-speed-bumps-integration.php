@@ -186,6 +186,22 @@ class Test_Speed_Bumps_Integration extends WP_UnitTestCase {
 
 	}
 
+	public function test_speed_bump_last_ditch_insertion() {
+		\Speed_Bumps()->register_speed_bump( 'speed_bump1', array(
+			'string_to_inject' => function( $context ) { return ( ! empty( $context['last_ditch'] ) ) ? 'last ditch' : 'normal insert'; },
+			'minimum_content_length' => 1500,
+			'from_start' => 0,
+			'from_end' => null,
+			'last_ditch_fallback' => true
+		) );
+
+		$content = $this->get_dummy_content();
+		$new_content = Speed_Bumps()->insert_speed_bumps( $content );
+
+		$this->assertSpeedBumpAtParagraph( $new_content, 19, 'last ditch' );
+
+	}
+
 	private function get_dummy_content() {
 		$content = <<<EOT
 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.
