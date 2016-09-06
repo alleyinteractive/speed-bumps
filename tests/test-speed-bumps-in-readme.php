@@ -184,7 +184,7 @@ EOT;
 
 	private function assertSpeedBumpAtParagraph( $content_to_test, $speed_bump_paragraph, $injected_string ) {
 		$parts = preg_split( '/\n\s*\n/', $content_to_test );
-		$actual_speed_bump_paragraph = array_search( $injected_string, $parts );
+		$actual_speed_bump_paragraph = array_search( $injected_string, $parts, true );
 
 		if ( false === $actual_speed_bump_paragraph ) {
 			$this->fail( 'The speed bump is not in the content' );
