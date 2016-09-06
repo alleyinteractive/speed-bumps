@@ -51,6 +51,11 @@ class Minimum_Text {
 			}
 		}
 
+		// This constraint should only need to be run once. If we've gotten to this point, then the content
+		// *is* long enough to insert, so this filter can be removed, rather than recalulating on every
+		// paragraph.
+		remove_filter( current_filter(), '\\' . __CLASS__ . '::' .  __FUNCTION__ );
+
 		return $can_insert;
 	}
 
