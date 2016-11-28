@@ -169,8 +169,10 @@ class Speed_Bumps {
 				 * @param array  $context           Current insertion point context
 				 */
 				do_action( 'speed_bumps_constraints_completed', $speed_bump_filter );
-			}
-		}
+
+			} // end foreach() loop over filters at potential insertion point
+
+		} // end foreach() loop over paragraphs in content
 
 		// Apply "last ditch" insertion rules for any speed bumps that implement them
 		$context['last_ditch'] = true;
