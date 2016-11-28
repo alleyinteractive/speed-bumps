@@ -11,4 +11,6 @@
 		<exclude name="WordPress.VIP.SuperGlobalInputUsage" />
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput" />
 	</rule>
+
+	<exclude name="Squiz.Commenting.LongConditionClosingComment"/>
 </ruleset>
