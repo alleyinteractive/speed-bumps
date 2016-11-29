@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<ruleset name="Shortcake">
+<ruleset name="Speed Bumps">
 	<description>Sniffs for the coding standards of the Speed Bumps plugin</description>
 
 	<extensions>*.php</extensions>
-	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*,*/node_modules/*</exclude-pattern>
 
 	<rule ref="WordPress-VIP">
 		<exclude name="WordPress.CSRF.NonceVerification" />

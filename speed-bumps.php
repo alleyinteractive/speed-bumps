@@ -169,8 +169,10 @@ class Speed_Bumps {
 				 * @param array  $context           Current insertion point context
 				 */
 				do_action( 'speed_bumps_constraints_completed', $speed_bump_filter );
-			}
-		}
+
+			} // @codingStandardsIgnoreLine End foreach() loop through filters at insertion point
+
+		} // @codingStandardsIgnoreLine End foreach() loop through paragraphs.
 
 		// Apply "last ditch" insertion rules for any speed bumps that implement them
 		$context['last_ditch'] = true;
@@ -374,7 +376,7 @@ class Speed_Bumps {
 		global $_wp_filters_backed_up, $wp_filter;
 
 		if ( in_array( $filter_id, Speed_Bumps()->get_speed_bumps_filters(), true ) ) {
-			$_wp_filters_backed_up[ $filter_id ] = $wp_filter[ $filter_id ];
+			$_wp_filters_backed_up[ $filter_id ] = is_object( $wp_filter[ $filter_id ] ) ? clone $wp_filter[ $filter_id ] : $wp_filter[ $filter_id ];
 			remove_all_filters( $filter_id );
 			add_filter( $filter_id, '__return_false' );
 		}
@@ -403,7 +405,7 @@ class Speed_Bumps {
 		if ( isset( $wp_filter[ $filter_id ] )
 				&& in_array( $filter_id, Speed_Bumps()->get_speed_bumps_filters(), true ) ) {
 
-			$_wp_filters_backed_up[ $filter_id ] = $wp_filter[ $filter_id ];
+			$_wp_filters_backed_up[ $filter_id ] = is_object( $wp_filter[ $filter_id ] ) ? clone $wp_filter[ $filter_id ] : $wp_filter[ $filter_id ];
 			remove_all_filters( $filter_id );
 
 			// Restore the speed bump after the current insertion point has been processed
