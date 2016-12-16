@@ -1,9 +1,9 @@
 # Speed Bumps #
-**Contributors:** fusioneng, goldenapples, noppanit  
+**Contributors:** fusionengineering, goldenapples, noppanit  
 **Tags:** content, advertising, recirculation  
-**Requires at least:** 3.0.1  
-**Stable tag:** 0.1.0  
-**Tested up to:** 4.3  
+**Requires at least:** 4.2  
+**Stable tag:** 0.2.0  
+**Tested up to:** 4.6  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -113,7 +113,17 @@ remove_filter( 'speed_bumps_{id}_constraints', '\Speed_Bumps\Constraints\Element
 
 ## Changelog ##
 
-### 0.1.0 (July 22, 2015) ###
+### 0.2.0 (December 15, 2016) ###
+
+* Compatability: Remove direct $wp_filter access for WP 4.7 compatability.
+* Compatability: Fix issues throwing warnings in PHP7.
+* Feature: Add "last ditch fallback" option for speed bump registration.
+* Feature: Add filter around speed bump insertion content.
+* Performance: Unregister speed bumps when global constraints prevent them being inserted.
+* Performance: Unregister speed bumps after inserting them the maximum number of times.
+* Performance: Allow speed bump constraint filters to short-circuit other filters at an insertion point, or to skip all remaining insertion points in a document.
+
+### 0.1.0 (July 23, 2015) ###
 
 * Initial release.
-* [Full release notes](http://fus.in/1MidK1N)
+* [Full release notes](http://fusion.net/story/170253/meet-speed-bumps-our-newest-open-source-release/)
