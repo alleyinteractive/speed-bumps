@@ -3,7 +3,7 @@
 **Tags:** content, advertising, recirculation  
 **Requires at least:** 4.2  
 **Stable tag:** 0.2.0  
-**Tested up to:** 4.6  
+**Tested up to:** 4.7  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
