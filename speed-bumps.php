@@ -114,6 +114,8 @@ class Speed_Bumps {
 		$already_inserted = array();
 		$parts = Text::split_paragraphs( $the_content );
 		$total_paragraphs = count( $parts );
+		$index = 0;
+
 		foreach ( $parts as $index => $part ) {
 			$output[] = $part;
 			$context = array(
