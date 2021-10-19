@@ -82,7 +82,7 @@ class Speed_Bumps {
 		$last = 'class-' . $last . '.php';
 
 		$parts[] = $last;
-		$file = dirname( __FILE__ ) . '/inc/' . str_replace( '_', '-', strtolower( implode( $parts, '/' ) ) );
+		$file = dirname( __FILE__ ) . '/inc/' . str_replace( '_', '-', strtolower( implode( '/', $parts ) ) );
 
 		//If the file exists....
 		if ( file_exists( $file ) ) {
