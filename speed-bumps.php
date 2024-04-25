@@ -108,6 +108,10 @@ class Speed_Bumps {
 	 * @return string The text with all registered speed bumps inserted at appropriate locations if possible.
 	 */
 	public function insert_speed_bumps( $the_content ) {
+		if ( true === apply_filters( 'speed_bumps_skip_insertion', false, $the_content ) ) {
+			return $the_content;
+		}
+
 		global $_wp_filters_backed_up, $wp_filter;
 		$_wp_filters_backed_up = array();
 		$output = array();
